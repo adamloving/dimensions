@@ -23,4 +23,4 @@ class App
     $('.share-widgets').fadeIn()
 
 jQuery ->  
-  window.app = new App
+  window.app = new App()

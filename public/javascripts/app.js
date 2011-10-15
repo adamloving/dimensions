@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Thu, 06 Oct 2011 06:40:48 GMT from
- * /Users/adam/Projects/rails-bootstrap/app/coffeescripts/app.coffee
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 19:37:11 GMT from
+ * /Users/adam/Projects/dimensions/app/coffeescripts/app.coffee
  */
 
 (function() {
@@ -35,6 +35,6 @@
     return App;
   })();
   jQuery(function() {
-    return window.app = new App;
+    return window.app = new App();
   });
 }).call(this);

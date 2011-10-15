@@ -8,7 +8,26 @@ body {
   }  
 
   #stream {
-  	margin-top: 20px
-  }
+  	margin-top: 20px;
+
+      .item {
+            
+        img {        
+          display: inline-block;
+          margin-right: 15px;
+        }
+
+        .body {
+
+          width: 600px;
+          display: inline-block;
+          vertical-align: top;
+
+          h2 {  
+            vertical-align: top;
+          }
+        }  
+      }
+    } 
 }
 
