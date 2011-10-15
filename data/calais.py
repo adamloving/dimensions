@@ -179,6 +179,17 @@ class CalaisResponse():
         
         return topics
 
+    def get_entities(self):
+        entities = []
+
+        if not hasattr(self, "entities"):
+            return entities
+        for item in self.entities:
+            entities.append(item)
+            # print "%s: %s (%.2f)" % (item['_type'], item['name'], item['relevance'])
+        
+        return entities
+
     def print_relations(self):
         if not hasattr(self, "relations"):
             return None

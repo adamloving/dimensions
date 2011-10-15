@@ -43,9 +43,20 @@ def extract_image(html):
         return match.group(1)
     return None
 
-def extract_tags(summary):
-    result = calais.analyze(summary)
+def extract_tags(result):
     return result.get_topics()
+
+def extract_location(result):
+    entities = result.get_entities()
+    location = ""
+    
+    for entity in entities:
+        if "resolutions" in entity:
+            if "latitude" in entity["resolutions"][0]:
+              location = entity["resolutions"][0]["latitude"] + ", " + entity["resolutions"][0]["longitude"]
+            break
+
+    return location
 
 def process_feed(feed_url):
     data = feedparser.parse(feed_url)
@@ -59,7 +70,9 @@ def process_feed(feed_url):
         if entry.has_key('updated_parsed'):
             output['article_date'] = entry['updated_parsed']
         output['article_summary'] = entry['summary_detail']['value']
-        output['article_tags'] = extract_tags(repr(output['article_summary']))
+        result = calais.analyze(repr(output['article_summary']))
+        output['article_location'] = extract_location(result)
+        output['article_tags'] = extract_tags(result)
 
         if entry.has_key('content'):
             output['article_text'] = entry['content'][0]['value']
