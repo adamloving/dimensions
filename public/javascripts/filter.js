@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 22:22:06 GMT from
- * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 23:36:49 GMT from
+ * /Users/leon/seattlenews/dimensions/app/coffeescripts/filter.coffee
  */
 
 (function() {
@@ -26,12 +26,30 @@
       query.start_date = this.startDate;
       return query;
     };
+    Filter.prototype.durationToMinutes = function(s) {
+      var duration, matches, multiplier;
+      matches = s.match(/(\d+)(\w+)/);
+      duration = matches[1];
+      multiplier = 1;
+      switch (matches[2]) {
+        case 'wk':
+          multiplier = 7 * 24 * 60;
+          break;
+        case 'd':
+          multiplier = 24 * 60;
+          break;
+        case 'hr':
+          multiplier = 60;
+      }
+      return multiplier * duration;
+    };
     Filter.prototype.onDateChange = function(e) {
-      var duration;
-      duration = e.target.value;
-      console.log(duration);
-      this.startDate = Date.now().add(-parseInt(duration)).hours().toISOString();
-      console.log("duration changed: ", this.duration, this.startDate);
+      var duration, minutes;
+      duration = $('#date-filter').val();
+      minutes = this.durationToMinutes(duration);
+      console.log(minutes);
+      this.startDate = Date.now().addMinutes(-minutes).toISOString();
+      console.log("duration changed: ", duration, this.startDate);
       return window.stream.loadItems();
     };
     Filter.prototype.onSearchChange = function(e) {
