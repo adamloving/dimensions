@@ -10,16 +10,23 @@
 ###   article_date
 ###   article_summary
 ###   article_text
+###   article_tags
 ###
 ### Usage: get_feed_data.py <url_file>
 ###
 ### Requires: http://code.google.com/p/feedparser/
+###           http://code.google.com/p/python-calais/
+###           http://pypi.python.org/pypi/simplejson/
 
 import feedparser
+from calais import Calais
 import json
 import os
 import re
 import time
+
+CALAIS_API_KEY = "d259fgb64k9vf5j3v9mx3hg6"
+calais = Calais(CALAIS_API_KEY, submitter="Seattle News Hackathon")
 
 class RssEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -36,6 +43,10 @@ def extract_image(html):
         return match.group(1)
     return None
 
+def extract_tags(summary):
+    result = calais.analyze(summary)
+    return result.get_topics()
+
 def process_feed(feed_url):
     data = feedparser.parse(feed_url)
     # print json.dumps(data, indent=2, skipkeys=True, cls=RssEncoder)
@@ -48,6 +59,8 @@ def process_feed(feed_url):
         if entry.has_key('updated_parsed'):
             output['article_date'] = entry['updated_parsed']
         output['article_summary'] = entry['summary_detail']['value']
+        output['article_tags'] = extract_tags(repr(output['article_summary']))
+
         if entry.has_key('content'):
             output['article_text'] = entry['content'][0]['value']
             image_url = extract_image(output['article_text'])

@@ -13,6 +13,7 @@ gem 'compass', ">= 0.10.4"
 gem 'devise'
 gem 'devise_rpx_connectable' 
 gem 'tire'
+gem 'crack'
 group :development do
   gem "barista" # coffeescript
 end
