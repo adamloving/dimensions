@@ -52,6 +52,8 @@ class SearchController < ApplicationController
     end
     facets = {
       "tags" => { "terms" => {"field" => "body","size"=>30} },
+      "source_tags" => { "terms" => {"field" => "tag","size"=>30} },
+      "topics" => { "terms" => {"field" => "topics","size"=>30} },
       "articles" => {
         "date_histogram" => {
           "field" => "created_at",
@@ -72,7 +74,7 @@ class SearchController < ApplicationController
       "query"=>match
    }
     Tire.configure do
-      #url "http://107.22.249.45:9200/"#TODO:make config
+      url "http://107.22.249.45:9200/"#TODO:make config
     end
     puts JSON.generate(qu)
     @results = Tire.search("news",qu)
@@ -87,7 +89,7 @@ class SearchController < ApplicationController
       } 
     }
     Tire.configure do
-      #url "http://107.22.249.45:9200/"#TODO:make config
+      url "http://107.22.249.45:9200/"#TODO:make config
     end
 
     @results = Tire.search("news",qu)
