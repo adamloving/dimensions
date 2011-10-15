@@ -25,7 +25,7 @@ class Calais():
     Python class that knows how to talk to the OpenCalais API.  Use the analyze() and analyze_url() methods, which return CalaisResponse objects.  
     """
     api_key = None
-    processing_directives = {"contentType":"TEXT/RAW", "outputFormat":"application/json", "reltagBaseURL":None, "calculateRelevanceScore":"true", "enableMetadataType":None, "discardMetadata":None, "omitOutputtingOriginalText":"true"}
+    processing_directives = {"contentType":"TEXT/RAW", "outputFormat":"application/json", "reltagBaseURL":None, "calculateRelevanceScore":"true", "enableMetadataType":"SocialTags", "discardMetadata":None, "omitOutputtingOriginalText":"true"}
     user_directives = {"allowDistribution":"false", "allowSearch":"false", "externalID":None}
     external_metadata = {}
 
@@ -164,6 +164,20 @@ class CalaisResponse():
             return None
         for topic in self.topics:
             print topic['categoryName']
+
+    def get_tags(self):
+        tags = ""
+        
+        if not hasattr(self, "socialTag"):
+            return ""
+    
+        for tag in self.socialTag:
+            tags += tag['name'] + ", "
+
+        if tags:
+            tags = tags[:-2]
+        
+        return tags
 
     def get_topics(self):
         if not hasattr(self, "topics"):
