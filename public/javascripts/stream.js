@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:39:19 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:57:28 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
  */
 
@@ -17,9 +17,7 @@
       $.ajax('/search', {
         type: 'GET',
         dataType: 'json',
-        data: {
-          start_date: window.filter.startDate
-        },
+        data: window.filter.getQuery(),
         error: __bind(function(jqXHR, textStatus, errorThrown) {
           return $('.alert-message.error').text('Error: #{textStatus}');
         }, this),

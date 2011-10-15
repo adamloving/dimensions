@@ -10,8 +10,7 @@ class Stream
     $.ajax '/search',
         type: 'GET'
         dataType: 'json'
-        data: 
-          start_date: window.filter.startDate
+        data: window.filter.getQuery()
         
         error: (jqXHR, textStatus, errorThrown) =>
           $('.alert-message.error').text('Error: #{textStatus}')
