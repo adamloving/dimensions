@@ -4,8 +4,8 @@
       h3
         a(href='/') Dimensions
 
-      form(action="")
-        input(type="text" placeholder="Search")
+      form(onsubmit='return false;')
+        input#search(type="text" placeholder="Search")
   
       - if user_signed_in?
 
