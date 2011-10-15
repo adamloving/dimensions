@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 20:32:17 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:57:28 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
  */
 
@@ -9,23 +9,15 @@
     function Stream() {
       this.render = __bind(this.render, this);
       this.onLoadItemsComplete = __bind(this.onLoadItemsComplete, this);
-      this.loadItems = __bind(this.loadItems, this);      this.data = [
-        {
-          title: "Hello world",
-          text: "this is the article"
-        }
-      ];
+      this.loadItems = __bind(this.loadItems, this);      this.template = $("#item-template").template("streamItem");
       this.loadItems();
-      this.render();
       console.log('stream constructor');
     }
     Stream.prototype.loadItems = function() {
       $.ajax('/search', {
         type: 'GET',
         dataType: 'json',
-        data: {
-          start_date: '2011-10-09T12:20:32Z'
-        },
+        data: window.filter.getQuery(),
         error: __bind(function(jqXHR, textStatus, errorThrown) {
           return $('.alert-message.error').text('Error: #{textStatus}');
         }, this),
@@ -41,7 +33,7 @@
     };
     Stream.prototype.render = function() {
       console.log('render');
-      this.template = $("#item-template").template("streamItem");
+      $("#stream").empty();
       $.tmpl("streamItem", this.data.results).appendTo("#stream");
       return console.log('rendered');
     };

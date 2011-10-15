@@ -254,3 +254,11 @@ vendor
   External libraries that the application depends on. Also includes the plugins
   subdirectory. If the app has frozen rails, those gems also go here, under
   vendor/rails/. This directory is in the load path.
+
+
+Elastic Search
+ruby script/es/load_es.rb  http://107.22.249.45:9200/ && ruby script/es/load_file.rb data/articles.json http://107.22.249.45:9200/
+load_es - builds out schema for es. First arg is host
+load_file - parses json file and build out ES json. first arg file second arg host
+
+Hosts default to local if not present

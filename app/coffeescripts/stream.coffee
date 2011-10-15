@@ -1,24 +1,20 @@
 class Stream
 
   constructor: ->
-  	@data = [{
-  		title: "Hello world"
-  		text: "this is the article"
-  	}]
-
-  	@loadItems()
-  	@render()
-  	console.log('stream constructor')
+    @template = $( "#item-template" ).template( "streamItem" )
+    @loadItems()
+    console.log('stream constructor')
 
   loadItems: () =>
     
     $.ajax '/search',
         type: 'GET'
         dataType: 'json'
-        data: 
-          start_date: '2011-10-09T12:20:32Z'
+        data: window.filter.getQuery()
+        
         error: (jqXHR, textStatus, errorThrown) =>
           $('.alert-message.error').text('Error: #{textStatus}')
+        
         success: (data, textStatus, jqXHR) =>
           console.log(data)
           @onLoadItemsComplete(data)
@@ -36,8 +32,8 @@ class Stream
 
   render: () =>
     console.log('render')
-    @template = $( "#item-template" ).template( "streamItem" );
-    $.tmpl( "streamItem", @data.results ).appendTo( "#stream" );
+    $("#stream").empty();
+    $.tmpl( "streamItem", @data.results ).appendTo("#stream")
     console.log('rendered')
 
 jQuery ->  
