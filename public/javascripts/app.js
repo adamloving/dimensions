@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 20:07:08 GMT from
- * /Users/adam/Projects/dimensions/app/coffeescripts/app.coffee
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:40:17 GMT from
+ * /Users/leon/seattlenews/dimensions/app/coffeescripts/app.coffee
  */
 
 (function() {
