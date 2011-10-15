@@ -1,21 +1,29 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:07:34 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:40:15 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
  */
 
 (function() {
-  var Filters;
-  Filters = (function() {
-    function Filters() {
+  var Filter;
+  Filter = (function() {
+    function Filter() {
+      this.startDate = Date.now().add(-12).hours().toISOString();
       console.log('gotcha');
-      $('#date-filter').change(this.onDateChange);
     }
-    Filters.prototype.onDateChange = function(e) {
-      this.duration = e.target.value;
-      return console.log(this.duration);
+    Filter.prototype.bind = function() {
+      return $('#date-filter').change(this.onDateChange);
     };
-    return Filters;
+    Filter.prototype.onDateChange = function(e) {
+      var duration;
+      duration = e.target.value;
+      console.log(duration);
+      this.startDate = Date.now().add(-parseInt(duration)).hours().toISOString();
+      console.log("duration changed: ", this.duration, this.startDate);
+      return window.stream.loadItems();
+    };
+    return Filter;
   })();
   jQuery(function() {
-    return window.stream = new Filters();
+    window.filter = new Filter();
+    return window.filter.bind();
   });
 }).call(this);
