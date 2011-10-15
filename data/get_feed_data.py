@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 ### Script for downloading articles from RSS feeds and outputting in a simple
-### json format. 
+### json format to stdout.
 ###
 ### JSON format: array of articles with the following fields
 ###   feed
@@ -10,6 +10,10 @@
 ###   article_date
 ###   article_summary
 ###   article_text
+###
+### Usage: get_feed_data.py <url_file>
+###
+### Requires: http://code.google.com/p/feedparser/
 
 import feedparser
 import json
