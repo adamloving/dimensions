@@ -18,6 +18,7 @@
 import feedparser
 import json
 import os
+import re
 import time
 
 class RssEncoder(json.JSONEncoder):
@@ -27,6 +28,13 @@ class RssEncoder(json.JSONEncoder):
         elif isinstance (obj, CharacterEncodingOverride):
             pass
         return json.JSONEncoder.default(self, obj)
+
+def extract_image(html):
+    '''Extracts the main image from the html, or returns None.'''
+    match = re.search('<img\s+src="([^"]+)"', html)
+    if match:
+        return match.group(1)
+    return None
 
 def process_feed(feed_url):
     data = feedparser.parse(feed_url)
@@ -42,6 +50,9 @@ def process_feed(feed_url):
         output['article_summary'] = entry['summary_detail']['value']
         if entry.has_key('content'):
             output['article_text'] = entry['content'][0]['value']
+            image_url = extract_image(output['article_text'])
+            if image_url:
+                output['article_image'] = image_url
         entries.append(output)
     return entries
         
@@ -54,6 +65,7 @@ def process_feeds(feed_url_file):
     feed_file.close()
 
 def dump_raw_feed(feed_url):
+    '''Dumps the raw feed for debugging'''
     data = feedparser.parse(feed_url)
     #print str(data)
     print json.dumps(data, indent=2, skipkeys=True, cls=RssEncoder)
