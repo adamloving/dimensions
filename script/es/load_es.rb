@@ -6,9 +6,10 @@ require "uri"
 require "date"
 require "time"
 if(ARGV[0])
+  host= "http://107.22.249.45:9200/"
   host=ARGV[0]
 else
-  host="http://localhost:9200"
+  host="http://localhost:9300/"
 end
 
 articles=[]
@@ -25,6 +26,7 @@ Tire.index 'news' do
             "_id" => {"index"=> "not_analyzed", "store" => "yes",:type=>'string'},
             "title" =>  {"type" => "string", "store" => "yes","analyzer"=>"standard","char_filter"=>["html_strip"]},
             "body" =>  {"type" => "string", "store" => "yes","analyzer"=>"standard","char_filter"=>["html_strip"]},
+            "no_tag_body" =>  {"type" => "string", "store" => "yes","analyzer"=>"standard","char_filter"=>["html_strip"]},
             "summary"=> {"type" => "string", "store" => "yes"},
             "photo_url" =>  {"type" => "string", "store" => "yes"},
             "article_link"=>  {"type" => "string", "store" => "yes"},
