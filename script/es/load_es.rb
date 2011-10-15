@@ -23,8 +23,8 @@ Tire.index 'news' do
         "_all" => {"enabled" => true},
         "properties" => {
             "_id" => {"index"=> "not_analyzed", "store" => "yes",:type=>'string'},
-            "title" =>  {"type" => "string", "store" => "yes"},
-            "body" =>  {"type" => "string", "store" => "yes"},
+            "title" =>  {"type" => "string", "store" => "yes","analyzer"=>"standard","char_filter"=>["html_strip"]},
+            "body" =>  {"type" => "string", "store" => "yes","analyzer"=>"standard","char_filter"=>["html_strip"]},
             "summary"=> {"type" => "string", "store" => "yes"},
             "photo_url" =>  {"type" => "string", "store" => "yes"},
             "article_link"=>  {"type" => "string", "store" => "yes"},
@@ -37,12 +37,9 @@ Tire.index 'news' do
             "zipcode"=>{"type"=>"string"},
             "owner" => {"type" => "string"},
             "source"=>{"type"=>"string"},
-            "tags" => {
-                "properties" => {
-                    "_id" => {"index"=> "not_analyzed", "store" => "yes",:type=>'integer'},
-                    "name" => {"type" => "string"}, 
-                }
-            }
+            "tags" =>  {"type" => "string"},
+            "topics" =>  {"type" => "string"},
+            
         }
     }
   }

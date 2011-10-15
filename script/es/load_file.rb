@@ -28,14 +28,17 @@ Tire.index 'news' do
     hash["title"]= hash.delete("article_title")
     body= hash.delete("article_text")
     sum = hash.delete("article_summary")
-    
+    hash["photo_url"]=hash.delete("article_image") 
     hash["body"]=body||sum
     hash["summary"]=sum
     hash["created_at"]=Date.parse(hash.delete("article_date")).strftime("%FT%TZ") rescue nil
     hash["source"]=hash.delete("feed")
     hash["id"]= Digest::MD5.hexdigest("#{hash["source"]}_#{hash["title"]}")
     hash["_type"]="article"
-    hash["tags"]=hash.delete("article_tags").to_s.split(",").map{|t| {"name"=>t}}
+    hash["tags"]=hash.delete("article_tags").to_s.split(",")
+    hash["topics"]=hash.delete("article_topics").to_s.split(",")
+    lat,long  = hash.delete("article_location").to_s.split(",").map{|x| x.to_f}
+    hash["location"]={"lat"=>lat,"long"=>long} if long
     articles.push(hash)
   }
   puts articles
