@@ -13,9 +13,9 @@ class App
         data: 
           email: $('#email').val()
         error: (jqXHR, textStatus, errorThrown) =>
-            $('.alert-message.error').text('Error: #{textStatus}')            
+          $('.alert-message.error').text('Error: #{textStatus}')            
         success: (data, textStatus, jqXHR) =>
-            this.onSignupSuccess(data)
+          this.onSignupSuccess(data)
     
   onSignupSuccess: (data) =>
     $('.form-elements').fadeOut()
@@ -23,4 +23,4 @@ class App
     $('.share-widgets').fadeIn()
 
 jQuery ->  
-  window.app = new App
+  window.app = new App()

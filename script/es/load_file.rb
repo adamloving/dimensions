@@ -35,6 +35,7 @@ Tire.index 'news' do
     hash["source"]=hash.delete("feed")
     hash["id"]= Digest::MD5.hexdigest("#{hash["source"]}_#{hash["title"]}")
     hash["_type"]="article"
+    hash["tags"]=hash.delete("article_tags").to_s.split(",").map{|t| {"name"=>t}}
     articles.push(hash)
   }
   puts articles

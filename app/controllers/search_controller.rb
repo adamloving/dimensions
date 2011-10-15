@@ -1,8 +1,11 @@
-class SearchController < ApplicationController
+ class Article
   
-  def index
+  end
+
+class SearchController < ApplicationController
+   def index
     #build our main searcher tags or search text
-    if(params["tags"])
+   if(params["tags"])
       match = { "text" => { "body" => { "query" => params["tags"], "operator" => "or" } } }
     elsif(params["search"])
       match = { "text_phrase" => { "body" => { "query" => params["search"], "operator" => "or" } } }
@@ -81,7 +84,7 @@ class SearchController < ApplicationController
   def article
     qu= {"query"=>{
       "ids" => {
-        "values" => param["ids"].split(",")
+        "values" => params["ids"].split(",")
       }
       } 
     }
@@ -90,6 +93,7 @@ class SearchController < ApplicationController
     end
 
     @results = Tire.search("news",qu)
+    puts  @results.results
     render :json=>{:results => @results.results}
   end
 end

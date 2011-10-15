@@ -1,0 +1,12 @@
+script#item-template(type="text/x-jquery-tmpl")
+  .item
+    | {{if photo_url}}
+    img(src='${photo_url}')
+    | {{/if}}
+    .body
+      h2.headline
+        a(href='${article_link}') ${title}
+      .text 
+        | {{html body}}
+
+      .date ${created_at}
