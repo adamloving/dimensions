@@ -54,6 +54,8 @@ RailsBootstrap::Application.routes.draw do
   match 'home' => "home#index"
   match 'product' => "product#show"
   match 'mobile' => "home#mobile"
+  match 'search' => "search#index"
+  match 'article' => "search#article/:ids"
   
   match 'api/paypal', :to => 'api/paypal#create', :via => %w(post)
   
