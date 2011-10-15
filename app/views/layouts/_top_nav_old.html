@@ -1,4 +1,4 @@
-<div class="topbar" data-dropdown="dropdown">
+.topbar(data-dropdown="dropdown")
   <div class="topbar-inner">
     <div class="container">
       <h3><a href="/">Dimensions</a></h3>
@@ -12,6 +12,17 @@
       <form class="pull-left" action="">
         <input type="text" placeholder="Search">
       </form>
+
+<!--   - if user_signed_in?
+    p = link_to('Edit registration', edit_user_registration_path)
+    p = link_to 'Sign out', destroy_user_session_path, :method => :delete
+
+  - else  
+    p = link_to_rpx "Sign in", user_session_url
+    p = link_to('Register', new_user_registration_path)
+    = javascript_include_rpx(user_session_url)
+ -->
+
       <!--
       <ul class="nav secondary-nav">
         <li class="dropdown">
