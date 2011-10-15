@@ -44,6 +44,9 @@ def extract_image(html):
     return None
 
 def extract_tags(result):
+    return result.get_tags()
+
+def extract_topics(result):
     return result.get_topics()
 
 def extract_location(result):
@@ -73,6 +76,7 @@ def process_feed(feed_url):
         result = calais.analyze(repr(output['article_summary']))
         output['article_location'] = extract_location(result)
         output['article_tags'] = extract_tags(result)
+        output['article_topics'] = extract_topics(result)
 
         if entry.has_key('content'):
             output['article_text'] = entry['content'][0]['value']
