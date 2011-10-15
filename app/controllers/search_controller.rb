@@ -1,14 +1,14 @@
  class Article
   
   end
-
+require "pp"
 class SearchController < ApplicationController
    def index
     #build our main searcher tags or search text
    if(params["tags"])
-      match = { "text" => { "body" => { "query" => params["tags"], "operator" => "or" } } }
+      match = { "text" => { "body"=> { "query"=> params["tags"], "operator"=> "and" } } }
     elsif(params["search"])
-      match = { "text_phrase" => { "body" => { "query" => params["search"], "operator" => "or" } } }
+      match = { "text_phrase" => { "body" => { "query" => params["search"]} } }
     else
       match = {"match_all"=>{}}
     end
@@ -51,7 +51,7 @@ class SearchController < ApplicationController
       querys= {"and"=>querys}
     end
     facets = {
-      "tags" => { "terms" => {"field" => "body"} },
+      "tags" => { "terms" => {"field" => "body","size"=>30} },
       "articles" => {
         "date_histogram" => {
           "field" => "created_at",
@@ -63,20 +63,18 @@ class SearchController < ApplicationController
     size = (params[:size]||10).to_i
     from = params["page"].to_i * size
     #real search json
+    match["filtered"]= {
+            "filter"=>querys} if !querys["and"] || querys["and"].size>0
+
     qu = {"size"=>size,
       "from"=>from,
       "facets"=>facets,
-      "query"=>
-       {"filtered"=>
-          {
-            "filter"=>querys,
-            "query"=>match
-          }
-      }
-    }
+      "query"=>match
+   }
     Tire.configure do
-      url "http://107.22.249.45:9200/"#TODO:make config
+      #url "http://107.22.249.45:9200/"#TODO:make config
     end
+    puts JSON.generate(qu)
     @results = Tire.search("news",qu)
     render :json=>{:results => @results.results,:facets=>@results.facets}
   end
@@ -89,11 +87,10 @@ class SearchController < ApplicationController
       } 
     }
     Tire.configure do
-      url "http://107.22.249.45:9200/"#TODO:make config
+      #url "http://107.22.249.45:9200/"#TODO:make config
     end
 
     @results = Tire.search("news",qu)
-    puts  @results.results
     render :json=>{:results => @results.results}
   end
 end
