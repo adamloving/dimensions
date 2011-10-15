@@ -5,3 +5,9 @@
 (function() {
 
 }).call(this);
+
+$(function(){
+    //dimensions
+    $('select#ago_slider').selectToUISlider();
+    $('select#ago_slider').hide();
+});
