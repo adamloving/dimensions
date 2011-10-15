@@ -51,7 +51,7 @@ class SearchController < ApplicationController
       querys= {"and"=>querys}
     end
     facets = {
-      "tags" => { "terms" => {"field" => "body","size"=>30} },
+      "tags" => { "terms" => {"field" => "no_tag_body","size"=>30} },
       "source_tags" => { "terms" => {"field" => "tag","size"=>30} },
       "topics" => { "terms" => {"field" => "topics","size"=>30} },
       "articles" => {

@@ -25,13 +25,27 @@ class Filter
 
     return query
 
+  durationToMinutes: (s) ->
+    # Converts a duration string like 2d into minutes
+    matches = s.match /(\d+)(\w+)/
+    duration = matches[1]
+    multiplier = 1
+    switch matches[2]
+        when 'wk' then multiplier = 7 * 24 * 60
+        when 'd'  then multiplier = 24 * 60
+        when 'hr' then multiplier = 60
+    return multiplier * duration
+
   onDateChange: (e) ->
-    duration = e.target.value
-    console.log(duration)
+    # Hard-coding #date-filter since the slider and the drop-down both
+    # generate this event.
+    duration = $('#date-filter').val() # e.target.value
+    minutes = this.durationToMinutes(duration)
+    console.log(minutes)
   
     # format: 2011-10-09T12:20:32Z
-    @startDate = Date.now().add(-parseInt(duration)).hours().toISOString()
-    console.log "duration changed: ", @duration, @startDate
+    @startDate = Date.now().addMinutes(- minutes).toISOString()
+    console.log "duration changed: ", duration, @startDate
     window.stream.loadItems()
 
   onSearchChange: (e) =>

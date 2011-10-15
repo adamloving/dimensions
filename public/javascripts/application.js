@@ -4,6 +4,13 @@
 // jQuery UI setup
 $(function(){
     //dimensions
-    $('select#date-filter').selectToUISlider();
+    $('select#date-filter').selectToUISlider({
+        labels: 4,
+        sliderOptions: { 
+            change:function(e, ui) {
+                window.filter.onDateChange(e);
+            }
+        }
+    });
     $('select#date-filter').hide();
 });
