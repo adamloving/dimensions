@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 19:37:11 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 20:07:08 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/app.coffee
  */
 
