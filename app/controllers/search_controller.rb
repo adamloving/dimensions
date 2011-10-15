@@ -19,11 +19,13 @@ class SearchController < ApplicationController
     end
     date_range=nil
     if(params["start_date"] || params["end_date"])
+      #d= Date.parse("2011-10-15T21:56:10.678Z")
+      #pp params
       date_range={
         "range"=> {
         "created_at"=> {
-          "from"=> Date.parse(params["start_date"]).strftime("%FT%TZ"),
-          "to"=>(Date.parse(params["end_date"]).strftime("%FT%TZ") rescue Time.now.strftime("%FT%TZ"))
+          "from"=> DateTime.parse(CGI.unescape(params["start_date"])).strftime("%FT%TZ"),
+          "to"=>(DateTime.parse(CGI.unescape(params["end_date"])).strftime("%FT%TZ") rescue Time.now.strftime("%FT%TZ"))
           }
         }
       }
