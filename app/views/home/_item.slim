@@ -1,10 +1,12 @@
 script#item-template(type="text/x-jquery-tmpl")
   .item
-    img(src='http://cache.virtualtourist.com/13/4708307-Wow_a_sunny_day_in_seattle_Seattle.jpg')
+    | {{if photo_url}}
+    img(src='${photo_url}')
+    | {{/if}}
     .body
       h2.headline
-        a ${title}
+        a(href='${article_link}') ${title}
       .text 
-        | ${body} 	
+        | {{html body}}
 
       .date ${created_at}

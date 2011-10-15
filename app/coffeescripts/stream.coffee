@@ -27,6 +27,11 @@ class Stream
 
   onLoadItemsComplete: (data) =>
     @data = data
+    
+    # $.each @data.results, (i, r) ->
+    #   console.log(unescape(r.body))
+    #   r.body = unescape(r.body)
+
     @render()
 
   render: () =>
