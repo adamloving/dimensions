@@ -2,6 +2,8 @@ require "rubygems"
 require "tire"
 require "time"
 require "crack"
+require "action_view"
+include ActionView::Helpers::SanitizeHelper  
 
 
 
@@ -30,6 +32,7 @@ Tire.index 'news' do
     sum = hash.delete("article_summary")
     hash["photo_url"]=hash.delete("article_image") 
     hash["body"]=body||sum
+    hash["no_tag_body"]=strip_tags(hash["body"].to_s)
     hash["summary"]=sum
     hash["created_at"]=Date.parse(hash.delete("article_date")).strftime("%FT%TZ") rescue nil
     hash["source"]=hash.delete("feed")

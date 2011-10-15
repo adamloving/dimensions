@@ -29,6 +29,7 @@ class Stream
     #   r.body = unescape(r.body)
 
     @render()
+    window.tagList.render(data.facets.tags)
 
   render: () =>
     console.log('render')

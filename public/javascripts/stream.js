@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:57:28 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 22:35:28 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
  */
 
@@ -29,7 +29,8 @@
     };
     Stream.prototype.onLoadItemsComplete = function(data) {
       this.data = data;
-      return this.render();
+      this.render();
+      return window.tagList.render(data.facets.tags);
     };
     Stream.prototype.render = function() {
       console.log('render');
