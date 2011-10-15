@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 21:59:12 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 22:22:06 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
  */
 
@@ -23,7 +23,7 @@
       if (this.search && this.search.trim()) {
         query.search = this.search;
       }
-      query.startDate = this.startDate;
+      query.start_date = this.startDate;
       return query;
     };
     Filter.prototype.onDateChange = function(e) {

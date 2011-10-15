@@ -17,7 +17,7 @@ class Filter
     if @search and @search.trim()
       query.search = @search
 
-    query.startDate = @startDate
+    query.start_date = @startDate
 
     return query
 
