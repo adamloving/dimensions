@@ -209,7 +209,7 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
 
-  config.rpx_application_name = "gambit" # instructions here: https://github.com/slainer68/devise_rpx_connectable
+  config.rpx_application_name = "dimensions" # instructions here: https://github.com/slainer68/devise_rpx_connectable
   config.rpx_auto_create_account = true # false if you don't want to create users automaticaly. True by default.
   config.rpx_additional_user_data = [:verifiedEmail, :url, :providerName,:photo] # default [], get some extra profile info from RPXnow, default only a few fields are available in the rpx_user object (https://rpxnow.com/docs#profile_data)
   config.rpx_extended_user_data = false # false by default, extended data only available for Plus and Pro RPX users (https://rpxnow.com/docs#api_auth_info)
