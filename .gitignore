@@ -6,3 +6,6 @@ config/environments/development.rb
 config/environments/production.rb
 *.DS_STORE
 public/client/sencha
+data/get_social_tags.py
+
+data/calais.pyc
