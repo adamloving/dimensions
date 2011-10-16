@@ -30,6 +30,8 @@ class Stream
 
     @render()
     window.tagList.render(data.facets.tags)
+    window.groupList.render(data.facets.tags)
+    
 
   render: () =>
     console.log('render')

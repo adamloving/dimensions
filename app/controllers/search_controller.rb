@@ -34,7 +34,7 @@ class SearchController < ApplicationController
     if(params["owner"] )
       owner={
         "terms"=> {
-        "owner"=> params["owner"]
+        "owner"=> params["owner"].split(",")
       }
       }
     end
