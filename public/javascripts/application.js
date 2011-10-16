@@ -18,26 +18,7 @@ $(function(){
 
 // Ask facebook to re-parse after ajax
 $(document).ajaxComplete(function(){
-
-    // Article show/hide
-    $('.article-details').hide();
-    $('h4.headline').click(function() {
-      if ($(this).next().is(':visible')) {
-          $('.article-details').hide();
-      } else {
-          $('.article-details').hide();
-          $(this).next().show();
-
-          // Add FB if this is the first time the article has been shown
-          if ($(this).hasClass("unread")) {
-              var url = $(this).next().children('a')[0].href;
-              console.log(url);
-              $(this).next().append('<div class="fb-like" data-href="' + url + '" data-send="true" data-width="450" data-show-faces="true"</div>')
-              try {
-                FB.XFBML.parse();
-              } catch(ex){}
-          }
-      }
-      $(this).removeClass('unread');
-    });
+  try {
+    FB.XFBML.parse();
+  } catch(ex){}
 });
