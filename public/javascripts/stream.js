@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:35:28 GMT from
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 20:44:08 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
  */
 
@@ -30,6 +30,17 @@
     };
     Stream.prototype.onLoadItemsComplete = function(data) {
       this.data = data;
+      $.each(this.data.results, function(i, r) {
+        var x;
+        x = Math.random() * 10;
+        if (x > 7) {
+          return r.post_it_html = '<div>⏰</div><p>Breaking</p>';
+        } else if (x > 3) {
+          return r.post_it_html = '<div>⇰</div><p>Nearby</p>';
+        } else {
+          return r.post_it_html = '<div><img src="images/lewis.png" style="display: inline-block; margin-right: 0px"/></div><p>Friend shared</p>';
+        }
+      });
       this.render();
       window.tagList.render(data.facets.tags);
       return window.groupList.render(data.facets.tags);

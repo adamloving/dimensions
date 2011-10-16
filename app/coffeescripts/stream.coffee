@@ -25,9 +25,15 @@ class Stream
   onLoadItemsComplete: (data) =>
     @data = data
     
-    # $.each @data.results, (i, r) ->
-    #   console.log(unescape(r.body))
-    #   r.body = unescape(r.body)
+    $.each @data.results, (i, r) ->
+      x = Math.random() * 10
+      
+      if x > 7
+        r.post_it_html = '<div>⏰</div><p>Breaking</p>'
+      else if x > 3
+        r.post_it_html = '<div>⇰</div><p>Nearby</p>'
+      else
+        r.post_it_html = '<div><img src="images/lewis.png" style="display: inline-block; margin-right: 0px"/></div><p>Friend shared</p>'
 
     @render()
     window.tagList.render(data.facets.tags)

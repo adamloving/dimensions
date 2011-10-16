@@ -11,6 +11,22 @@ body {
   	margin-top: 20px;
 
     .item {
+
+      .post-it {
+        display: inline-block;
+        height: 50px;
+        width: 60px;
+        margin: 10px;
+        margin-top: 0px;
+        padding: 4px;
+        padding-top: 10px;
+        background-color: #ffe454;
+        border: solid 1px #ffe9e9;
+        border-radius: 5px;
+        text-align: center;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
+        box-shadow: rgba(100, 100, 100, 0.2) -1px 2px 2px;
+      }
           
       img {        
         /* display: none; */
@@ -22,13 +38,17 @@ body {
 
       .body {
 
-        width: 600px;
+        width: 590px;
         display: inline-block;
         vertical-align: top;
 
         h2 {  
           vertical-align: top;
         }
+
+        padding-bottom: 10px;
+        border-bottom: solid 1px #eee;
+        margin-bottom: 20px;
       }
     }  
   }
