@@ -18,6 +18,9 @@ $(function(){
 
 // Ask facebook to re-parse after ajax
 $(document).ajaxComplete(function(){
+  // Hide ads
+  $('a[href^="http://feedads"]').parent().hide();
+
   try {
     FB.XFBML.parse();
   } catch(ex){}
