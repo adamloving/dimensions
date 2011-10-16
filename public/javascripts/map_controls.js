@@ -59,8 +59,14 @@ $(function() {
             filterByBoundary(map);
         });
         
+        var firstEvent = true;
         google.maps.event.addListener(map, 'zoom_changed', function() {
-            filterByBoundary(map);
+            if (firstEvent) {
+                firstEvent = false;
+            } else {
+                filterByBoundary(map);    
+            }
+            
         });
     });
 
