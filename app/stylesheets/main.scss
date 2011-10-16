@@ -13,8 +13,11 @@ body {
     .item {
           
       img {        
-        display: inline-block;
+        display: none;
         margin-right: 15px;
+      }
+      .show{
+          display: inline-block;
       }
 
       .body {
