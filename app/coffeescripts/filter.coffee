@@ -27,10 +27,10 @@ class Filter
       query.owner = @groups.join(',')
 
     if @coords
-      query.sw_lat = @coords.southWest.Ma
-      query.sw_long = @coords.southWest.Na
-      query.ne_lat = @coords.northEast.Ma
-      query.ne_long = @coords.northEast.Na
+      query.sw_lat = @coords.southWest.lat()
+      query.sw_long = @coords.southWest.lng()
+      query.ne_lat = @coords.northEast.lat()
+      query.ne_long = @coords.northEast.lng()
       
     query.start_date = @startDate
 
