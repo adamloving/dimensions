@@ -10,6 +10,11 @@ function addMarker(longitude, latitude)
     $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'bounds': true } );
 }
 
+function addBreakingNewsMarker(longitude, latitude)
+{
+    $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'icon':'../images/shark-export.png' , 'bounds': true } );
+}
+
 function clearMap()
 {
     $('#map').gmap('clear', 'markers');
@@ -27,15 +32,20 @@ function getNorthEastCoordinates(map)
     return bounds.getNorthEast();
 }
 
-$(function() {
-    $('#map').gmap();
-
+function centerMapToCurrentLocation()
+{
     navigator.geolocation.getCurrentPosition(function(position) {
         currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         $('#map').gmap({ 'center': currentPosition });
     });
+}
+
+$(function() {
+    $('#map').gmap();
     
     $('#map').gmap().bind('init', function(event, map) {
+        centerMapToCurrentLocation();
+
         $(map).dragend( function() {
             // TODO: we need to refresh the stream based on the boundary filter
             //       instead of displaying alert.
