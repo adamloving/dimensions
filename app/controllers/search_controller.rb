@@ -7,7 +7,7 @@ class SearchController < ApplicationController
     #build our main searcher tags or search text
    if(params["tag"] || params["search"])
      s=""
-     s+="("+params["tag"].to_s.split(",").join(" OR ")+") #{'AND' if params["search"]} " if params["tag"]
+     s+="("+params["tag"].to_s.split(",").join(" AND ")+") #{'AND' if params["search"]} " if params["tag"]
      s+= " "+params["search"] if params["search"]
      match={"query_string"=>{
 "fields"=> [ "no_tag_body" ], "query"=> s, "use_dis_max"=> true}}
