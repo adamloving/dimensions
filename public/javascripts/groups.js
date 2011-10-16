@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 02:00:13 GMT from
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 02:08:16 GMT from
  * /Users/becker/trash/dimensions/app/coffeescripts/groups.coffee
  */
 
@@ -15,7 +15,7 @@
       $.each(groups, function(i, t) {
         var element, selected;
         selected = window.filter.hasGroup(t);
-        element = $('<li><a href="#group=' + t + '">' + t + '</a></li>');
+        element = $('<li><a href="#group=' + t + '">' + t + ' (' + Math.floor(Math.random() * 101) + ')</a></li>');
         if (selected) {
           element.addClass('selected');
         }

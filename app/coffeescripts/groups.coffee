@@ -7,7 +7,7 @@ class GroupList
     groups =["geeks","family","coworkers"]
     $.each groups, (i, t) ->
       selected = window.filter.hasGroup(t)
-      element = $('<li><a href="#group=' + t+ '">' + t+ '</a></li>')
+      element = $('<li><a href="#group=' + t+ '">' + t+' ('+Math.floor(Math.random()*101)+')</a></li>')
       if (selected) 
         element.addClass('selected')
       $('#group-list').append(element)
