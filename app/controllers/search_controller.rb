@@ -64,7 +64,7 @@ class SearchController < ApplicationController
       }
     }
 
-    size = (params[:size]||10).to_i
+    size = (params[:size]||50).to_i
     from = params["page"].to_i * size
     #real search json
     match["filtered"]= {

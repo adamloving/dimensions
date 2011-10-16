@@ -13,6 +13,7 @@ $(function(){
         }
     });
     $('select#date-filter').hide();
+
 });
 
 // Ask facebook to re-parse after ajax
@@ -20,4 +21,16 @@ $(document).ajaxComplete(function(){
     try{
         FB.XFBML.parse();
     }catch(ex){}
+
+    // Article show/hide
+    $('.article-details').hide();
+    $('h4.headline').click(function() {
+      $(this).addClass('article_read')
+      if ($(this).next().is(':visible')) {
+          $('.article-details').hide();
+      } else {
+          $('.article-details').hide();
+          $(this).next().show();
+      }
+    });
 });

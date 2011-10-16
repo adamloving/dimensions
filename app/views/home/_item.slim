@@ -1,13 +1,14 @@
 script#item-template(type="text/x-jquery-tmpl")
   .item
-    | {{if photo_url}}
-    img(src='${photo_url}' class="show")
-    | {{/if}}
     .body
-      h2.headline
-        a(href='${article_link}') ${title}
-      .text 
-        | {{html body}}
+      h4.headline ${title}
+      .article-details
+        | {{if photo_url}}
+        img(src='${photo_url}' class="show")
+        | {{/if}}
 
-      .date ${created_at}
-      .fb-like data-href='${article_link}' data-send="true" data-width="450" data-show-faces="true"
+        .text
+          | {{html body}}
+        a(href='${article_link}') ${article_link}
+        .date ${created_at}
+        .fb-like data-href='${article_link}' data-send="true" data-width="450" data-show-faces="true"
