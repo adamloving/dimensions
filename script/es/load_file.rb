@@ -21,12 +21,14 @@ articles=[]
 Tire.configure do
   url host
 end
+count = 0 
 Tire.index 'news' do
   random_hashes.each{|hash|
     if(articles.size>200)
       import articles
       articles=[]
     end
+    count+=1
     hash["title"]= hash.delete("article_title")
     body= hash.delete("article_text")
     sum = hash.delete("article_summary")
@@ -34,7 +36,9 @@ Tire.index 'news' do
     hash["body"]=body||sum
     hash["no_tag_body"]=strip_tags(hash["body"].to_s)
     hash["summary"]=sum
-    hash["created_at"]=DateTime.parse(hash.delete("article_date")).strftime("%FT%TZ") rescue nil
+    date = nil
+    hash["created_at"]=(date=DateTime.parse(hash.delete("article_date"))).strftime("%FT%TZ") rescue nil
+    hash["created_date"]=date.to_i if date
     hash["source"]=hash.delete("feed")
     hash["id"]= Digest::MD5.hexdigest("#{hash["source"]}_#{hash["title"]}")
     hash["_type"]="article"
@@ -47,6 +51,8 @@ Tire.index 'news' do
   puts articles
   import articles
 end
+puts "found"
+puts count
 Tire.index 'news' do
   refresh
 end

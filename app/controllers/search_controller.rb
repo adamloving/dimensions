@@ -74,7 +74,9 @@ class SearchController < ApplicationController
       "from"=>from,
       "facets"=>facets,
       "query"=>match,
-      "sort"=> [ { "created_at" => {"order" => "asc"} } ]    
+      "sort"=>[{"created_date"=>{"reverse"=>true}}],
+     "version"=>true
+      
    }
     Tire.configure do
       url "http://107.22.249.45:9200/"#TODO:make config

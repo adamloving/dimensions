@@ -34,6 +34,7 @@ Tire.index 'news' do
                 "type" => "geo_point"
             },
             "created_at"=>{"type" => "date"},
+            "created_date"=>{"type" => "long"},
             "address"=>{"type"=>"string"},
             "city"=>{"type"=>"string"},
             "zipcode"=>{"type"=>"string"},
