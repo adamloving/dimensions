@@ -5,6 +5,7 @@ class Filter
     @startDate = Date.now().add(-12).hours().toISOString()
     @search = null
     @tags = []
+    @groups = []
 
     console.log('gotcha')
   
@@ -20,6 +21,8 @@ class Filter
 
     if @tags.length > 0
       query.tag = @tags.join(',')
+    if @groups.length > 0
+      query.owner = @groups.join(',')
 
     query.start_date = @startDate
 
@@ -51,6 +54,20 @@ class Filter
   onSearchChange: (e) =>
     @search = e.target.value
     console.log @search
+    window.stream.loadItems()
+  addGroup: (t) =>
+    @groups.push(t)
+    window.stream.loadItems()
+  hasGroup: (t) =>
+    found = false
+    $.each @groups, (i, t1) ->
+      found = true if t1 == t
+    return found
+  removeGroup: (t) =>
+    temp = []
+    $.each @groups, (i, t1) ->
+      temp.push(t1) unless t1 == t
+    @groups = temp
     window.stream.loadItems()
 
   hasTag: (t) =>

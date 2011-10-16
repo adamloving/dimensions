@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Sat, 15 Oct 2011 22:35:28 GMT from
- * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 01:40:52 GMT from
+ * /Users/becker/trash/dimensions/app/coffeescripts/stream.coffee
  */
 
 (function() {
@@ -30,7 +30,8 @@
     Stream.prototype.onLoadItemsComplete = function(data) {
       this.data = data;
       this.render();
-      return window.tagList.render(data.facets.tags);
+      window.tagList.render(data.facets.tags);
+      return window.groupList.render(data.facets.tags);
     };
     Stream.prototype.render = function() {
       console.log('render');
