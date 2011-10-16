@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:33:10 GMT from
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:48:15 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
  */
 
@@ -59,8 +59,8 @@
       if (q.search) {
         s += '<li>Keyword: ' + q.search + '</li>';
       }
-      if (q.tags) {
-        s += '<li>Tags: ' + q.tags.join(', ') + '</li>';
+      if (q.tag) {
+        s += '<li>Tags: ' + q.tag + '</li>';
       }
       if (q.owner) {
         s += '<li>Groups: ' + q.groups.join(', ') + '</li>';

@@ -46,8 +46,8 @@ class Filter
     if q.search 
       s += '<li>Keyword: ' + q.search + '</li>'
 
-    if q.tags 
-      s+= '<li>Tags: ' + q.tags.join(', ') + '</li>'
+    if q.tag 
+      s += '<li>Tags: ' + q.tag + '</li>'
 
     if q.owner 
       s+= '<li>Groups: ' + q.groups.join(', ') + '</li>'
