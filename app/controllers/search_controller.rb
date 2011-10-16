@@ -13,9 +13,9 @@ class SearchController < ApplicationController
       match = {"match_all"=>{}}
     end
     geo_box = nil
-    if(params["sw_long"])
+    if(false && params["sw_long"])
       geo_box= {"geo_bounding_box"=>
-        {"location"=>{"top_left"=>[params["sw_long"].to_f,params["ne_lat"].to_f ], "bottom_right"=>[params["ne_long"].to_f,params["sw_lat"].to_f]}}}
+        {"article.location"=>{"top_left"=>[params["sw_long"].to_f,params["ne_lat"].to_f ], "bottom_right"=>[params["ne_long"].to_f,params["sw_lat"].to_f]}}}
     end
     date_range=nil
     if(params["start_date"] || params["end_date"])
@@ -46,7 +46,7 @@ class SearchController < ApplicationController
         }
       }
     end
-    querys = [geo_box,date_range,owner,sources].compact
+    querys = [geo_box,date_range].compact
     if(querys.size==1)
       querys = querys.first
     else

@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 19:19:51 GMT from
- * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 20:32:00 GMT from
+ * /Users/becker/trash/dimensions/app/coffeescripts/filter.coffee
  */
 
 (function() {
@@ -17,6 +17,7 @@
       this.onSearchChange = __bind(this.onSearchChange, this);
       this.getQueryAsHtml = __bind(this.getQueryAsHtml, this);
       this.getQuery = __bind(this.getQuery, this);
+      this.getQueryString = __bind(this.getQueryString, this);
       this.bind = __bind(this.bind, this);      this.startDate = Date.now().add(-12).hours().toISOString();
       this.search = null;
       this.tags = [];
@@ -27,6 +28,30 @@
     Filter.prototype.bind = function() {
       $('#date-filter').change(this.onDateChange);
       return $('#search').change(this.onSearchChange);
+    };
+    Filter.prototype.getQueryString = function() {
+      var q, s;
+      q = this.getQuery();
+      s = "?";
+      if (q.start_date) {
+        s += "start_date=" + q.start_date + '&';
+      }
+      if (q.search) {
+        s += "search=" + q.search + '&';
+      }
+      if (q.tags) {
+        s += "tags=" + q.tags.join(', ') + '&';
+      }
+      if (q.owner) {
+        s += "owner=" + q.groups.join(', ') + '&';
+      }
+      if (q.sw_lat) {
+        s += "sw_lat=" + q.sw_lat + '&';
+        s += "sw_long=" + q.sw_long + '&';
+        s += "ne_lat=" + q.ne_lat + '&';
+        s += "ne_long=" + q.ne_long + '&';
+      }
+      return s;
     };
     Filter.prototype.getQuery = function() {
       var query;
@@ -103,11 +128,13 @@
       return window.stream.loadItems();
     };
     Filter.prototype.addGroup = function(t) {
+      t = t.split(" ")[0];
       this.groups.push(t);
       return window.stream.loadItems();
     };
     Filter.prototype.hasGroup = function(t) {
       var found;
+      t = t.split(" ")[0];
       found = false;
       $.each(this.groups, function(i, t1) {
         if (t1 === t) {
@@ -118,6 +145,7 @@
     };
     Filter.prototype.removeGroup = function(t) {
       var temp;
+      t = t.split(" ")[0];
       temp = [];
       $.each(this.groups, function(i, t1) {
         if (t1 !== t) {
