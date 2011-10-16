@@ -52,7 +52,8 @@ $(function() {
             boundary = "Visible map viewpoer has changed.\n\n";
             boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
             boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
-            alert(boundary);
+            console.log(boundary);
+            window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map))
         });
     });
 

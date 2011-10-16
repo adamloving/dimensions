@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 02:01:19 GMT from
- * /Users/becker/trash/dimensions/app/coffeescripts/filter.coffee
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:04:45 GMT from
+ * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
  */
 
 (function() {
@@ -7,6 +7,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Filter = (function() {
     function Filter() {
+      this.setCoords = __bind(this.setCoords, this);
       this.removeTag = __bind(this.removeTag, this);
       this.addTag = __bind(this.addTag, this);
       this.hasTag = __bind(this.hasTag, this);
@@ -19,6 +20,7 @@
       this.search = null;
       this.tags = [];
       this.groups = [];
+      this.coords = null;
       console.log('gotcha');
     }
     Filter.prototype.bind = function() {
@@ -36,6 +38,12 @@
       }
       if (this.groups.length > 0) {
         query.owner = this.groups.join(',');
+      }
+      if (this.coords) {
+        query.sw_lat = this.coords.southWest.Ma;
+        query.sw_long = this.coords.southWest.Na;
+        query.ne_lat = this.coords.northEast.Ma;
+        query.ne_long = this.coords.northEast.Na;
       }
       query.start_date = this.startDate;
       return query;
@@ -119,6 +127,14 @@
         }
       });
       this.tags = temp;
+      return window.stream.loadItems();
+    };
+    Filter.prototype.setCoords = function(northEast, southWest) {
+      this.coords = {
+        northEast: northEast,
+        southWest: southWest
+      };
+      console.log(this.coords);
       return window.stream.loadItems();
     };
     return Filter;
