@@ -5,8 +5,8 @@ require "pp"
 class SearchController < ApplicationController
    def index
     #build our main searcher tags or search text
-   if(params["tags"])
-      match = { "text" => { "body"=> { "query"=> params["tags"], "operator"=> "and" } } }
+   if(params["tag"])
+      match = { "text" => { "body"=> { "query"=> params["tag"].split(",").join(" "), "operator"=> "or" } } }
     elsif(params["search"])
       match = { "text_phrase" => { "body" => { "query" => params["search"]} } }
     else
@@ -19,11 +19,13 @@ class SearchController < ApplicationController
     end
     date_range=nil
     if(params["start_date"] || params["end_date"])
+      #d= Date.parse("2011-10-15T21:56:10.678Z")
+      #pp params
       date_range={
         "range"=> {
         "created_at"=> {
-          "from"=> Date.parse(params["start_date"]).strftime("%FT%TZ"),
-          "to"=>(Date.parse(params["end_date"]).strftime("%FT%TZ") rescue Time.now.strftime("%FT%TZ"))
+          "from"=> DateTime.parse(CGI.unescape(params["start_date"])).strftime("%FT%TZ"),
+          "to"=>(DateTime.parse(CGI.unescape(params["end_date"])).strftime("%FT%TZ") rescue Time.now.strftime("%FT%TZ"))
           }
         }
       }
@@ -78,7 +80,7 @@ class SearchController < ApplicationController
     end
     puts JSON.generate(qu)
     @results = Tire.search("news",qu)
-    render :json=>{:results => @results.results,:facets=>@results.facets}
+    render :json=>{:results => @results.results,:facets=>@results.facets,:page=>from,:total_results=>@results.total,:size=>size}
   end
 
   def article
