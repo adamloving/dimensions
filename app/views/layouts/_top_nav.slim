@@ -2,12 +2,15 @@
   .topbar-inner
     .container
       h3
-        a(href='/') Welcome Leon to Dimensions!
+        a(href='/') Dimensions
         
       form(onsubmit='return false;')
         input#search(type="text" placeholder="Search")
 
       h3
-        img(src='../../../images/profile.jpeg' width='40px' height='40px' align='right')
+      	.name(style="right: 60px; position: absolute; margin-top: 5px; color: #eee; font-size: 0.85em")
+      		| Welcome, Leon
+
+      img(src='../../../images/profile.jpeg' width='40px' height='40px' align='right')
     
 = javascript_include_rpx(user_session_url)
