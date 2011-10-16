@@ -73,7 +73,8 @@ class SearchController < ApplicationController
     qu = {"size"=>size,
       "from"=>from,
       "facets"=>facets,
-      "query"=>match
+      "query"=>match,
+      "sort"=> [ { "created_at" => {"order" => "asc"} } ]    
    }
     Tire.configure do
       url "http://107.22.249.45:9200/"#TODO:make config
