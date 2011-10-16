@@ -1,10 +1,10 @@
 script#item-template(type="text/x-jquery-tmpl")
   .item
     .body
-      h4.headline.unread ${title}
+      h3.headline.unread ${title}
       .article-details
         | {{if photo_url}}
-        img(src='${photo_url}' class="show")
+        / img(src='${photo_url}' class="show")
         | {{/if}}
 
         .text

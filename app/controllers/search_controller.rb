@@ -24,8 +24,8 @@ class SearchController < ApplicationController
       date_range={
         "range"=> {
         "created_at"=> {
-          "from"=> DateTime.parse(CGI.unescape(params["start_date"])).strftime("%FT%TZ"),
-          "to"=>(DateTime.parse(CGI.unescape(params["end_date"])).strftime("%FT%TZ") rescue Time.now.strftime("%FT%TZ"))
+          "from"=> DateTime.parse(CGI.unescape(params["start_date"])).new_offset(0).strftime("%FT%TZ"),
+          "to"=>(DateTime.parse(CGI.unescape(params["end_date"])).new_offset(0).strftime("%FT%TZ") rescue DateTime.now.new_offset(0).strftime("%FT%TZ"))
           }
         }
       }

@@ -13,7 +13,7 @@ body {
     .item {
           
       img {        
-        display: none;
+        /* display: none; */
         margin-right: 15px;
       }
       .show{
@@ -58,4 +58,8 @@ body {
 
 .ui-slider {
     margin: 0 0 30px 10px;
+}
+
+.feedflare {
+  display: none;
 }
