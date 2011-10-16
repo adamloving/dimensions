@@ -1,11 +1,12 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:35:28 GMT from
- * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 20:44:47 GMT from
+ * /Users/almalkawi/Documents/Projects/Events/Seattle News Hackathon/code/dimensions/app/coffeescripts/stream.coffee
  */
 
 (function() {
   var Stream;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Stream = (function() {
+    var firstMapEvent;
     function Stream() {
       this.render = __bind(this.render, this);
       this.onLoadItemsComplete = __bind(this.onLoadItemsComplete, this);
@@ -34,11 +35,31 @@
       window.tagList.render(data.facets.tags);
       return window.groupList.render(data.facets.tags);
     };
+    firstMapEvent = true;
     Stream.prototype.render = function() {
       console.log('render');
       $("#stream").empty();
       if (this.data.results.length > 0) {
         $.tmpl("streamItem", this.data.results).appendTo("#stream");
+        clearMap();
+        $.each(this.data.results, function(i, r) {
+          var breakingNews, displayMarker, latitude, longitude, _ref, _ref2;
+          longitude = 47.5 + Math.random() / 4.0;
+          latitude = -122.0 - Math.random() * 0.5;
+          breakingNews = (_ref = Math.random() < .2) != null ? _ref : {
+            1: 0
+          };
+          displayMarker = (_ref2 = Math.random() < .4) != null ? _ref2 : {
+            1: 0
+          };
+          if (displayMarker > 0) {
+            if (breakingNews < 1) {
+              return addMarker(longitude, latitude);
+            } else {
+              return addBreakingNewsMarker(longitude, latitude);
+            }
+          }
+        });
       } else {
         $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
       }

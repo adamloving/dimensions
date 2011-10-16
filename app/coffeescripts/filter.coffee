@@ -145,11 +145,21 @@ class Filter
     window.stream.loadItems()
 
   setCoords: (northEast, southWest) =>
-    @coords = {
-      northEast: northEast,
-      southWest: southWest
-    }
-    console.log(@coords)
+    #@coords = {
+    #  northEast: northEast,
+    #  southWest: southWest
+    #}
+    # console.log(@coords)
+    #window.stream.loadItems()
+    
+  setSearch: (searchterm) =>
+    @search = searchterm
+    
+    #@coords = {
+    #  northEast: northEast,
+    #  southWest: southWest
+    #}
+    # console.log(@coords)
     window.stream.loadItems()    
 
 jQuery ->  

@@ -33,13 +33,33 @@ class Stream
     window.tagList.render(data.facets.tags)
     window.groupList.render(data.facets.tags)
     
-
+  firstMapEvent = true
+  
   render: () =>
     console.log('render')
     $("#stream").empty();
 
     if (@data.results.length > 0) 
       $.tmpl("streamItem", @data.results).appendTo("#stream")
+      
+      clearMap()
+
+      $.each @data.results, (i, r) ->
+        #if (firstMapEvent == true) 
+          longitude = 47.5 + Math.random() / 4.0
+          latitude = -122.0 - Math.random() * 0.5
+          breakingNews = Math.random() < .2 ? 1 : 0
+          displayMarker = Math.random() < .4 ? 1 : 0
+
+          if (displayMarker > 0)
+            if (breakingNews < 1)
+              addMarker(longitude, latitude)
+            else
+              addBreakingNewsMarker(longitude, latitude)
+          
+        
+          #firstMapEvent = false
+          #centerMapToCurrentLocation()
     else
       $("#stream").append(
         '<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' +

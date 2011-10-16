@@ -7,12 +7,12 @@ function refreshMap()
 
 function addMarker(longitude, latitude)
 {
-    $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'bounds': true } );
+    $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'bounds': false } );
 }
 
 function addBreakingNewsMarker(longitude, latitude)
 {
-    $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'icon':'../images/shark-export.png' , 'bounds': true } );
+    $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'icon':'../images/shark-export.png' , 'bounds': false } );
 }
 
 function clearMap()
@@ -34,9 +34,18 @@ function getNorthEastCoordinates(map)
 
 function centerMapToCurrentLocation()
 {
+    $('#map').gmap({ 'zoom': 9 });
     navigator.geolocation.getCurrentPosition(function(position) {
         currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         $('#map').gmap({ 'center': currentPosition });
+    });
+}
+
+function getCurrentPosition()
+{
+    navigator.geolocation.getCurrentPosition(function(position) {
+        pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        return pos;
     });
 }
 
@@ -49,6 +58,11 @@ function filterByBoundary(map)
     window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
 }
 
+function filterByClick(map)
+{
+    window.filter.setSearch("Redmond");
+}
+
 $(function() {
     $('#map').gmap();
     
@@ -56,7 +70,8 @@ $(function() {
         centerMapToCurrentLocation();
 
         $(map).dragend( function() {
-            filterByBoundary(map);
+            //filterByBoundary(map);
+            filterByClick(map);
         });
         
         var firstEvent = true;
@@ -64,7 +79,7 @@ $(function() {
             if (firstEvent) {
                 firstEvent = false;
             } else {
-                filterByBoundary(map);    
+                //filterByClick(map);    
             }
             
         });
