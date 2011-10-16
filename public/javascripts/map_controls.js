@@ -15,6 +15,18 @@ function clearMap()
     $('#map').gmap('clear', 'markers');
 }
 
+function getSouthWestCoordinates(map)
+{
+    var bounds = map.getBounds();
+    return bounds.getSouthWest();
+}
+
+function getNorthEastCoordinates(map)
+{
+    var bounds = map.getBounds();
+    return bounds.getNorthEast();
+}
+
 $(function() {
     $('#map').gmap();
 
@@ -23,17 +35,16 @@ $(function() {
         $('#map').gmap({ 'center': currentPosition });
     });
     
-    //$('#map').gmap().bind('init', function(event, map) {
-    //    addMarker(42, -71);
-    //    addMarker(42, -70);
-    //    addMarker(42, -69);
-    //   clearMap();
-    //    addMarker(42, -70);
-    //});
+    $('#map').gmap().bind('init', function(event, map) {
+        $(map).dragend( function() {
+            // TODO: we need to refresh the stream based on the boundary filter
+            //       instead of displaying alert.
+            boundary = "Visible map viewpoer has changed.\n\n";
+            boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
+            boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
+            alert(boundary);
+        });
+    });
 
     refreshMap();
 });
-
-// TODO: function to clear
-
-// TODO: function to center
