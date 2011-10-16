@@ -73,10 +73,13 @@ def process_feed(feed_url):
         if entry.has_key('updated_parsed'):
             output['article_date'] = entry['updated_parsed']
         output['article_summary'] = entry['summary_detail']['value']
-        result = calais.analyze(repr(output['article_summary']))
-        output['article_location'] = extract_location(result)
-        output['article_tags'] = extract_tags(result)
-        output['article_topics'] = extract_topics(result)
+        try:
+          result = calais.analyze(repr(output['article_summary']))
+          output['article_location'] = extract_location(result)
+          output['article_tags'] = extract_tags(result)
+          output['article_topics'] = extract_topics(result)
+        except ValueError:
+          output
 
         if entry.has_key('content'):
             output['article_text'] = entry['content'][0]['value']
