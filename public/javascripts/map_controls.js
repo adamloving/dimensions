@@ -1,9 +1,30 @@
+var currentPosition;
+
+function refreshMap()
+{
+    $('#map').gmap('refresh');
+}
+
+function addMarker(longitude, latitude)
+{
+    $('#map').gmap('addMarker', { 'position': new google.maps.LatLng(longitude, latitude), 'bounds': true } );
+}
+
 $(function() {
     $('#map').gmap();
 
-    var startLocation = new google.maps.LatLng(47.6064, -122.3308); // TODO: get this info from geotag API
-    $('#map').gmap({ 'center': startLocation });
-    $('#map').gmap().bind('init', function(event, map) {
-        //$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': '42.345573,-71.098326', 'bounds': true } );                                                                                                                                                                                                                
+    navigator.geolocation.getCurrentPosition(function(position) {
+        currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        $('#map').gmap({ 'center': currentPosition });
     });
+    
+    //$('#map').gmap().bind('init', function(event, map) {
+    //    addMarker(42, -71);
+    //});
+
+    refreshMap();
 });
+
+// TODO: function to clear
+
+// TODO: function to center
