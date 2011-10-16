@@ -2,27 +2,12 @@
   .topbar-inner
     .container
       h3
-        a(href='/') Dimensions
-
+        a(href='/') Welcome Leon to Dimensions!
+        
       form(onsubmit='return false;')
         input#search(type="text" placeholder="Search")
-  
-      - if user_signed_in?
 
-        ul.nav.secondary-nav
-          li.dropdown
-            a.dropdown-toggle(href="#") My Account
-            ul.dropdown-menu
-              = link_to 'Edit', edit_user_registration_path
-              = link_to 'Sign out', destroy_user_session_path, :method => :delete
-
-      - else  
-          
-        ul.nav.secondary-nav
-          / .active
-          li 
-            = link_to_rpx "Sign in", user_session_url
-          li
-            = link_to('Register', new_user_registration_path)
-            
+      h3
+        img(src='../../../images/profile.jpeg' width='55px' height='55px' align='right')
+    
 = javascript_include_rpx(user_session_url)
