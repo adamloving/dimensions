@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:04:45 GMT from
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:33:10 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
  */
 
@@ -15,6 +15,7 @@
       this.hasGroup = __bind(this.hasGroup, this);
       this.addGroup = __bind(this.addGroup, this);
       this.onSearchChange = __bind(this.onSearchChange, this);
+      this.getQueryAsHtml = __bind(this.getQueryAsHtml, this);
       this.getQuery = __bind(this.getQuery, this);
       this.bind = __bind(this.bind, this);      this.startDate = Date.now().add(-12).hours().toISOString();
       this.search = null;
@@ -47,6 +48,28 @@
       }
       query.start_date = this.startDate;
       return query;
+    };
+    Filter.prototype.getQueryAsHtml = function() {
+      var q, s;
+      q = this.getQuery();
+      s = '<ul>';
+      if (q.start_date) {
+        s += '<li>Start date: ' + q.start_date + '</li>';
+      }
+      if (q.search) {
+        s += '<li>Keyword: ' + q.search + '</li>';
+      }
+      if (q.tags) {
+        s += '<li>Tags: ' + q.tags.join(', ') + '</li>';
+      }
+      if (q.owner) {
+        s += '<li>Groups: ' + q.groups.join(', ') + '</li>';
+      }
+      if (q.sw_lat) {
+        s += '<li>Geo: sw: (' + q.sw_lat + ', ' + q.sw_long + ') ';
+        s += ' ne: (' + q.ne_lat + ', ' + q.ne_long + ')</li>';
+      }
+      return s += '</ul>';
     };
     Filter.prototype.durationToMinutes = function(s) {
       var duration, matches, multiplier;
