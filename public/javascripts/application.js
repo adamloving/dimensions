@@ -14,3 +14,10 @@ $(function(){
     });
     $('select#date-filter').hide();
 });
+
+// Ask facebook to re-parse after ajax
+$(document).ajaxComplete(function(){
+    try{
+        FB.XFBML.parse();
+    }catch(ex){}
+});
