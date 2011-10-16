@@ -21,8 +21,9 @@ html
     = javascript_include_tag 'date.js'
         
   body
+    = render :partial => 'layouts/facebook_sdk'
     = render :partial => 'layouts/top_nav'
     .container
       == yield
       
-
+    .fb-like data-href='http://dimensions.heroku.com' data-send="true" data-width="450" data-show-faces="true"
