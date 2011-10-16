@@ -80,7 +80,11 @@ class SearchController < ApplicationController
     end
     puts JSON.generate(qu)
     @results = Tire.search("news",qu)
-    render :json=>{:results => @results.results,:facets=>@results.facets,:page=>from,:total_results=>@results.total,:size=>size}
+    #ruby do what i want coding
+    r=@results.instance_variable_get(:@response)
+    facets = {}
+r["facets"].each{|k,v| facets[k]=v["terms"]}
+    render :json=>{:results => r["hits"]["hits"].map{|x| x["_source"]},:facets=>r["facets"],:page=>from,:total_results=>@results.total,:size=>size}
   end
 
   def article
@@ -95,6 +99,8 @@ class SearchController < ApplicationController
     end
 
     @results = Tire.search("news",qu)
-    render :json=>{:results => @results.results}
+    r=@results.instance_variable_get(:@response)
+    
+    render :json=>{:results =>  r["hits"]["hits"]}
   end
 end
