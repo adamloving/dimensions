@@ -1,5 +1,8 @@
 script#item-template(type="text/x-jquery-tmpl")
   .item
+    .post-it
+      | {{html post_it_html}}
+      
     .body
       h3.headline.unread ${title}
       .article-details
@@ -13,4 +16,3 @@ script#item-template(type="text/x-jquery-tmpl")
         .date ${created_at}
 
         .fb-like data-href="${article_link}" data-send="true" data-width="450" data-show-faces="true"
-      hr
