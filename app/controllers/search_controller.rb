@@ -80,7 +80,7 @@ class SearchController < ApplicationController
     end
     puts JSON.generate(qu)
     @results = Tire.search("news",qu)
-    render :json=>{:results => @results.results,:facets=>@results.facets}
+    render :json=>{:results => @results.results,:facets=>@results.facets,:page=>from,:total_results=>@results.total,:size=>size}
   end
 
   def article
