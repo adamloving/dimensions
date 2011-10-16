@@ -12,15 +12,12 @@ $(function(){
             }
         }
     });
-    $('select#date-filter').hide();
 
+    $('select#date-filter').hide();
 });
 
 // Ask facebook to re-parse after ajax
 $(document).ajaxComplete(function(){
-    try{
-        FB.XFBML.parse();
-    }catch(ex){}
 
     // Article show/hide
     $('.article-details').hide();
@@ -31,6 +28,12 @@ $(document).ajaxComplete(function(){
       } else {
           $('.article-details').hide();
           $(this).next().show();
+          var url = $(this).next().children('a')[0].href;
+          console.log(url);
+          $(this).next().append('<div class="fb-like" data-href="' + url + '" data-send="true" data-width="450" data-show-faces="true"</div>')
+        try{
+            FB.XFBML.parse();
+        }catch(ex){}
       }
     });
 });
