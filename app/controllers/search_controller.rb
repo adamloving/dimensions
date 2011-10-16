@@ -5,8 +5,8 @@ require "pp"
 class SearchController < ApplicationController
    def index
     #build our main searcher tags or search text
-   if(params["tags"])
-      match = { "text" => { "body"=> { "query"=> params["tags"], "operator"=> "and" } } }
+   if(params["tag"])
+      match = { "text" => { "body"=> { "query"=> params["tag"].split(",").join(" "), "operator"=> "or" } } }
     elsif(params["search"])
       match = { "text_phrase" => { "body" => { "query" => params["search"]} } }
     else
