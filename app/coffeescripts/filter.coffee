@@ -6,6 +6,7 @@ class Filter
     @search = null
     @tags = []
     @groups = []
+    @coords = null
 
     console.log('gotcha')
   
@@ -21,8 +22,16 @@ class Filter
 
     if @tags.length > 0
       query.tag = @tags.join(',')
+    
     if @groups.length > 0
       query.owner = @groups.join(',')
+
+    if @coords
+      query.sw_lat = @coords.southWest.Ma
+      query.sw_long = @coords.southWest.Na
+      query.ne_lat = @coords.northEast.Ma
+      query.ne_long = @coords.northEast.Na
+      
 
     query.start_date = @startDate
 
@@ -55,14 +64,17 @@ class Filter
     @search = e.target.value
     console.log @search
     window.stream.loadItems()
+  
   addGroup: (t) =>
     @groups.push(t)
     window.stream.loadItems()
+  
   hasGroup: (t) =>
     found = false
     $.each @groups, (i, t1) ->
       found = true if t1 == t
     return found
+  
   removeGroup: (t) =>
     temp = []
     $.each @groups, (i, t1) ->
@@ -86,6 +98,14 @@ class Filter
       temp.push(t1) unless t1 == t
     @tags = temp
     window.stream.loadItems()
+
+  setCoords: (northEast, southWest) =>
+    @coords = {
+      northEast: northEast,
+      southWest: southWest
+    }
+    console.log(@coords)
+    window.stream.loadItems()    
 
 jQuery ->  
   window.filter = new Filter()
