@@ -37,7 +37,7 @@ Tire.index 'news' do
     hash["no_tag_body"]=strip_tags(hash["body"].to_s)
     hash["summary"]=sum
     date = nil
-    hash["created_at"]=(date=DateTime.parse(hash.delete("article_date"))).strftime("%FT%TZ") rescue nil
+    hash["created_at"]=(date=DateTime.parse(hash.delete("article_date")).new_offset(0)).strftime("%FT%TZ") rescue nil
     hash["created_date"]=date.to_i if date
     hash["source"]=hash.delete("feed")
     hash["id"]= Digest::MD5.hexdigest("#{hash["source"]}_#{hash["title"]}")

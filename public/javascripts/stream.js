@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 01:40:52 GMT from
- * /Users/becker/trash/dimensions/app/coffeescripts/stream.coffee
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:35:28 GMT from
+ * /Users/adam/Projects/dimensions/app/coffeescripts/stream.coffee
  */
 
 (function() {
@@ -14,6 +14,7 @@
       console.log('stream constructor');
     }
     Stream.prototype.loadItems = function() {
+      $("#stream").empty().append('<p style="text-align: center; margin-top: 200px">Loading...</p>');
       $.ajax('/search', {
         type: 'GET',
         dataType: 'json',
@@ -36,7 +37,11 @@
     Stream.prototype.render = function() {
       console.log('render');
       $("#stream").empty();
-      $.tmpl("streamItem", this.data.results).appendTo("#stream");
+      if (this.data.results.length > 0) {
+        $.tmpl("streamItem", this.data.results).appendTo("#stream");
+      } else {
+        $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
+      }
       return console.log('rendered');
     };
     return Stream;

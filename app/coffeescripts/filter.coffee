@@ -32,10 +32,31 @@ class Filter
       query.ne_lat = @coords.northEast.Ma
       query.ne_long = @coords.northEast.Na
       
-
     query.start_date = @startDate
 
     return query
+
+  getQueryAsHtml: () =>
+    q = @getQuery()
+    s = '<ul>'
+
+    if q.start_date
+      s += '<li>Start date: ' + q.start_date + '</li>'
+
+    if q.search 
+      s += '<li>Keyword: ' + q.search + '</li>'
+
+    if q.tags 
+      s+= '<li>Tags: ' + q.tags.join(', ') + '</li>'
+
+    if q.owner 
+      s+= '<li>Groups: ' + q.groups.join(', ') + '</li>'
+
+    if q.sw_lat 
+      s += '<li>Geo: sw: (' + q.sw_lat + ', ' + q.sw_long + ') '
+      s += ' ne: (' + q.ne_lat + ', ' + q.ne_long + ')</li>'
+
+    s += '</ul>'
 
   durationToMinutes: (s) ->
     # Converts a duration string like 2d into minutes

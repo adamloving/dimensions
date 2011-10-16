@@ -6,7 +6,8 @@ class Stream
     console.log('stream constructor')
 
   loadItems: () =>
-    
+    $("#stream").empty().append('<p style="text-align: center; margin-top: 200px">Loading...</p>')
+
     $.ajax '/search',
         type: 'GET'
         dataType: 'json'
@@ -36,7 +37,15 @@ class Stream
   render: () =>
     console.log('render')
     $("#stream").empty();
-    $.tmpl( "streamItem", @data.results ).appendTo("#stream")
+
+    if (@data.results.length > 0) 
+      $.tmpl("streamItem", @data.results).appendTo("#stream")
+    else
+      $("#stream").append(
+        '<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' +
+        '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>'
+      )
+
     console.log('rendered')
 
 jQuery ->  
