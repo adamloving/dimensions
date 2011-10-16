@@ -13,6 +13,27 @@ class Filter
   bind: () =>
     $('#date-filter').change @onDateChange
     $('#search').change @onSearchChange
+  getQueryString: () =>
+    q = @getQuery()
+    s="?"
+    if q.start_date
+      s += "start_date="+ q.start_date + '&'
+
+    if q.search       
+      s += "search="+ q.search + '&'
+
+    if q.tags
+      s += "tags="+ q.tags.join(', ') + '&'
+
+    if q.owner 
+      s += "owner="+ q.groups.join(', ') + '&'
+      
+    if q.sw_lat 
+      s += "sw_lat="+ q.sw_lat+ '&'
+      s += "sw_long="+ q.sw_long+ '&'
+      s += "ne_lat="+ q.ne_lat+ '&'
+      s += "ne_long="+ q.ne_long+ '&'
+    return s
 
   getQuery: () =>
     query = {}
@@ -87,16 +108,19 @@ class Filter
     window.stream.loadItems()
   
   addGroup: (t) =>
+    t=t.split(" ")[0]
     @groups.push(t)
     window.stream.loadItems()
   
   hasGroup: (t) =>
+    t=t.split(" ")[0]    
     found = false
     $.each @groups, (i, t1) ->
       found = true if t1 == t
     return found
   
   removeGroup: (t) =>
+    t=t.split(" ")[0]    
     temp = []
     $.each @groups, (i, t1) ->
       temp.push(t1) unless t1 == t
