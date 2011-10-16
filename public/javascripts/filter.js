@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 18:33:10 GMT from
+/* DO NOT MODIFY. This file was compiled Sun, 16 Oct 2011 19:19:51 GMT from
  * /Users/adam/Projects/dimensions/app/coffeescripts/filter.coffee
  */
 
@@ -41,10 +41,10 @@
         query.owner = this.groups.join(',');
       }
       if (this.coords) {
-        query.sw_lat = this.coords.southWest.Ma;
-        query.sw_long = this.coords.southWest.Na;
-        query.ne_lat = this.coords.northEast.Ma;
-        query.ne_long = this.coords.northEast.Na;
+        query.sw_lat = this.coords.southWest.lat();
+        query.sw_long = this.coords.southWest.lng();
+        query.ne_lat = this.coords.northEast.lat();
+        query.ne_long = this.coords.northEast.lng();
       }
       query.start_date = this.startDate;
       return query;
@@ -59,8 +59,8 @@
       if (q.search) {
         s += '<li>Keyword: ' + q.search + '</li>';
       }
-      if (q.tags) {
-        s += '<li>Tags: ' + q.tags.join(', ') + '</li>';
+      if (q.tag) {
+        s += '<li>Tags: ' + q.tag + '</li>';
       }
       if (q.owner) {
         s += '<li>Groups: ' + q.groups.join(', ') + '</li>';

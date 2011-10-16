@@ -40,6 +40,15 @@ function centerMapToCurrentLocation()
     });
 }
 
+function filterByBoundary(map)
+{
+    boundary = "Visible map viewport has changed.\n\n";
+    boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
+    boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
+    console.log(boundary);
+    window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
+}
+
 $(function() {
     $('#map').gmap();
     
@@ -47,13 +56,17 @@ $(function() {
         centerMapToCurrentLocation();
 
         $(map).dragend( function() {
-            // TODO: we need to refresh the stream based on the boundary filter
-            //       instead of displaying alert.
-            boundary = "Visible map viewpoer has changed.\n\n";
-            boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
-            boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
-            console.log(boundary);
-            window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map))
+            filterByBoundary(map);
+        });
+        
+        var firstEvent = true;
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            if (firstEvent) {
+                firstEvent = false;
+            } else {
+                filterByBoundary(map);    
+            }
+            
         });
     });
 
