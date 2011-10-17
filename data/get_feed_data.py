@@ -25,7 +25,7 @@ import os
 import re
 import time
 
-CALAIS_API_KEY = "d259fgb64k9vf5j3v9mx3hg6"
+CALAIS_API_KEY = "ENTER_YOUR_KEY"
 calais = Calais(CALAIS_API_KEY, submitter="Seattle News Hackathon")
 
 class RssEncoder(json.JSONEncoder):
