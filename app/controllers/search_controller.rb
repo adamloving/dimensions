@@ -17,7 +17,7 @@ class SearchController < ApplicationController
       match = {"match_all"=>{}}
     end
     geo_box = nil
-    if(false && params["sw_long"])
+    if(params["sw_long"])
       geo_box= {"geo_bounding_box"=>
         {"article.location"=>{"top_left"=>[params["sw_long"].to_f,params["ne_lat"].to_f ], "bottom_right"=>[params["ne_long"].to_f,params["sw_lat"].to_f]}}}
     end
