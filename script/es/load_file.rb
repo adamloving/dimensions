@@ -45,8 +45,13 @@ Tire.index 'news' do
     hash["_type"]="article"
     hash["tags"]=hash.delete("article_tags").to_s.split(",")
     hash["topics"]=hash.delete("article_topics").to_s.split(",")
+    if(hash["article_location"])
     lat,long  = hash.delete("article_location").to_s.split(",").map{|x| x.to_f}
-    hash["location"]=[lat,long] if long
+    
+      puts lat
+      puts long 
+    hash["location"]=[long,lat] if long && lat<90 && lat>-90 && long>-180 && long<180
+    end
     articles.push(hash)
   }
   puts articles
