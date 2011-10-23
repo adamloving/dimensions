@@ -34,7 +34,7 @@ This project uses
 Elastic Search Notes
 ====================
 
-`ruby script/es/load_es.rb  http://107.22.249.45:9200/ && ruby script/es/load_file.rb data/articles.json http://107.22.249.45:9200/`
+`ruby script/es/load_es.rb  http://IP:9200/ && ruby script/es/load_file.rb data/articles.json http://IP:9200/`
 
 * load_es - builds out schema for es. First arg is host
 * load_file - parses json file and build out ES json. first arg file second arg host
