@@ -1,8 +1,8 @@
 What is Dimensions?
 ===================
 
-This web application is the winning entry from the King5 News Hackathon held 
-October 14-16th in Seattle, WA. The application is a local news aggregator with
+This web application is the winning entry from the [King5 News Hackathon](http://hackingseattlenews.com) 
+held October 14-16th in Seattle, WA. The application is a local news aggregator with
 highly customizable filtering system.
 
 http://hackingseattlenews.com/2011/10/slides-from-the-winning-presentation/
@@ -32,9 +32,9 @@ This project uses
 * Twitter's Bootstrap http://twitter.github.com/bootstrap
 
 Elastic Search Notes
-==================== 
+====================
 
-` ruby script/es/load_es.rb  http://107.22.249.45:9200/ && ruby script/es/load_file.rb data/articles.json http://107.22.249.45:9200/
+`ruby script/es/load_es.rb  http://107.22.249.45:9200/ && ruby script/es/load_file.rb data/articles.json http://107.22.249.45:9200/`
 
 * load_es - builds out schema for es. First arg is host
 * load_file - parses json file and build out ES json. first arg file second arg host
