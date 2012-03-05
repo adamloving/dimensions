@@ -1,15 +1,20 @@
 source 'http://rubygems.org'
+source 'http://gems.github.com'
+
 
 gem 'rails', '3.2.2'
 gem 'activeadmin'
 
 
 # active admin requirements
+#========================================
 gem 'meta_search'
 gem 'sass-rails'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+#feed parsing
+#========================================
+gem 'feedzirra'
+
 
 
 gem 'slim'
@@ -23,6 +28,11 @@ gem 'crack'
 group :development do
   gem "barista" # coffeescript
   gem 'mysql2'
+end
+
+group :test do
+  gem 'rspec-rails'
+  gem 'fuubar'
 end
 
 # To use debugger
