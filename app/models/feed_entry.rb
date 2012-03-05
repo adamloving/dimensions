@@ -1,4 +1,6 @@
 class FeedEntry < ActiveRecord::Base
+  belongs_to :feed, class_name: NewsFeed
+
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
     raise "The feed is invalid" if feed.nil?
