@@ -1,6 +1,12 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.2.2'
+gem 'activeadmin'
+
+
+# active admin requirements
+gem 'meta_search'
+gem 'sass-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -20,4 +26,4 @@ group :development do
 end
 
 # To use debugger
-# gem 'ruby-debug'
+gem 'ruby-debug19'

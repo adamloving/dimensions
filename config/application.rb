@@ -6,6 +6,9 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+Bundler.require(:default, :assets, Rails.env) if defined?(Bundler)
+
+
 module RailsBootstrap
   class Application < Rails::Application
     # RPXNow.api_key = "..." # see https://github.com/slainer68/devise_rpx_connectable
