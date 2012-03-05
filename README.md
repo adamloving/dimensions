@@ -40,3 +40,16 @@ Elastic Search Notes
 * load_file - parses json file and build out ES json. first arg file second arg host
 
 Hosts default to local if not present
+
+TangoSource Notes
+====================
+
+Installation
+
+- Clone the repo
+- Bundle install. Verify:
+  - Rails version: 3.2.2
+  - Use either mysql or postgresql in dev.
+- Working routes (March, 5th, 2012)
+  - /home
+
