@@ -4,7 +4,7 @@ require 'ruby-debug'
 describe FeedEntry do
   describe "#load_entries" do
     before do
-      @news_feed = NewsFeed.new(name: 'King5.com', url:'http://king5.com')
+      @news_feed = Factory.build(:news_feed)
     end
 
     it 'should propagate the exception when the url is not valid' do
@@ -22,9 +22,9 @@ describe FeedEntry do
 
       @news_feed.load_entries
 
-      entry.feed.should == @news_feed
+      entry.reload.feed.should == @news_feed
 
-      @news_feed.entries.should include(entry)
+      @news_feed.reload.entries.should include(entry)
     end
   end
 end

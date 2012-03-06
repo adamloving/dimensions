@@ -9,5 +9,6 @@ FactoryGirl.define do
     end
     author        'Inaki'
     content       'blah blah'
+    visible        true
   end
 end

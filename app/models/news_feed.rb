@@ -12,6 +12,8 @@ class NewsFeed < ActiveRecord::Base
 
   def load_entries
     entries = FeedEntry.update_from_feed(self.url)
+    self.entries += entries
+    self.save
     entries.each do|entry|
       entry.feed = self
       self.entries << entry
