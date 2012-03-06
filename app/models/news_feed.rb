@@ -4,6 +4,7 @@ class NewsFeed < ActiveRecord::Base
   include Dimensions::Netutils
 
   has_many :entries, class_name: FeedEntry
+
   validates :name, :url, presence: true
 
 
