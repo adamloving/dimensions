@@ -28,6 +28,8 @@ gem 'crack'
 group :development do
   gem "barista" # coffeescript
   gem 'mysql2'
+  # To use debugger
+  gem 'ruby-debug19'
 end
 
 group :test do
@@ -36,5 +38,3 @@ group :test do
   gem 'factory_girl_rails'
 end
 
-# To use debugger
-gem 'ruby-debug19'
