@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 source 'http://gems.github.com'
 
 
-gem 'pg'
 gem 'rails', '3.2.2'
 gem 'activeadmin'
 
@@ -25,8 +24,10 @@ gem 'devise'
 gem 'devise_rpx_connectable' 
 gem 'tire'
 gem 'crack'
+gem 'exception_notification', :require => 'exception_notifier'
 
 group :development do
+  gem 'pg'
   gem "barista" # coffeescript
   gem 'mysql2'
   # To use debugger
