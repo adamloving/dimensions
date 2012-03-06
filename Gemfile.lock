@@ -131,6 +131,7 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.4.7)
     orm_adapter (0.0.6)
+    pg (0.13.2)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -240,6 +241,7 @@ DEPENDENCIES
   fuubar
   meta_search
   mysql2
+  pg
   rails (= 3.2.2)
   rspec-rails
   ruby-debug19
