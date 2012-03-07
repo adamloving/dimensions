@@ -44,6 +44,17 @@ class Admin::FeedEntriesController < Admin::BaseController
     redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
   end
 
+  def fetch_content
+    entry = @news_feed.entries.find(params[:id])
+    if entry.fetch_content!.present?
+      entry.save
+      flash[:notice] = "Loaded entry's content successfully"
+    else
+      flash[:errors] = "We had an error fetching your content"
+    end
+    redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
+  end
+
   def destroy
     entry = @news_feed.entries.find(params[:id])
     entry.destroy

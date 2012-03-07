@@ -154,6 +154,39 @@ describe Admin::FeedEntriesController do
     end
   end 
 
+  describe "POST 'fetch_content'" do
+
+    before do
+      @entry = mock_model(FeedEntry)
+      @news_feed.stub_chain(:entries, :find).with(@entry.id.to_s){@entry}
+    end
+
+    subject { post 'fetch_content', news_feed_id: @news_feed.id, id: @entry.id}
+
+    describe "when there were no fetch errors" do
+      it "redirects to the the entry path and sets a notice" do
+        @entry.stub(:fetch_content!){"some content"}
+        @entry.stub(:fetch_errors){nil}
+        @entry.should_receive(:save)
+
+        subject
+        response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
+        flash[:notice].should == "Loaded entry's content successfully"
+      end
+    end
+
+    describe "when there are fetch errors" do
+      it "redirects to the the entry path and sets error flash" do
+        @entry.stub(:fetch_content!){nil}
+        @entry.stub(:fetch_errors){{:error => "Blah"}}
+
+        subject
+        response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
+        flash[:errors].should == "We had an error fetching your content"
+      end
+    end
+  end 
+
   describe "GET 'destroy'" do
     before do
       @entry = mock_model(FeedEntry)

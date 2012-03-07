@@ -1,5 +1,6 @@
 class FeedEntry < ActiveRecord::Base
   belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
+  serialize :fetch_errors
 
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
@@ -22,13 +23,20 @@ class FeedEntry < ActiveRecord::Base
 
   def fetch_content!
     return self.content if self.content.present?
-    scraper = Scraper.define do
-      array :content
+    begin
+      scraper = Scraper.define do
+        array :content
 
-      process "p", :content => :text
-      result :content
+        process "p", :content => :text
+        result :content
+      end
+      uri = URI.parse(self.url)
+      self.content = scraper.scrape(uri).join(" ")
+    rescue Exception => e
+      self.fetch_errors = {:error => e.to_s}
+      return nil
     end
-    uri = URI.parse(self.url)
-    self.content = scraper.scrape(uri).join(" ")
+
+    return self.content
   end
 end

@@ -59,5 +59,17 @@ describe FeedEntry do
       @entry.fetch_content!.should == "Hola Mundo"
       @entry.content.should == "Hola Mundo"
     end
+
+    context "failure to fetch content" do
+      it "should rescue the exception and add this to serialized fetch errors" do
+        scraper = mock
+        Scraper.stub(:define){ scraper }
+        uri = mock
+        URI.stub(:parse).with(@entry.url){uri}
+        scraper.should_receive(:scrape).with(uri).and_raise(Scraper::Reader::HTMLParseError)
+        @entry.fetch_content!.should be_nil
+        @entry.fetch_errors.should == {:error => "Scraper::Reader::HTMLParseError"}
+      end
+    end
   end
 end
