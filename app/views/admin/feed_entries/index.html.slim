@@ -1,2 +1,24 @@
-h1 Admin::FeedEntries#index
-p Find me in app/views/admin/feed_entries/index.html.slim
+table
+  thead
+    tr
+      th Name
+      th Published At
+      th Visible
+      th
+  tbody
+    - @feed_entries.each do|entry|
+      tr
+        td= entry.name
+        td= entry.published_at
+        td= entry.visible
+        td
+          = link_to "Edit",
+edit_admin_news_feed_feed_entry_path(@news_feed, entry)
+          = "|"
+          = link_to "View",
+admin_news_feed_feed_entry_path(@news_feed,
+entry)
+          = "|"
+          = link_to "Delete", "#"
+
+
