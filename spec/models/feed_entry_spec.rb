@@ -60,4 +60,30 @@ describe FeedEntry do
       @entry.content.should == "Hola Mundo"
     end
   end
+
+  # -------- State machine tests --------
+  describe "change state" do
+    before do
+      @entry = FactoryGirl.build(:feed_entry)
+    end
+    
+    it "should initialize with :loaded" do
+      @entry.loaded?.should == true
+    end
+    
+    it "should change to :fetched when :fetching" do
+      @entry.fetching
+      @entry.fetched?.should == true
+    end
+
+    it "should change to :localized when :localized" do
+      @entry.localizing
+      @entry.localized?.should == true
+    end
+
+    it "should change to :tagged when :tagging" do
+      @entry.tagging
+      @entry.tagged?.should == true
+    end
+  end
 end
