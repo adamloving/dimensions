@@ -11,5 +11,6 @@ FactoryGirl.define do
     end
     author        'Inaki'
     visible        true
+    state         'loaded'
   end
 end
