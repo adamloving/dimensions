@@ -7,6 +7,8 @@ gem 'rails', '3.2.2'
 gem 'activeadmin'
 gem 'calais'
 gem 'scrapi'
+gem 'state_machine'
+gem 'ruby-graphviz', :require => 'graphviz'
 # active admin requirements
 #========================================
 gem 'meta_search'
