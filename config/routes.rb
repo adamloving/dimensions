@@ -1,10 +1,17 @@
 RailsBootstrap::Application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   ActiveAdmin.routes(self)
 
   devise_for :users
 
+
+  namespace :admin do
+    resources :news_feeds, :only => :index do
+      resources :feed_entries
+    end
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -8,7 +8,7 @@ class NewsFeed < ActiveRecord::Base
   validates :name, :url, presence: true
 
 
-  before_save :url_connection_valid?
+  before_save :url_connection_valid? unless Rails.env.test?
 
   def load_entries
     entries = FeedEntry.update_from_feed(self.url)

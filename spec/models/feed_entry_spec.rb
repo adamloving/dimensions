@@ -15,7 +15,7 @@ describe FeedEntry do
 
       mock_entries = [mock( title: "The first post",
              summary: 'I was so lazy to write my first post',
-             url: '/some-url',
+             url: '/some-url-x',
              published: Time.now,
              id: '/my-unique-id',
              author: 'Inaki',
