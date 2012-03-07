@@ -8,7 +8,7 @@ require "sprockets/railtie"
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+#Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 Bundler.require(:default, :assets, Rails.env) if defined?(Bundler)
 
@@ -44,6 +44,7 @@ module RailsBootstrap
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
+    config.assets.enabled = false
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]

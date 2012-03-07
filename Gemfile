@@ -6,7 +6,6 @@ gem 'pg'
 gem 'rails', '3.2.2'
 gem 'activeadmin'
 
-
 # active admin requirements
 #========================================
 gem 'meta_search'

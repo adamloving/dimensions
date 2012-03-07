@@ -11,14 +11,10 @@ common: &common
   #<<: *mysql
   <<: *postgres
 
-
 development:
   <<: *common
   database: dimensions_dev
 
-#production:
-  #<<: *common
-  #database: diaspora_production
 
 test:
   <<: *common
