@@ -1,0 +1,14 @@
+= form_tag("/search", :method => "get") do 
+ .filter_form_field.filter_string
+    = label_tag(:q_name, "Search name:") 
+    = text_field_tag(:q_name) 
+ .filter_form_field.filter_string
+    = label_tag(:q_url, "Search url:") 
+    = text_field_tag(:q_url) 
+ .filter_form_field.filter_date_range
+    = label_tag(:q_created_at_gte, "Created at:",:class=>'label') 
+    = text_field_tag(:q_created_at_gte,nil,:class=>'datepicker hasDatepicker',:size=>12,:max=>10) 
+    span.separator -
+    = text_field_tag(:q_created_at_lte,nil,:class=>'datepicker hasDatepicker',:size=>12,:max=>10) 
+
+    = submit_tag("Search") 

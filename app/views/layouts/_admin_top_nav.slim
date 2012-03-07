@@ -12,6 +12,24 @@
       a(href="/admin/logout" data-method="get")Logout
 #title_bar
  #titlebar_left
-  h2.title Dashboard
+  span.breadcrumb
+    a(href="#")Admin
+    span.breadcrumb_sep |
+  h2.page_title Dashboard
  #titlebar_right
+  span.action_items
+    a(href="#")Some Action
 #active_admin_content
+ #main_content_wrapper
+  #main_content
+    .blank_slate_container#dashboard_default_message
+      span.blank_slate
+        span Welcome Message.
+        a(href="#")Create something
+        small Admin dashboard
+ #sidebar.sidebar_section.panel
+  h3 dinamic Title
+  #panel_contents
+   = render :partial => 'admin/filters_form'
+
+#footer
