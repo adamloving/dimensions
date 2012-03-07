@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20120306164957) do
     t.datetime "published_at"
     t.string   "guid"
     t.string   "author"
-    t.string   "content"
+    t.text     "content"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.integer  "news_feed_id"

@@ -18,7 +18,7 @@ gem 'feedzirra'
 
 
 
-gem 'slim-rails'
+gem 'haml-rails'
 gem 'configatron'
 gem 'compass', ">= 0.10.4"
 gem 'devise'

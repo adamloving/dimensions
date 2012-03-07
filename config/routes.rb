@@ -1,7 +1,7 @@
 RailsBootstrap::Application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  
+
   ActiveAdmin.routes(self)
 
   devise_for :users
@@ -11,8 +11,10 @@ RailsBootstrap::Application.routes.draw do
 
 
   namespace :admin do
-    resources :news_feeds, :only => :index do
-      resources :feed_entries
+    resources :news_feeds do
+      resources :feed_entries do
+        put :toggle_visible, :on => :member
+      end
     end
   end
   # The priority is based upon order of creation:

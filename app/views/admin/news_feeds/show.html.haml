@@ -1,0 +1,14 @@
+%table
+  %tbody
+    %tr
+      %td
+        Name
+      %td
+        = @news_feed.name
+    %tr
+      %td
+        Url
+      %td
+        = @news_feed.url
+
+= link_to "Edit", edit_admin_news_feed_path(@news_feed)

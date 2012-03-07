@@ -37,6 +37,13 @@ class Admin::FeedEntriesController < Admin::BaseController
     @feed_entry = @news_feed.entries.find(params[:id])
   end
 
+  def toggle_visible
+    entry = @news_feed.entries.find(params[:id])
+    entry.toggle(:visible)
+    entry.save
+    redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
+  end
+
   def destroy
     entry = @news_feed.entries.find(params[:id])
     entry.destroy

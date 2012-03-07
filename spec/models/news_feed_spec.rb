@@ -4,7 +4,7 @@ require 'ruby-debug'
 describe FeedEntry do
   describe "#load_entries" do
     before do
-      @news_feed = Factory.build(:news_feed)
+      @news_feed = FactoryGirl.build(:news_feed)
     end
 
     it 'should propagate the exception when the url is not valid' do
@@ -16,7 +16,7 @@ describe FeedEntry do
     end
 
     it 'associate the entries with the feed' do
-      entry = Factory.create(:feed_entry)
+      entry = FactoryGirl.create(:feed_entry)
 
       FeedEntry.stub(:update_from_feed){[entry]}
 

@@ -1,0 +1,30 @@
+#header
+  %h1#site_title Rails Dashboard admin
+  %ul.header-item#tabs
+    %li.current#dashboard
+      %a{:href => "#"} Dashboard
+    %li.news_feeds
+      = link_to "News Feeds", admin_news_feeds_path
+  %p.header-item#utility_nav
+    %span.current_user current_user@example.com
+    %a{:href=>"/admin/logout", "data-method" => "get"} Logout
+#title_bar
+  #titlebar_left
+    %span.breadcrumb
+      %a{:href=>"#"} Admin
+    %span.breadcrumb_sep |
+    %h2.page_title Dashboard
+  #titlebar_right
+    %span.action_items
+      = yield :action_items
+#active_admin_content
+  #main_content_wrapper
+    #main_content
+      .blank_slate_container#dashboard_default_message
+        = yield
+  #sidebar.sidebar_section.panel
+    %h3 dinamic Title
+    #panel_contents
+      = render 'admin/filters_form'
+
+#footer

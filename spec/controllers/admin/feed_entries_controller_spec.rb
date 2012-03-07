@@ -138,6 +138,22 @@ describe Admin::FeedEntriesController do
     end
   end
 
+  describe "PUT 'toggle_visible'" do
+    before do
+      @entry = mock_model(FeedEntry)
+      @news_feed.stub_chain(:entries, :find).with(@entry.id.to_s){@entry}
+    end
+
+    subject { put 'toggle_visible', news_feed_id: @news_feed.id, id: @entry.id}
+
+    it "returns http success" do
+      @entry.stub(:toggle).with(:visible){@entry}
+      @entry.should_receive(:save){true}
+      subject
+      response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
+    end
+  end 
+
   describe "GET 'destroy'" do
     before do
       @entry = mock_model(FeedEntry)
@@ -145,11 +161,5 @@ describe Admin::FeedEntriesController do
     end
 
     subject { get 'destroy', news_feed_id: @news_feed.id, id: @entry.id }
-
-
-    #it "returns http success" do
-      #subject
-      #response.should be_success
-    #end
   end
 end

@@ -1,0 +1,20 @@
+%table
+  %thead
+    %tr
+      %th Id
+      %th Name
+      %th Published At
+      %th
+  %tbody
+    - @feed_entries.each do|entry|
+      %tr
+        %td= entry.id
+        %td= entry.name
+        %td= entry.published_at
+        %td
+          = link_to "View",
+admin_news_feed_feed_entry_path(@news_feed,
+entry)
+          = "|"
+          = link_to "Delete", admin_news_feed_feed_entry_path(@news_feed, entry), :method => :delete, :confirm => "Are you sure?"
+
