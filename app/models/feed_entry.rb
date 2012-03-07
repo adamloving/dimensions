@@ -19,4 +19,16 @@ class FeedEntry < ActiveRecord::Base
     end
     entries
   end
+
+  def fetch_content!
+    return self.content if self.content.present?
+    scraper = Scraper.define do
+      array :content
+
+      process "p", :content => :text
+      result :content
+    end
+    uri = URI.parse(self.url)
+    self.content = scraper.scrape(uri).join(" ")
+  end
 end

@@ -37,4 +37,27 @@ describe FeedEntry do
       entries.last.should be_an_instance_of(FeedEntry)
     end
   end
+
+  describe "#fetch content" do
+    before do
+      @entry = FactoryGirl.build(:feed_entry)
+    end
+
+    it "should return true if content is already there" do
+      @entry.content = "blah"
+      @entry.fetch_content!.should == "blah"
+    end
+
+    it "should fetch all the content existing between p tags in the requested url" do
+      scraper = mock
+      Scraper.stub(:define){ scraper }
+      uri = mock
+      URI.stub(:parse).with(@entry.url){uri}
+      scraper.stub(:scrape).with(uri){
+        ["Hola", "Mundo"]
+      }
+      @entry.fetch_content!.should == "Hola Mundo"
+      @entry.content.should == "Hola Mundo"
+    end
+  end
 end

@@ -22,9 +22,9 @@ describe FeedEntry do
 
       @news_feed.load_entries
 
-      entry.reload.feed.should == @news_feed
+      entry.feed.should == @news_feed
 
-      @news_feed.reload.entries.should include(entry)
+      @news_feed.entries.should include(entry)
     end
   end
 end
