@@ -1,4 +1,4 @@
-class Admin::FeedEntriesController < ApplicationController
+class Admin::FeedEntriesController < Admin::BaseController
   before_filter :find_feed
 
   def index
