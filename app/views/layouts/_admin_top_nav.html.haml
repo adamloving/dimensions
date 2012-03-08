@@ -1,9 +1,7 @@
 #header
   %h1#site_title Dimensions Admin
   %ul.header-item#tabs
-    %li.current#dashboard
-      %a{:href => "#"} Dashboard
-    %li.news_feeds
+    %li.news_feeds{:class => set_nav_active(admin_news_feeds_path)}
       = link_to "News Feeds", admin_news_feeds_path
   %p.header-item#utility_nav
     %span.current_user current_user@example.com
@@ -11,7 +9,8 @@
 #title_bar
   #titlebar_left
     %span.breadcrumb_sep |
-    %h2.page_title Dashboard
+    %h2.page_title 
+      =title_layout @news_feeds
   #titlebar_right
     %span.action_items
       = yield :action_items
