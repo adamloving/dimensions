@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20120307224932) do
     t.integer  "news_feed_id"
     t.boolean  "visible",      :default => true
     t.string   "fetch_errors"
+    t.string   "state"
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true

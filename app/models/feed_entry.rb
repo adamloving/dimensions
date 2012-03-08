@@ -2,6 +2,22 @@ class FeedEntry < ActiveRecord::Base
   belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
   serialize :fetch_errors
 
+  state_machine :initial => :loaded do
+
+    event :fetch do
+      transition :loaded => :fetched
+    end
+
+    event :localize do
+      transition :fetched => :localized
+    end
+
+    event :tag do
+      transition :localized => :tagged
+    end
+
+  end
+
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
     raise "The feed is invalid" if feed.nil?
