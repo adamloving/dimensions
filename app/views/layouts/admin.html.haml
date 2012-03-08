@@ -13,5 +13,13 @@
     = javascript_include_tag "active_admin.js"
     = javascript_include_tag "admin.js"
   %body.index.admin_dashboard.logged_in.admin_namespace
-    .admin_page
-      = render 'layouts/admin_top_nav'
+    = render 'layouts/admin_top_nav'
+    #active_admin_content
+      #main_content_wrapper
+        #main_content
+          .blank_slate_container#dashboard_default_message
+            .admin_page
+              = yield
+      #sidebar.sidebar_section.panel
+        = yield :sidebar
+    #footer

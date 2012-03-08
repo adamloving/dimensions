@@ -1,8 +1,13 @@
 class Admin::FeedEntriesController < Admin::BaseController
-  before_filter :find_feed
+  before_filter :find_feed, :except => [:index, :search]
 
   def index
-    @feed_entries = @news_feed.entries
+    #@feed_entries = @news_feed.entries
+    @feed_entries = if params[:news_feed_id]
+      NewsFeed.find(params[:news_feed_id]).entries
+    else
+      FeedEntry.all
+    end
   end
 
   def new
@@ -59,6 +64,12 @@ class Admin::FeedEntriesController < Admin::BaseController
     entry = @news_feed.entries.find(params[:id])
     entry.destroy
     redirect_to admin_news_feed_feed_entries_path(@news_feed)
+  end
+
+  def search
+    @search = FeedEntry.search(params[:q])
+    @feed_entries = @search.all
+    render :index
   end
 
   private

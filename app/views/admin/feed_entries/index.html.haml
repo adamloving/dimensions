@@ -1,3 +1,9 @@
+= content_for :sidebar do
+  %h3 
+    Feed Entries Filters
+  #panel_contents
+    = render 'filters_form', news_feeds: NewsFeed.all
+
 .admin_page
   %table.feed_entries
     %thead
@@ -17,8 +23,8 @@
             
           %td
             = link_to "View",
-  admin_news_feed_feed_entry_path(@news_feed,
+  admin_news_feed_feed_entry_path(entry.feed,
   entry)
             = "|"
-            = link_to "Delete", admin_news_feed_feed_entry_path(@news_feed, entry), :method => :delete, :confirm => "Are you sure?"
+            = link_to "Delete", admin_news_feed_feed_entry_path(entry.feed, entry), :method => :delete, :confirm => "Are you sure?"
 

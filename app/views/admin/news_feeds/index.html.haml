@@ -1,5 +1,11 @@
 = content_for :action_items, link_to("New NewsFeed", new_admin_news_feed_path)
 
+= content_for :sidebar do
+  %h3 
+    News Feeds Filters
+  #panel_contents
+    = render 'admin/filters_form'
+
 %table
   %thead
     %tr

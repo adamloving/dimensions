@@ -15,23 +15,28 @@ describe Admin::FeedEntriesController do
   end
 
   describe "GET 'index'" do
+    describe "when receiving a news feed id" do
+      before do
+        @news_feed = mock_model(NewsFeed)
+        NewsFeed.stub(:find).with('1'){@news_feed}
+        @news_feed.stub(:entries){[mock_model(FeedEntry)]}
+      end
 
-    before do
-      @news_feed.stub(:entries){[FactoryGirl.build(:feed_entry)]}
+      it "should scope the feed entries to that news feed" do
+        get "index", :news_feed_id => '1' 
+        assigns(:feed_entries).should_not be_empty
+      end
     end
 
-    subject{ get "index", :news_feed_id => @news_feed.id.to_s }
+    describe "when not receiving a news feed id" do
+      before do
+        FeedEntry.stub(:all){[mock_model(FeedEntry)]}
+      end
 
-    it_should_behave_like  "an entry belonging to a feed"
-
-    it "returns http success" do
-      subject
-      response.should be_success
-    end
-
-    it "should assign the feed entries" do
-      subject
-      assigns(:feed_entries).should_not be_empty
+      it "should get all the feed entries" do
+        get "index"
+        assigns(:feed_entries).should_not be_empty
+      end
     end
   end
 

@@ -19,6 +19,10 @@ RailsBootstrap::Application.routes.draw do
         post :fetch_content, :on => :member
       end
     end
+
+    resources :feed_entries, :only => :index do
+      get :search, :on => :collection
+    end
   end
   # The priority is based upon order of creation:
   # first created -> highest priority.

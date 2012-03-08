@@ -1,0 +1,24 @@
+= form_tag search_admin_feed_entries_path, :method => :get do|q|
+  .filter_form_field.filter_string
+    = label :q, :news_feed_id_equals, "News Feed"
+    - if params[:q]
+      = select :q, :news_feed_id_equals, options_from_collection_for_select(news_feeds, 'id', 'name', params[:q][:news_feed_id_equals])
+    - else
+      = select :q, :news_feed_id_equals, options_from_collection_for_select(news_feeds, 'id', 'name')
+  .filter_form_field.filter_string
+    = label :q, :name_contains, "Search name:", :class => 'label'
+    - if params[:q]
+      = text_field :q, :name_contains, :value => params[:q][:name_contains]
+    - else
+      = text_field :q, :name_contains
+  .filter_form_field.filter_string
+    = label :q, :url_contains, "Search url:", :class => 'label'
+    - if params[:q]
+      = text_field :q, :url_contains, :value => params[:q][:url_contains]
+    - else
+      = text_field :q, :url_contains
+  .filter_form_field.filter_date_range
+    = label :q, :created_at_gte, "Created at:", :class => 'label'
+    = text_field :q, :created_at_gte, :class=>'datepicker', :size=>12,:max=>10
+  %span.separator
+    = submit_tag "Submit" 
