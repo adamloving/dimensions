@@ -71,18 +71,12 @@ describe FeedEntry do
       @entry.loaded?.should == true
     end
     
-    it "should change to :fetched when :fetching" do
-      @entry.fetching
+    it "should get valid states when :fetch, :localize, and :tag" do
+      @entry.fetch
       @entry.fetched?.should == true
-    end
-
-    it "should change to :localized when :localized" do
-      @entry.localizing
+      @entry.localize
       @entry.localized?.should == true
-    end
-
-    it "should change to :tagged when :tagging" do
-      @entry.tagging
+      @entry.tag
       @entry.tagged?.should == true
     end
   end

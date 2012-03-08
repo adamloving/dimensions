@@ -3,15 +3,15 @@ class FeedEntry < ActiveRecord::Base
 
   state_machine :initial => :loaded do
 
-    event :fetching do
+    event :fetch do
       transition :loaded => :fetched
     end
 
-    event :localizing do
+    event :localize do
       transition :fetched => :localized
     end
 
-    event :tagging do
+    event :tag do
       transition :localized => :tagged
     end
 
