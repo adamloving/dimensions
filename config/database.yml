@@ -3,11 +3,12 @@ common: &common
   adapter: postgresql
   username: dev
   password: dev
+  host: "localhost"
   charset: utf8
   collation: utf8_bin
 
 
-derelopment:
+development:
   <<: *common
   database: dimensions_dev
 

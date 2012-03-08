@@ -13,7 +13,7 @@
     = javascript_include_tag "active_admin.js"
     = javascript_include_tag "admin.js"
   %body.index.admin_dashboard.logged_in.admin_namespace
-    = render 'layouts/admin_top_nav'
+    = render 'layouts/admin_top_nav' if admin_user_signed_in?
     #active_admin_content
       #main_content_wrapper
         #main_content

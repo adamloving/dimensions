@@ -53,13 +53,13 @@ ActiveRecord::Schema.define(:version => 20120307224932) do
     t.datetime "published_at"
     t.string   "guid"
     t.string   "author"
-    t.text     "content"
+    t.string   "content"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.integer  "news_feed_id"
     t.boolean  "visible",      :default => true
-    t.string   "fetch_errors"
     t.string   "state"
+    t.string   "fetch_errors"
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true

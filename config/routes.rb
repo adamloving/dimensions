@@ -1,14 +1,16 @@
 RailsBootstrap::Application.routes.draw do
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  devise_for :admin_users,{
+    :path => :admin,
+    :path_names => { :sign_in => 'login', :sign_out => "logout" }
+  }
 
-  ActiveAdmin.routes(self)
+
 
   devise_for :users
   namespace :admin do
     resources :pages, :only => :index
   end
-
 
   namespace :admin do
     resources :news_feeds do
