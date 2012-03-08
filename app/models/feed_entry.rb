@@ -57,6 +57,8 @@ class FeedEntry < ActiveRecord::Base
       self.fetch
     rescue Exception => e
       self.fetch_errors = {:error => e.to_s}
+      self.failed = true
+      self.save
       return nil
     end
 

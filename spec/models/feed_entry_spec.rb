@@ -71,6 +71,8 @@ describe FeedEntry do
         scraper.should_receive(:scrape).with(uri).and_raise(Scraper::Reader::HTMLParseError)
         @entry.fetch_content!.should be_nil
         @entry.fetch_errors.should == {:error => "Scraper::Reader::HTMLParseError"}
+        @entry.failed?.should be_true
+        FeedEntry.find(@entry.id).failed?.should be_true
       end
     end
   end
