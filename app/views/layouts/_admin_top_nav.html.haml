@@ -9,8 +9,8 @@
 #title_bar
   #titlebar_left
     %span.breadcrumb_sep |
-    %h2.page_title 
-      =title_layout @news_feeds
+    %h2.page_title
+      =title_layout params
   #titlebar_right
     %span.action_items
       = yield :action_items
