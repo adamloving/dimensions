@@ -34,9 +34,12 @@
       %td
         Content
       %td
-        - if @feed_entry.content.nil?
-          = link_to "Fetch Content", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post
-        - else
-          = @feed_entry.content
+- if @feed_entry.content.nil?
+  = link_to "Fetch Content", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post,:class=>"button_link",:style=>"float:left;"
+- else
+  = @feed_entry.content
 
-= entry_toggle_visibility_link(@feed_entry)
+= entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
+
+
+
