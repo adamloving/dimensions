@@ -19,7 +19,7 @@ describe Admin::FeedEntriesController do
       before do
         @news_feed = mock_model(NewsFeed)
         NewsFeed.stub(:find).with('1'){@news_feed}
-        @news_feed.stub(:entries){[mock_model(FeedEntry)]}
+        @news_feed.stub_chain(:entries, :page, :per){[mock_model(FeedEntry)]}
       end
 
       it "should scope the feed entries to that news feed" do
@@ -30,7 +30,7 @@ describe Admin::FeedEntriesController do
 
     describe "when not receiving a news feed id" do
       before do
-        FeedEntry.stub(:all){[mock_model(FeedEntry)]}
+        FeedEntry.stub_chain(:page, :per){[mock_model(FeedEntry)]}
       end
 
       it "should get all the feed entries" do

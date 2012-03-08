@@ -4,27 +4,39 @@
   #panel_contents
     = render 'filters_form', news_feeds: NewsFeed.all
 
-.admin_page
-  %table.feed_entries
-    %thead
+%p#feed_entries_tabs
+  = link_to "all", search_admin_feed_entries_path
+  = link_to "normal", search_admin_feed_entries_path(:q => {:failed_equals => false})
+  = link_to "failed", search_admin_feed_entries_path(:q => {:failed_equals => true})
+
+.pagination
+  = paginate @feed_entries
+%table.feed_entries
+  %thead
+    %tr
+      %th Id
+      - if params[:news_feed_id].nil?
+        %th Feed
+      %th Name
+      %th Published At
+      %th
+      %th
+  %tbody
+    - @feed_entries.each do|entry|
       %tr
-        %th Id
-        %th Name
-        %th Published At
-        %th
-        %th
-    %tbody
-      - @feed_entries.each do|entry|
-        %tr
-          %td= entry.id
-          %td= entry.name
-          %td= entry.published_at
-          %td= entry.state
-            
-          %td
-            = link_to "View",
-  admin_news_feed_feed_entry_path(entry.feed,
-  entry)
-            = "|"
-            = link_to "Delete", admin_news_feed_feed_entry_path(entry.feed, entry), :method => :delete, :confirm => "Are you sure?"
+        %td= entry.id
+        - if params[:news_feed_id].nil?
+          %td= entry.feed.name
+        %td= entry.name
+        %td= entry.published_at
+        %td
+          %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
+            = entry.state
+          
+        %td
+          = link_to "View",
+admin_news_feed_feed_entry_path(entry.feed,
+entry)
+          = "|"
+          = link_to "Delete", admin_news_feed_feed_entry_path(entry.feed, entry), :method => :delete, :confirm => "Are you sure?"
 

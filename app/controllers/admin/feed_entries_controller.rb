@@ -4,9 +4,9 @@ class Admin::FeedEntriesController < Admin::BaseController
   def index
     #@feed_entries = @news_feed.entries
     @feed_entries = if params[:news_feed_id]
-      NewsFeed.find(params[:news_feed_id]).entries
+      NewsFeed.find(params[:news_feed_id]).entries.page(params[:page]).per(20)
     else
-      FeedEntry.all
+      FeedEntry.page(params[:page]).per(20)
     end
   end
 
@@ -68,7 +68,7 @@ class Admin::FeedEntriesController < Admin::BaseController
 
   def search
     @search = FeedEntry.search(params[:q])
-    @feed_entries = @search.all
+    @feed_entries = @search.page(params[:page]).per(20)
     render :index
   end
 

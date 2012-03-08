@@ -1,3 +1,5 @@
+.admin_page table.feed_entries td span.entry.failed {
+  color: red; }
 .admin_page table.feed_entries td span.entry-progress-block {
   background-color: blue;
   min-width: 10px;
