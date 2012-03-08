@@ -1,0 +1,10 @@
+.admin_page{
+  table.feed_entries{
+    td span.entry-progress-block{
+      background-color: blue;
+      min-width: 10px;
+      min-height: 20px;
+      float: left;
+    }
+  }
+}
