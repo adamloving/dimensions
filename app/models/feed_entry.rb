@@ -2,10 +2,14 @@ class FeedEntry < ActiveRecord::Base
   belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
   serialize :fetch_errors
 
-  state_machine :initial => :loaded do
+  state_machine :initial => :new do
+
+    event :download do
+      transition :new => :downloaded
+    end
 
     event :fetch do
-      transition :loaded => :fetched
+      transition :downloaded => :fetched
     end
 
     event :localize do
@@ -32,6 +36,7 @@ class FeedEntry < ActiveRecord::Base
                guid: entry.id,
                author: entry.author,
                content: entry.content)
+
       end
     end
     entries
@@ -48,6 +53,8 @@ class FeedEntry < ActiveRecord::Base
       end
       uri = URI.parse(self.url)
       self.content = scraper.scrape(uri).join(" ")
+      self.save
+      self.fetch
     rescue Exception => e
       self.fetch_errors = {:error => e.to_s}
       return nil

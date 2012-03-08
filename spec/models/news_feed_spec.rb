@@ -20,6 +20,8 @@ describe FeedEntry do
 
       FeedEntry.stub(:update_from_feed){[entry]}
 
+      entry.should_receive(:download)
+
       @news_feed.load_entries
 
       entry.feed.should == @news_feed

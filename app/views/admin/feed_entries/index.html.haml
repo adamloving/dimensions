@@ -13,8 +13,8 @@
           %td= entry.id
           %td= entry.name
           %td= entry.published_at
-          %td
-            %span.entry-progress-block
+          %td= entry.state
+            
           %td
             = link_to "View",
   admin_news_feed_feed_entry_path(@news_feed,

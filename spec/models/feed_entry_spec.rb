@@ -56,8 +56,10 @@ describe FeedEntry do
       scraper.stub(:scrape).with(uri){
         ["Hola", "Mundo"]
       }
+      @entry.should_receive(:fetch)
       @entry.fetch_content!.should == "Hola Mundo"
       @entry.content.should == "Hola Mundo"
+      FeedEntry.find(@entry.id).content.should == "Hola Mundo"
     end
 
     context "failure to fetch content" do
@@ -80,10 +82,12 @@ describe FeedEntry do
     end
     
     it "should initialize with :loaded" do
-      @entry.loaded?.should == true
+      @entry.new?.should == true
     end
     
     it "should get valid states when :fetch, :localize, and :tag" do
+      @entry.download
+      @entry.downloaded?.should be_true
       @entry.fetch
       @entry.fetched?.should == true
       @entry.localize

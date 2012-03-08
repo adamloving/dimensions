@@ -17,6 +17,7 @@ class NewsFeed < ActiveRecord::Base
     entries.each do|entry|
       entry.feed = self
       self.entries << entry
+      entry.download
     end
   end
 end
