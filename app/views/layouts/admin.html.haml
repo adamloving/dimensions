@@ -11,5 +11,7 @@
     = javascript_include_tag "jquery-ui.min.js"
     = javascript_include_tag "jquery_ujs.js"
     = javascript_include_tag "active_admin.js"
+    = javascript_include_tag "admin.js"
   %body.index.admin_dashboard.logged_in.admin_namespace
-    = render 'layouts/admin_top_nav'
+    .admin_page
+      = render 'layouts/admin_top_nav'

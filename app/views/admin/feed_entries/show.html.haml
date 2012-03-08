@@ -35,11 +35,27 @@
         Content
       %td
 - if @feed_entry.content.nil?
-  = link_to "Fetch Content", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post,:class=>"button_link",:style=>"float:left;"
+  = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
 - else
   = @feed_entry.content
 
 = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
 
+.ajax_loading
 
-
+:javascript
+  $(function(){
+    var link = $('a.process-entry');
+    link.click(function(){
+      $.ajax({
+        url: link.attr('href'),
+        type: 'POST',
+        dataType: 'json',
+        data: "id=" + link.data('entry-id'),
+        success: function(data){
+          console.log(data);
+        }
+      });
+      return false;
+    });
+  });

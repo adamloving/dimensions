@@ -161,17 +161,22 @@ describe Admin::FeedEntriesController do
       @news_feed.stub_chain(:entries, :find).with(@entry.id.to_s){@entry}
     end
 
-    subject { post 'fetch_content', news_feed_id: @news_feed.id, id: @entry.id}
+    subject { post 'fetch_content', news_feed_id: @news_feed.id, id: @entry.id, :format => :xhr}
 
     describe "when there were no fetch errors" do
       it "redirects to the the entry path and sets a notice" do
         @entry.stub(:fetch_content!){"some content"}
         @entry.stub(:fetch_errors){nil}
         @entry.should_receive(:save)
+        @entry.stub(:content){"some content"}
+        expected = { 
+          :message  => "we successfully processed your entry",
+          :content    => "some content"
+        }.to_json
 
         subject
-        response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
-        flash[:notice].should == "Loaded entry's content successfully"
+        response.should be_success
+        response.body.should == expected
       end
     end
 
@@ -179,10 +184,13 @@ describe Admin::FeedEntriesController do
       it "redirects to the the entry path and sets error flash" do
         @entry.stub(:fetch_content!){nil}
         @entry.stub(:fetch_errors){{:error => "Blah"}}
-
+        expected = { 
+          :message  => "we couldn't process your entry",
+          :error => ["Blah"]
+        }.to_json
         subject
-        response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
-        flash[:errors].should == "We had an error fetching your content"
+        response.should be_success
+        response.body.should == expected
       end
     end
   end 

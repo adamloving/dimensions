@@ -7,4 +7,11 @@
       float: left;
     }
   }
+
+  .ajax_loading{
+    background-image: url(../images/ajax_spinner.gif);
+    width: 150px;
+    height: 150px;
+    display: none;
+  }
 }

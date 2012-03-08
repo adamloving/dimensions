@@ -138,4 +138,32 @@ describe Admin::NewsFeedsController do
       #response.should be_success
     #end
   end
+
+  # ------------------ loading entries manually -----------------------------
+  describe "POST 'load_entries'" do
+    before do
+      NewsFeed.stub(:find).with(@news_feed.id.to_s){@news_feed}
+    end
+
+    subject { post 'load_entries', id: @news_feed.id}
+
+
+    describe "a succesful load" do
+      it "should render a text with  a successful message" do
+        @news_feed.stub(:load_entries){true}
+        subject
+        response.should be_successful
+        response.body.should == "We have successfully loaded your news feed"
+      end
+    end
+
+    describe "a load that raised error" do
+      it "should call the load entries method" do
+        @news_feed.should_receive(:load_entries).and_raise(NotImplementedError)
+        subject
+        response.should be_successful
+        response.body.should == "We have had errors loading your feed: NotImplementedError"
+      end
+    end
+  end
 end

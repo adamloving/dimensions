@@ -10,5 +10,13 @@
         Url
       %td
         = @news_feed.url
+    %tr
+      %td
+        Actions
+      %td
+        = link_to "Process", load_entries_admin_news_feed_path(@news_feed), :method => :post, :remote => true
+        |
+        = link_to "View Entries", admin_news_feed_feed_entries_path(@news_feed)
 
-= link_to "Edit", edit_admin_news_feed_path(@news_feed),:class=>"button_link"
+= link_to "Edit", edit_admin_news_feed_path(@news_feed), :class=>"button_link"
+.ajax_loading
