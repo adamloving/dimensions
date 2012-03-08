@@ -5,6 +5,8 @@ describe Admin::NewsFeedsController do
     @news_feed = mock_model(NewsFeed)
   end
 
+  login_admin
+
   describe "GET 'index'" do
 
     before do

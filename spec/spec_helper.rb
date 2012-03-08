@@ -10,7 +10,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
   # ## Mock Framework
-  #
+  config.include  Devise::TestHelpers, :type => :controller
+  config.extend   ControllerMacros, :type => :controller
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
   #
   # config.mock_with :mocha

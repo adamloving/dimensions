@@ -9,6 +9,8 @@ describe Admin::FeedEntriesController do
     end
   end
 
+  login_admin
+
   before do
     @news_feed = FactoryGirl.create(:news_feed)
     NewsFeed.stub(:find).with(@news_feed.id.to_s){@news_feed}
