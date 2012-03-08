@@ -55,4 +55,51 @@ class FeedEntry < ActiveRecord::Base
 
     return self.content
   end
+
+  def self.get_location
+    begin
+      entries = self.all
+
+      entries.each do |e|
+        if e.fetched?
+          unless e.localized?
+            location = Calais.process_document(:content => e.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
+            unless location.geographies.first == nil
+              e.shortname = location.geographies.first.attributes["shortname"]
+              e.country = location.geographies.first.attributes["containedbycountry"]
+              e.latitude = location.geographies.first.attributes["latitude"]
+              e.longitude = location.geographies.first.attributes["longitude"]
+              e.localize
+              e.save
+            end
+          end
+        end
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
+  def self.get_location_by_id(id)
+    begin
+      entry = self.find(id)
+      if entry.fetched?
+        unless entry.localized?
+          location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
+          unless location.geographies.first == nil
+            entry.shortname = location.geographies.first.attributes["shortname"]
+            entry.country = location.geographies.first.attributes["containedbycountry"]
+            entry.latitude = location.geographies.first.attributes["latitude"]
+            entry.longitude = location.geographies.first.attributes["longitude"]
+            entry.localize
+            entry.save
+          end
+        end
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
 end
