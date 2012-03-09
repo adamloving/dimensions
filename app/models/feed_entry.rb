@@ -89,8 +89,6 @@ class FeedEntry < ActiveRecord::Base
           entry.longitude =   geography["longitude"]
           entry.localize
           entry.save
-          require "ruby-debug"
-          debugger
           return true
         end
       end

@@ -63,7 +63,6 @@ describe FeedEntry do
         }
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
         FeedEntry.localize(@entry.id).should be_true
-        debugger
         FeedEntry.find(@entry.id).tap do |entry|
           entry.shortname.should == "Colima"
           entry.country.should == "Mexico"
