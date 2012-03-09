@@ -1,10 +1,10 @@
-script#item-template(type="text/x-jquery-tmpl")
+%script#item-template{:type=>"text/x-jquery-tmpl"}
   .item
     .post-it
       | {{html post_it_html}}
       
     .body
-      h3.headline.unread ${title}
+      %h3.headline.unread ${title}
       .article-details
         | {{if photo_url}}
         / img(src='${photo_url}' class="show")
@@ -12,7 +12,7 @@ script#item-template(type="text/x-jquery-tmpl")
 
         .text
           | {{html body}}
-        a(href='${article_link}') ${article_link}
+        %a{:href=>'${article_link}'} ${article_link}
         .date ${created_at}
 
-        .fb-like data-href="${article_link}" data-send="true" data-width="450" data-show-faces="true"
+        .fb-like{:data-href=>"${article_link}", :data-send=>"true", :data-width=>"450", :data-show-faces=>"true"}
