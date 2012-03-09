@@ -37,7 +37,42 @@ describe FeedEntry do
       entries.last.should be_an_instance_of(FeedEntry)
     end
   end
-
+  describe "self.localize" do
+    context "unfetched entry" do
+      it "should return false" do
+        @entry = mock_model(FeedEntry)
+        FeedEntry.stub(:find).with(@entry.id){@entry}
+        @entry.stub(:fetched?){false}
+        FeedEntry.localize(@entry.id).should be_false
+      end
+    end
+    context 'successfully localizing the entry' do
+      it "should return true and must save the new localization" do
+        @entry = FactoryGirl.create(:feed_entry)
+        FeedEntry.stub(:find).with(@entry.id){@entry}
+        @entry.stub(:fetched?){true} 
+        @entry.stub(:content){"some content"}
+        calais_proxy = mock
+        calais_proxy.stub_chain(:geographies, :first, :attributes){
+          {
+            "shortname" => "Colima",
+            "containedbycountry" => "Mexico",
+            "latitude" => "123456",
+            "longitude" => "654321"
+          }
+        }
+        Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
+        FeedEntry.localize(@entry.id).should be_true
+        debugger
+        FeedEntry.find(@entry.id).tap do |entry|
+          entry.shortname.should == "Colima"
+          entry.country.should == "Mexico"
+          entry.latitude.should == "123456"
+          entry.longitude.should == "654321"
+        end
+      end
+    end
+  end
   describe "#fetch content" do
     before do
       @entry = FactoryGirl.build(:feed_entry)
