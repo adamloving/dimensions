@@ -56,24 +56,10 @@ class FeedEntry < ActiveRecord::Base
     return self.content
   end
 
-  def self.get_location
+  def self.batch_localize
     begin
-      entries = self.all
-
-      entries.each do |e|
-        if e.fetched?
-          unless e.localized?
-            location = Calais.process_document(:content => e.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
-            unless location.geographies.first == nil
-              e.shortname = location.geographies.first.attributes["shortname"]
-              e.country = location.geographies.first.attributes["containedbycountry"]
-              e.latitude = location.geographies.first.attributes["latitude"]
-              e.longitude = location.geographies.first.attributes["longitude"]
-              e.localize
-              e.save
-            end
-          end
-        end
+      self.find_each do |e|
+        self.localize(e.id)
       end
     rescue Exception => e
       puts e.to_s
@@ -81,20 +67,22 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  def self.get_location_by_id(id)
+  def self.localize(id)
     begin
       entry = self.find(id)
       if entry.fetched?
-        unless entry.localized?
-          location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
-          unless location.geographies.first == nil
-            entry.shortname = location.geographies.first.attributes["shortname"]
-            entry.country = location.geographies.first.attributes["containedbycountry"]
-            entry.latitude = location.geographies.first.attributes["latitude"]
-            entry.longitude = location.geographies.first.attributes["longitude"]
-            entry.localize
-            entry.save
-          end
+        location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
+        unless location.geographies.first.nil?
+          geography = location.geographies.first.attributes
+          entry.shortname =   geography["shortname"]
+          entry.country =     geography["containedbycountry"]
+          entry.latitude =    geography["latitude"]
+          entry.longitude =   geography["longitude"]
+          entry.localize
+          entry.save
+          require "ruby-debug"
+          debugger
+          return true
         end
       end
     rescue Exception => e
