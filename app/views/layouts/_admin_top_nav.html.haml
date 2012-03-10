@@ -3,6 +3,8 @@
   %ul.header-item#tabs
     %li.news_feeds{:class => set_nav_active(admin_news_feeds_path)}
       = link_to "News Feeds", admin_news_feeds_path
+    %li.news_feeds{:class => set_nav_active(admin_feed_entries_path)}
+      = link_to "Feed Entries", admin_feed_entries_path
   %p.header-item#utility_nav
     %span.current_user current_user@example.com
     %a{:href=>"/admin/logout", "data-method" => "get"} Logout

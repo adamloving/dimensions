@@ -84,8 +84,8 @@ class FeedEntry < ActiveRecord::Base
         unless location.geographies.first.nil?
           geography = location.geographies.first.attributes
           entry.shortname =   geography["shortname"]
-          entry.country =     geography["containedbycountry"]
-          entry.latitude =    geography["latitude"]
+          entry.country   =     geography["containedbycountry"]
+          entry.latitude  =    geography["latitude"]
           entry.longitude =   geography["longitude"]
           entry.localize
           entry.save

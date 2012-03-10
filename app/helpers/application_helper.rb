@@ -1,7 +1,7 @@
 module ApplicationHelper
     def entry_toggle_visibility_link(entry,opts={})
     message = entry.visible? ? "Hide" : "Show"
-    link_to message, toggle_visible_admin_news_feed_feed_entry_path(entry.feed, entry), :method => :put,:class => opts[:class]
+    link_to message, toggle_visible_admin_news_feed_feed_entry_path(entry.feed, entry), :method => :put, :class => opts[:class]
     end
 
     def title_layout(object)
