@@ -64,4 +64,37 @@ class FeedEntry < ActiveRecord::Base
 
     return self.content
   end
+
+  def self.batch_localize
+    begin
+      self.find_each do |e|
+        self.localize(e.id)
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
+  def self.localize(id)
+    begin
+      entry = self.find(id)
+      if entry.fetched?
+        location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
+        unless location.geographies.first.nil?
+          geography = location.geographies.first.attributes
+          entry.shortname =   geography["shortname"]
+          entry.country   =     geography["containedbycountry"]
+          entry.latitude  =    geography["latitude"]
+          entry.longitude =   geography["longitude"]
+          entry.localize
+          entry.save
+          return true
+        end
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
 end

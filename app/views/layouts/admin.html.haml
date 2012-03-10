@@ -12,6 +12,9 @@
     = javascript_include_tag "jquery_ujs.js"
     = javascript_include_tag "active_admin.js"
     = javascript_include_tag "admin.js"
+    = javascript_include_tag "jquery.moreless.min"
+    = csrf_meta_tag
+
   %body.index.admin_dashboard.logged_in.admin_namespace
     = render 'layouts/admin_top_nav' if admin_user_signed_in?
     #active_admin_content

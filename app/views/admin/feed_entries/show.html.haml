@@ -1,3 +1,15 @@
+= content_for :sidebar do
+  %h3
+    FeedEntry
+  #panel_contents
+    %h4
+      State
+    %p
+      = @feed_entry.state
+    %h4
+      Visibility
+    %p
+      = @feed_entry.visible? ? "Showing" : "Hidden"
 %table
   %tbody
     %tr
@@ -10,11 +22,6 @@
         Url
       %td
         = @feed_entry.url
-    %tr
-      %td
-        Visibility
-      %td
-        = @feed_entry.visible? ? "Showing" : "Hidden"
     %tr
       %td
         Published At:
@@ -34,10 +41,35 @@
       %td
         Content
       %td
-- if @feed_entry.content.nil?
-  = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
-- else
-  = @feed_entry.content
+        - if @feed_entry.content.nil?
+          = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
+        - else
+          .more-less
+            .text-block
+              %p
+                = @feed_entry.content
+
+    - if @feed_entry.localized?
+      %tr
+        %td
+          City
+        %td
+          = @feed_entry.shortname
+      %tr
+        %td
+          Country
+        %td
+          = @feed_entry.country
+      %tr
+        %td
+          Latitude
+        %td
+          = @feed_entry.latitude
+      %tr
+        %td
+          Longitude
+        %td
+          = @feed_entry.longitude
 
 = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
 
@@ -45,6 +77,15 @@
 
 :javascript
   $(function(){
+    $(document).moreless({
+      anchorClass: 'adjust',
+      contentContainer: 'text-block',
+      lessText: 'Show Less',
+      moreText: 'Show More',
+      outerContainer: 'more-less',
+      startHeight: 90
+    });
+
     var link = $('a.process-entry');
     link.click(function(){
       $.ajax({
