@@ -1,5 +1,6 @@
 class FeedEntry < ActiveRecord::Base
   belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
+  has_many :entities
   serialize :fetch_errors
 
   state_machine :initial => :new do
@@ -83,10 +84,8 @@ class FeedEntry < ActiveRecord::Base
         location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
         unless location.geographies.first.nil?
           geography = location.geographies.first.attributes
-          entry.shortname =   geography["shortname"]
-          entry.country   =     geography["containedbycountry"]
-          entry.latitude  =    geography["latitude"]
-          entry.longitude =   geography["longitude"]
+          entity = Entity.new(:type => "location", :serialized_data => geography)
+          entity.save
           entry.localize
           entry.save
           return true
