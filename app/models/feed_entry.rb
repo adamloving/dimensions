@@ -82,11 +82,11 @@ class FeedEntry < ActiveRecord::Base
       if entry.fetched?
         location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
         unless location.geographies.first.nil?
-          geography = location.geographies.first.attributes
-          entry.shortname =   geography["shortname"]
-          entry.country   =     geography["containedbycountry"]
-          entry.latitude  =    geography["latitude"]
-          entry.longitude =   geography["longitude"]
+          geography       = location.geographies.first.attributes
+          entry.shortname = geography["shortname"]
+          entry.country   = geography["containedbycountry"]
+          entry.latitude  = geography["latitude"]
+          entry.longitude = geography["longitude"]
           entry.localize
           entry.save
           return true

@@ -19,6 +19,7 @@ RailsBootstrap::Application.routes.draw do
       resources :feed_entries do
         put :toggle_visible, :on => :member
         post :fetch_content, :on => :member
+        post :process_entry, :on => :member
       end
     end
 

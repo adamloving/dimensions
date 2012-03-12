@@ -60,6 +60,15 @@ class Admin::FeedEntriesController < Admin::BaseController
     render :json => data
   end
 
+  def process_entry
+    entry = @news_feed.entries.find(params[:id])
+    case params[:current]
+    when "fetched"
+      FeedEntry.localize(entry.id)
+    end
+    redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
+  end
+
   def destroy
     entry = @news_feed.entries.find(params[:id])
     entry.destroy
