@@ -29,9 +29,10 @@ gem 'tire'
 gem 'crack'
 gem 'exception_notification', :require => 'exception_notifier'
 
+gem 'jasmine', :group => [:development, :test]
+
 group :development do
   gem 'pg'
-  gem "barista" # coffeescript
   gem 'mysql2'
   # To use debugger
   gem 'ruby-debug19'
