@@ -11,6 +11,8 @@
     %tr
       %th Id
       %th Name
+      %th Entries(successful)
+      %th Entries(failed)
       %th Url
       %th
   %tbody
@@ -18,6 +20,8 @@
       %tr
         %td= feed.id
         %td= feed.name
+        %td= feed.entries.failed(false).count
+        %td= feed.entries.failed(true).count
         %td= feed.url
         %td
           = link_to "View",

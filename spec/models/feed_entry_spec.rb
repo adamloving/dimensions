@@ -1,6 +1,25 @@
 require 'spec_helper'
 
 describe FeedEntry do
+  #******************** SCOPES********************
+  describe ".failed" do
+    before do
+      @entry1 = FactoryGirl.create(:feed_entry, :failed => false)
+      @entry2 = FactoryGirl.create(:feed_entry, :failed => true)
+    end
+
+    it "should return only feed entries without errors when passed false" do
+      results = FeedEntry.failed(false)
+      results.should include(@entry1)
+      results.should_not include(@entry2)
+    end
+    it "should return only feed entries with errors when passed true" do
+      results = FeedEntry.failed(true)
+      results.should include(@entry2)
+      results.should_not include(@entry1)
+    end
+  end
+
   #******************** CLASS METHODS********************
   describe ".update_from_feed" do
     it 'should raise an exception when the feed is not valid' do

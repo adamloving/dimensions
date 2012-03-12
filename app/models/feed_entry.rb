@@ -2,6 +2,8 @@ class FeedEntry < ActiveRecord::Base
   belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
   serialize :fetch_errors
 
+  scope :failed, lambda{|is_fail| where(:failed => is_fail) }
+
   state_machine :initial => :new do
 
     event :download do

@@ -10,6 +10,17 @@
         Url
       %td
         = @news_feed.url
+    - if @news_feed.entries.present?
+      %tr
+        %td
+          Entries(successful)
+        %td
+          = @news_feed.entries.failed(false).count
+      %tr
+        %td
+          Entries(failed)
+        %td
+          = @news_feed.entries.failed(true).count
     %tr
       %td
         Actions
