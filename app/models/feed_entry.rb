@@ -112,16 +112,20 @@ class FeedEntry < ActiveRecord::Base
   def self.searchify_me(id)
     begin
       entry = self.find(id)
-      api = IndexTank::Client.new "http://:8c3vN9XtuEPi53@do1vj.api.searchify.com"
-      index = api.indexes "idx"
-      fields = { :text => entry.content }
-      variables = {
-        0 => entry.latitude,
-        1 => entry.longitude
-      }
-      index.document(entry.id).add(fields, :variables => variables)
-      entry.tag
-      entry.save
+      if entry.localized?
+        api = IndexTank::Client.new "http://:8c3vN9XtuEPi53@do1vj.api.searchify.com"
+        index = api.indexes "idx"
+        fields = { :text => entry.content }
+        variables = {
+          0 => entry.latitude,
+          1 => entry.longitude
+        }
+        index.document(entry.id).add(fields, :variables => variables)
+        entry.tag
+        entry.save
+      else
+        return nil
+      end
     rescue Exception => e
       puts e.to_s
       return nil
