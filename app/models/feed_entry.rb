@@ -84,7 +84,8 @@ class FeedEntry < ActiveRecord::Base
         location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
         unless location.geographies.first.nil?
           geography = location.geographies.first.attributes
-          entity = Entity.new(:type => "location", :serialized_data => geography)
+          geography.delete("docId")
+          entity = Entity.new(:type => "location", :serialized_data => geography, :feed_entry_id => entry.id)
           entity.save
           entry.localize
           entry.save
@@ -122,6 +123,7 @@ class FeedEntry < ActiveRecord::Base
         index.document(entry.id).add(fields, :variables => variables)
         entry.tag
         entry.save
+        return true
       else
         return nil
       end
