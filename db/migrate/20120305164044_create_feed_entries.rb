@@ -7,7 +7,7 @@ class CreateFeedEntries < ActiveRecord::Migration
       t.datetime  :published_at
       t.string    :guid
       t.string    :author
-      t.string    :content
+      t.text    :content
       t.timestamps
     end
 

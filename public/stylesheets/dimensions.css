@@ -1,0 +1,12 @@
+.admin_page table.feed_entries td span.entry.failed {
+  color: red; }
+.admin_page table.feed_entries td span.entry-progress-block {
+  background-color: blue;
+  min-width: 10px;
+  min-height: 20px;
+  float: left; }
+.admin_page .ajax_loading {
+  background-image: url(../images/ajax_spinner.gif);
+  width: 150px;
+  height: 150px;
+  display: none; }

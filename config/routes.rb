@@ -1,10 +1,32 @@
 RailsBootstrap::Application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
 
-  ActiveAdmin.routes(self)
+  devise_for :admin_users,{
+    :path => :admin,
+    :path_names => { :sign_in => 'login', :sign_out => "logout" }
+  }
+
+
 
   devise_for :users
+  namespace :admin do
+    resources :pages, :only => :index
+  end
 
+  namespace :admin do
+    resources :news_feeds do
+      post :load_entries, :on => :member
+
+      resources :feed_entries do
+        put :toggle_visible, :on => :member
+        post :fetch_content, :on => :member
+        post :process_entry, :on => :member
+      end
+    end
+
+    resources :feed_entries, :only => :index do
+      get :search, :on => :collection
+    end
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
