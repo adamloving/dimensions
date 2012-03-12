@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120312221951) do
+ActiveRecord::Schema.define(:version => 20120312230701) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20120312221951) do
     t.string   "serialized_data"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.integer  "feed_entry_id"
   end
 
   create_table "feed_entries", :force => true do |t|
@@ -68,10 +69,6 @@ ActiveRecord::Schema.define(:version => 20120312221951) do
     t.string   "state"
     t.text     "fetch_errors"
     t.boolean  "failed"
-    t.string   "shortname"
-    t.string   "country"
-    t.string   "latitude"
-    t.string   "longitude"
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true
