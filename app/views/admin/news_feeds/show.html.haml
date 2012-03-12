@@ -1,3 +1,18 @@
+
+= content_for :action_items, link_to("New NewsFeed", new_admin_news_feed_path)
+= content_for :sidebar do
+  %h3
+    NewsFeed - Actions
+  #panel_contents
+    %h4
+      = link_to "Process", load_entries_admin_news_feed_path(@news_feed), :method => :post, :remote => true,:class=>"button_link"
+    %p
+    %h4
+      = link_to "View Entries", admin_news_feed_feed_entries_path(@news_feed),:class=>"button_link"
+    %p
+    %h4
+      = link_to "Edit", edit_admin_news_feed_path(@news_feed), :class=>"button_link"
+
 %table
   %tbody
     %tr
@@ -21,13 +36,5 @@
           Entries(failed)
         %td
           = @news_feed.entries.failed(true).count
-    %tr
-      %td
-        Actions
-      %td
-        = link_to "Process", load_entries_admin_news_feed_path(@news_feed), :method => :post, :remote => true
-        |
-        = link_to "View Entries", admin_news_feed_feed_entries_path(@news_feed)
 
-= link_to "Edit", edit_admin_news_feed_path(@news_feed), :class=>"button_link"
 .ajax_loading

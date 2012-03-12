@@ -12,6 +12,7 @@ class Admin::NewsFeedsController < Admin::BaseController
   def create
     @news_feed = NewsFeed.new(params[:news_feed])
     if @news_feed.save
+      flash[:notice] = "News Feed successfully created"
       redirect_to admin_news_feeds_path
     else
       render 'new'
