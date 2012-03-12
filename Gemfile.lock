@@ -40,6 +40,7 @@ GEM
     activesupport (3.2.2)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    addressable (2.2.7)
     archive-tar-minitar (0.5.2)
     arel (3.0.2)
     barista (1.2.1)
@@ -83,6 +84,12 @@ GEM
     factory_girl_rails (1.7.0)
       factory_girl (~> 2.6.0)
       railties (>= 3.0.0)
+    faraday (0.7.6)
+      addressable (~> 2.2)
+      multipart-post (~> 1.1)
+      rack (~> 1.1)
+    faraday-stack (0.1.5)
+      faraday (>= 0.6, < 0.8)
     fastercsv (1.5.4)
     feedzirra (0.0.31)
       activesupport (>= 3.0.8)
@@ -111,6 +118,9 @@ GEM
     has_scope (0.5.1)
     hike (1.2.1)
     i18n (0.6.0)
+    indextank (1.0.12)
+      faraday-stack
+      yajl-ruby (>= 0.7.7)
     inherited_resources (1.3.0)
       has_scope (~> 0.5.0)
       responders (~> 0.6.0)
@@ -139,6 +149,7 @@ GEM
       polyamorous (~> 0.5.0)
     mime-types (1.17.2)
     multi_json (1.1.0)
+    multipart-post (1.1.5)
     mysql2 (0.3.11)
     nokogiri (1.4.7)
     orm_adapter (0.0.6)
@@ -231,6 +242,7 @@ GEM
     tzinfo (0.3.31)
     warden (1.1.1)
       rack (>= 1.0)
+    yajl-ruby (1.1.0)
     yamler (0.1.0)
 
 PLATFORMS
@@ -249,6 +261,7 @@ DEPENDENCIES
   feedzirra
   fuubar
   haml-rails
+  indextank
   meta_search
   mysql2
   pg

@@ -8,6 +8,7 @@ gem 'activeadmin'
 gem 'calais'
 gem 'scrapi'
 gem 'state_machine'
+gem 'indextank'
 gem 'ruby-graphviz', :require => 'graphviz'
 # active admin requirements
 #========================================

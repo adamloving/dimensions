@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(:version => 20120310163101) do
     t.datetime "updated_at",                     :null => false
     t.integer  "news_feed_id"
     t.boolean  "visible",      :default => true
-    t.text     "fetch_errors"
     t.string   "state"
+    t.text     "fetch_errors"
     t.boolean  "failed"
     t.string   "shortname"
     t.string   "country"
