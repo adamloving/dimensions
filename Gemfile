@@ -27,6 +27,7 @@ gem 'devise'
 gem 'devise_rpx_connectable' 
 gem 'tire'
 gem 'crack'
+gem 'jasmine', :group => [:development, :test]
 
 group :development do
   gem "barista" # coffeescript

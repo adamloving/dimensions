@@ -79,28 +79,5 @@
 
 .ajax_loading
 
-:javascript
-  $(function(){
-    $(document).moreless({
-      anchorClass: 'adjust',
-      contentContainer: 'text-block',
-      lessText: 'Show Less',
-      moreText: 'Show More',
-      outerContainer: 'more-less',
-      startHeight: 90
-    });
+= javascript_include_tag "feed_entries/show.onready.js"
 
-    var link = $('a.process-entry');
-    link.click(function(){
-      $.ajax({
-        url: link.attr('href'),
-        type: 'POST',
-        dataType: 'json',
-        data: "id=" + link.data('entry-id'),
-        success: function(data){
-          console.log(data);
-        }
-      });
-      return false;
-    });
-  });

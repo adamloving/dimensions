@@ -16,3 +16,8 @@
   #titlebar_right
     %span.action_items
       = yield :action_items
+
+.flashes
+  - flash.each do |key, value|
+    = content_tag(:div, value, :class => "flash flash_#{key}")
+  

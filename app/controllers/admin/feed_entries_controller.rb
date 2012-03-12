@@ -65,7 +65,9 @@ class Admin::FeedEntriesController < Admin::BaseController
     case params[:current]
     when "fetched"
       FeedEntry.localize(entry.id)
+      flash[:notice] = "Feed Entry successfully localized"
     end
+
     redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
   end
 

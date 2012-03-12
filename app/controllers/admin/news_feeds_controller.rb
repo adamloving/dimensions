@@ -23,6 +23,7 @@ class Admin::NewsFeedsController < Admin::BaseController
 
   def update
     if @news_feed.update_attributes(params[:news_feed])
+      flash[:notice] = "News Feed successfully updated"
       redirect_to admin_news_feeds_path
     else
       render 'edit'
