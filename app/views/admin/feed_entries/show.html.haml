@@ -15,6 +15,8 @@
       = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
     - elsif @feed_entry.fetched?
       = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"
+    %p
+      = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
 
 %table
   %tbody
@@ -47,15 +49,12 @@
       %td
         Content
       %td
-        - if @feed_entry.content.nil?
-          = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry",:style=>"float:left;", 'data-entry-id' => @feed_entry.id
-        - else
-          .more-less
-            .text-block
-              %p
-                = @feed_entry.content
+        .more-less
+          .text-block
+            %p
+              = @feed_entry.content
 
-    - if @feed_entry.localized?
+    - if @feed_entry.localized? && @feed_entry.entities.locations.first.present?
       %tr
         %td
           City
@@ -77,7 +76,6 @@
         %td
           = @feed_entry.entities.locations.first.serialized_data["longitude"]
 
-= entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
 
 .ajax_loading
 
