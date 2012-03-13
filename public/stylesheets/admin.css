@@ -2515,7 +2515,9 @@ body.logged_out #login a {
 /* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #main_content_wrapper {
   float: left;
-  width: 85%;
+  max-width: 70%;
+  margin: 0 10px;
+  min-width: 500px;
 }
 /* line 14, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #main_content_wrapper #main_content {
@@ -2527,7 +2529,7 @@ body.logged_out #login a {
 }
 /* line 21, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #sidebar {
-  float: left;
+  float: right;
   width: 270px;
 }
 
