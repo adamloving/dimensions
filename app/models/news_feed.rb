@@ -6,6 +6,7 @@ class NewsFeed < ActiveRecord::Base
   has_many :entries, :class_name =>  FeedEntry, :dependent => :restrict
 
   validates :name, :url, presence: true
+  validates_uniqueness_of :name, :url
 
 
   before_save :url_connection_valid? unless Rails.env.test?
