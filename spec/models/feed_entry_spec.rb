@@ -78,26 +78,6 @@ describe FeedEntry do
     end
   end
 
-  #describe "self.searchify_me" do
-    #context "unlocalized entry" do
-      #it "should return false" do
-        #@entry = FactoryGirl.create(:feed_entry)
-        #FeedEntry.stub(:find).with(@entry.id){@entry}
-        #@entry.stub(:localized?){false}
-        #FeedEntry.localize(@entry.id)should be_false
-      #end
-    #end
-    #context "succesfully tagging the entry" do
-      #it "should return true and must index the entry on searchify" do
-        #@entry = FactoryGirl.create(:feed_entry)
-        #FeedEntry.stub(:find).with(@entry.id){@entry}
-        #@entry.stub(:localized?){true}
-        #@entry.stub(:content){"this is the content of the entry"}
-      #end
-    #end
-  #end
-
-
   describe "#fetch content" do
     before do
       @entry = FactoryGirl.build(:feed_entry)

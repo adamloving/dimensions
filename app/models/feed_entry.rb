@@ -87,6 +87,7 @@ class FeedEntry < ActiveRecord::Base
           data.delete("docId")
           entity = entry.entities.build(:type => "location", :serialized_data => data)
           entity.save
+          entry.published_at = location.doc_date
           entry.localize
           entry.save
           return true
