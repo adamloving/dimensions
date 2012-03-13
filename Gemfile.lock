@@ -289,6 +289,7 @@ DEPENDENCIES
   mysql2
   pg
   rails (= 3.2.2)
+  rake
   rspec-rails
   ruby-debug19
   ruby-graphviz

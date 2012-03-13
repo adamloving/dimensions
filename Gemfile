@@ -20,6 +20,7 @@ gem 'sass-rails'
 gem 'feedzirra'
 
 
+gem 'rake'
 gem 'haml-rails'
 gem 'configatron'
 gem 'compass', ">= 0.10.4"
