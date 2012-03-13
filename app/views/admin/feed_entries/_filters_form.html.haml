@@ -20,9 +20,9 @@
   .filter_form_field.filter_string
     = label :q, :state_equals, "State", :class => 'label'
     - if params[:q]
-      = select :q, :state_equals, options_for_select(FeedEntry.state_machine.states.map{|state| state.name.to_s}, params[:q][:state_equals])
+      = select :q, :state_equals, options_for_select(entries_states_for_select, params[:q][:state_equals])
     - else
-      = select :q, :state_equals, options_for_select(FeedEntry.state_machine.states.map{|state| state.name.to_s})
+      = select :q, :state_equals, options_for_select(entries_states_for_select)
   .filter_form_field.filter_date_range
     = label :q, :created_at_gte, "Created at:", :class => 'label'
     = text_field :q, :created_at_gte, :class=>'datepicker', :size=>12,:max=>10

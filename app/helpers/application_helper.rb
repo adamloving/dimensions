@@ -28,4 +28,7 @@ module ApplicationHelper
      request.referrer
   end
 
+  def entries_states_for_select
+    [" "] + FeedEntry.state_machine.states.map{|state| state.name.to_s}
+  end
 end
