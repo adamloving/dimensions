@@ -976,10 +976,12 @@ form fieldset.buttons li.cancel a span.icon svg {
 .sidebar_section label {
   display: block;
   text-transform: uppercase;
-  color: #5e6469;
   font-size: 0.9em;
   font-weight: bold;
+  background-color:none;
+  text-align:left;
 }
+
 /* line 200, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/_forms.css.scss */
 .sidebar_section select {
   width: 240px;
