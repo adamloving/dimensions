@@ -190,7 +190,7 @@ describe Admin::FeedEntriesController do
       @news_feed.stub_chain(:entries, :find).with(@entry.id.to_s){@entry}
     end
 
-    subject { post 'fetch_content', news_feed_id: @news_feed.id, id: @entry.id, :format => :xhr}
+    subject { post 'fetch_content', news_feed_id: @news_feed.id, id: @entry.id}
 
     describe "when there were no fetch errors" do
       it "redirects to the the entry path and sets a notice" do
@@ -204,8 +204,8 @@ describe Admin::FeedEntriesController do
         }.to_json
 
         subject
-        response.should be_success
-        response.body.should == expected
+        response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
+        flash[:notice].should == "Entry successfully processed"
       end
     end
 
@@ -218,8 +218,8 @@ describe Admin::FeedEntriesController do
           :error => ["Blah"]
         }.to_json
         subject
-        response.should be_success
-        response.body.should == expected
+        response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
+        flash[:error].should == "There are some errors trying to process the entry: Blah"
       end
     end
   end 
