@@ -60,7 +60,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     else
       flash[:error] = "There are some errors trying to process the entry: #{entry.fetch_errors.values.join(',')}"
     end
-    redirect_to admin_news_feed_feed_entry_path(entry.feed, entry)
+    redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
   end
 
   def process_entry
