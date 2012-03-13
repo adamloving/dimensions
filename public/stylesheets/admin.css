@@ -971,6 +971,27 @@ form fieldset.buttons li.cancel a span.icon svg {
   width: 9px;
   height: 9px;
 }
+ form#new_admin_user.new_admin_user div{
+   overflow:hidden;
+   padding: 0 2%;
+ }
+ form#new_admin_user.new_admin_user div label{
+   line-height: 60px;
+ }
+ form#new_admin_user.new_admin_user div #admin_user_email,#admin_user_password{
+   width: 300px;
+ }
+ form#new_admin_user.new_admin_user div input#admin_user_remember_me{
+   height: 50px;
+ }
+ form#new_admin_user.new_admin_user{
+  padding: 22px 0;
+  margin: 25px 15%;
+  box-shadow:3px 1px 12px 1px #ccc;   
+  -moz-box-shadow:3px 1px 12px 1px #ccc;   
+  -o-box-shadow:3px 1px 12px 1px #ccc;   
+  -webkit-box-shadow:3px 1px 12px 1px #ccc;   
+ }
 
 /* line 192, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/_forms.css.scss */
 .sidebar_section label {
@@ -2498,7 +2519,7 @@ body.logged_out #login a {
 }
 /* line 14, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #main_content_wrapper #main_content {
-  margin-right: 300px;
+  margin: 0 auto;
 }
 /* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content.without_sidebar #main_content_wrapper #main_content {
