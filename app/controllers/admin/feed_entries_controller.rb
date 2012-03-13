@@ -53,13 +53,14 @@ class Admin::FeedEntriesController < Admin::BaseController
 
   def fetch_content
     entry = @news_feed.entries.find(params[:id])
+
     if entry.fetch_content!.present?
       entry.save
-      data = {:message => "we successfully processed your entry", :content => entry.content}
+      flash[:notice] = "Entry successfully processed"
     else
-      data = {:message => "we couldn't process your entry", :error => entry.fetch_errors.values}
+      flash[:error] = "There are some errors trying to process the entry: #{entry.fetch_errors.values.join(',')}"
     end
-    render :json => data
+    redirect_to admin_news_feed_feed_entry_path(entry.feed, entry)
   end
 
   def process_entry
