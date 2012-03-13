@@ -21,4 +21,10 @@ class NewsFeed < ActiveRecord::Base
       entry.download
     end
   end
+
+  def process_entries
+    entries.each do |entry|
+      entry.next
+    end
+  end
 end

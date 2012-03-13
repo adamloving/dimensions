@@ -1,5 +1,5 @@
 class Admin::NewsFeedsController < Admin::BaseController
-  before_filter :find_the_news_feed, :only => [:edit, :update, :show, :load_entries, :destroy]
+  before_filter :find_the_news_feed, :only => [:edit, :update, :show, :load_entries, :destroy, :process_entries]
 
   def index
     @news_feeds = NewsFeed.all
@@ -41,6 +41,12 @@ class Admin::NewsFeedsController < Admin::BaseController
     rescue Exception => e
       render :text => "We have had errors loading your feed: #{e.to_s}"
     end
+  end
+
+  def process_entries
+      flash[:notice] = "Feed entries processed"
+      @news_feed.process_entries
+      redirect_to :back
   end
 
   def destroy
