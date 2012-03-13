@@ -1733,6 +1733,10 @@ a:hover {
   float: right;
   font-size: 0.9em;
   margin-left: 10px;
+  margin-bottom:1px;
+}
+.pagination nav {
+  width:100%;
 }
 /* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_pagination.scss */
 .pagination a {
