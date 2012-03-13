@@ -1,5 +1,5 @@
 class Admin::NewsFeedsController < Admin::BaseController
-  before_filter :find_the_news_feed, :only => [:edit, :update, :show, :load_entries]
+  before_filter :find_the_news_feed, :only => [:edit, :update, :show, :load_entries, :destroy]
 
   def index
     @news_feeds = NewsFeed.all
@@ -44,6 +44,14 @@ class Admin::NewsFeedsController < Admin::BaseController
   end
 
   def destroy
+    begin
+      @news_feed.destroy
+      flash[:notice] = "Feed #{@news_feed.name} destroyed"
+      redirect_to admin_news_feeds_path
+    rescue Exception => e
+      flash[:error] = "The feed can't be destroyed because it has associated entries"
+      redirect_to admin_news_feeds_path
+    end
   end
 
   private

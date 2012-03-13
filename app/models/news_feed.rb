@@ -3,7 +3,7 @@ require 'dimensions/netutils'
 class NewsFeed < ActiveRecord::Base
   include Dimensions::Netutils
 
-  has_many :entries, class_name: FeedEntry
+  has_many :entries, :class_name =>  FeedEntry, :dependent => :restrict
 
   validates :name, :url, presence: true
 

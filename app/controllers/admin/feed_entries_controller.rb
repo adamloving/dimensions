@@ -76,6 +76,7 @@ class Admin::FeedEntriesController < Admin::BaseController
   def destroy
     entry = @news_feed.entries.find(params[:id])
     entry.destroy
+    flash[:notice] = "Entry successfully destroyed"
     redirect_to admin_news_feed_feed_entries_path(@news_feed)
   end
 

@@ -27,7 +27,7 @@
           = link_to "View",
 admin_news_feed_path(feed)
           = "|"
-          = link_to "Delete", "#"
+          = link_to "Delete", admin_news_feed_path(feed), :method => :delete, :confirm => "Are you sure?"
           = "|"
           = link_to "View Entries", admin_news_feed_feed_entries_path(feed)
 
