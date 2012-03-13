@@ -3,6 +3,8 @@ class FeedEntry < ActiveRecord::Base
   has_many :entities
   serialize :fetch_errors
 
+  scope :failed, lambda{|is_fail| where(:failed => is_fail) }
+
   state_machine :initial => :new do
 
     event :download do
@@ -45,6 +47,7 @@ class FeedEntry < ActiveRecord::Base
 
   def fetch_content!
     return self.content if self.content.present?
+
     begin
       scraper = Scraper.define do
         array :content
@@ -81,13 +84,13 @@ class FeedEntry < ActiveRecord::Base
     begin
       entry = self.find(id)
       if entry.fetched?
-        location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
-        unless location.geographies.first.nil?
-          data = location.geographies.first.attributes
-          data.delete("docId")
+        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
+        entry.published_at||= doc.doc_date
+
+        unless doc.geographies.first.nil?
+          data = doc.geographies.first.attributes.except("docId")
           entity = entry.entities.build(:type => "location", :serialized_data => data)
           entity.save
-          entry.published_at = location.doc_date
           entry.localize
           entry.save
           return true

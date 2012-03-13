@@ -6,7 +6,7 @@
     %li.news_feeds{:class => set_nav_active(admin_feed_entries_path)}
       = link_to "Feed Entries", admin_feed_entries_path
   %p.header-item#utility_nav
-    %span.current_user current_user@example.com
+    %span.current_user= current_admin_user.email
     %a{:href=>"/admin/logout", "data-method" => "get"} Logout
 #title_bar
   #titlebar_left
@@ -16,3 +16,8 @@
   #titlebar_right
     %span.action_items
       = yield :action_items
+
+.flashes
+  - flash.each do |key, value|
+    = content_tag(:div, value, :class => "flash flash_#{key}")
+  

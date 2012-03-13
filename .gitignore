@@ -12,3 +12,4 @@ nbproject
 data/calais.pyc
 .rvmrc
 config/database.yml
+coverage

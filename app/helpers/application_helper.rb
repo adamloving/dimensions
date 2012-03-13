@@ -6,9 +6,9 @@ module ApplicationHelper
 
     def title_layout(object)
       if object.has_key?:id
-        ActiveSupport::Inflector.titleize(object[:controller].gsub!("admin/"," ")).singularize.split(' ').join(' - ')
+        ActiveSupport::Inflector.titleize(object[:controller].gsub!("admin/"," ")).singularize.split(' ').join
       else
-        ActiveSupport::Inflector.titleize(object[:controller].gsub!("admin/"," ")).pluralize.split(' ').join(' - ')
+        ActiveSupport::Inflector.titleize(object[:controller].gsub!("admin/"," ")).pluralize.split(' ').join
       end
     end
 

@@ -1,6 +1,25 @@
 require 'spec_helper'
 
 describe FeedEntry do
+  #******************** SCOPES********************
+  describe ".failed" do
+    before do
+      @entry1 = FactoryGirl.create(:feed_entry, :failed => false)
+      @entry2 = FactoryGirl.create(:feed_entry, :failed => true)
+    end
+
+    it "should return only feed entries without errors when passed false" do
+      results = FeedEntry.failed(false)
+      results.should include(@entry1)
+      results.should_not include(@entry2)
+    end
+    it "should return only feed entries with errors when passed true" do
+      results = FeedEntry.failed(true)
+      results.should include(@entry2)
+      results.should_not include(@entry1)
+    end
+  end
+
   #******************** CLASS METHODS********************
   describe ".update_from_feed" do
     it 'should raise an exception when the feed is not valid' do
@@ -37,6 +56,7 @@ describe FeedEntry do
       entries.last.should be_an_instance_of(FeedEntry)
     end
   end
+
   describe "self.localize" do
     context "unfetched entry" do
       it "should return false" do
@@ -46,15 +66,22 @@ describe FeedEntry do
         FeedEntry.localize(@entry.id).should be_false
       end
     end
+
     context 'successfully localizing the entry' do
       it "should return true and must save the new localization" do
-        @entry = FactoryGirl.create(:feed_entry)
+        @entry = FactoryGirl.create(:feed_entry, :published_at => nil)
         FeedEntry.stub(:find).with(@entry.id){@entry}
-        @entry.stub(:fetched?){true} 
+        @entry.stub(:fetched?){true}
         @entry.stub(:content){"some content"}
+
         calais_proxy = mock
+
+        @now = Time.zone.now
+
+        calais_proxy.stub(:doc_date){@now}
         calais_proxy.stub_chain(:geographies, :first, :attributes){
           {
+            "docId" => "do not show me",
             "shortname" => "Colima",
             "containedbystate" => "Colima",
             "containedbycountry" => "Mexico",
@@ -62,17 +89,22 @@ describe FeedEntry do
             "longitude" => "654321"
           }
         }
+
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
         lambda{
           FeedEntry.localize(@entry.id).should be_true
         }.should change(Entity, :count).by(1)
 
-        FeedEntry.find(@entry.id).entities.last.tap do |entity|
-          entity.serialized_data["shortname"].should == "Colima"
-          entity.serialized_data["containedbystate"].should == "Colima"
-          entity.serialized_data["containedbycountry"].should == "Mexico"
-          entity.serialized_data["latitude"].should == "123456"
-          entity.serialized_data["longitude"].should == "654321"
+        entry = FeedEntry.find(@entry.id)
+        entry.published_at.should == @now
+
+        entry.entities.last.tap do |entity|
+          entity.serialized_data["shortname"].should            == "Colima"
+          entity.serialized_data["containedbystate"].should     == "Colima"
+          entity.serialized_data["containedbycountry"].should   == "Mexico"
+          entity.serialized_data["latitude"].should             == "123456"
+          entity.serialized_data["longitude"].should            == "654321"
+          entity.serialized_data["docId"].should                == nil
         end
       end
     end

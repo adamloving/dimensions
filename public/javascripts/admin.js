@@ -15,5 +15,13 @@ $(function(){
   .ajaxStop(function() {
     $(this).hide();
   });
+  $("#news_feed_proccess").bind("ajax:complete",function(event,response){
+    flashMessage("notice",response.responseText);
+    $(hideMessage);
+  });
 
 });
+
+
+
+

@@ -45,4 +45,11 @@ RailsBootstrap::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Send email when something is wrong on dimensions
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => "[Dimensions-ExceptionNotifier-Production]",
+    :sender_address => %{"Exception Notifier" <app3148068@heroku.com>},
+    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com eric@tangosource.com alejandro.espinoza@tangosource.com}
+
 end

@@ -20,7 +20,6 @@ gem 'sass-rails'
 gem 'feedzirra'
 
 
-
 gem 'haml-rails'
 gem 'configatron'
 gem 'compass', ">= 0.10.4"
@@ -28,17 +27,22 @@ gem 'devise'
 gem 'devise_rpx_connectable' 
 gem 'tire'
 gem 'crack'
+gem 'exception_notification', :require => 'exception_notifier'
+
+gem 'jasmine', :group => [:development, :test]
 
 group :development do
-  gem "barista" # coffeescript
+  gem 'pg'
   gem 'mysql2'
   # To use debugger
   gem 'ruby-debug19'
 end
 
 group :test do
+  gem 'capybara'
   gem 'rspec-rails'
   gem 'fuubar'
   gem 'factory_girl_rails'
+  gem 'simplecov'
 end
 

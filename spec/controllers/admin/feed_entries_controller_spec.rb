@@ -161,6 +161,28 @@ describe Admin::FeedEntriesController do
     end
   end 
 
+  describe "POST 'process_entry'" do
+
+    before do
+      @entry = mock_model(FeedEntry)
+      @news_feed.stub_chain(:entries, :find).with(@entry.id.to_s){@entry}
+    end
+
+
+
+    describe "when the entry is in fetched state" do
+      subject { post 'process_entry', news_feed_id: @news_feed.id, id: @entry.id, :current => "fetched"}
+
+      context "succesul localization" do
+        it "redirects to the the entry path and sets a notice" do
+          FeedEntry.stub(:localize).with(@entry.id){true}
+          subject
+          response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
+        end
+      end
+    end
+  end
+
   describe "POST 'fetch_content'" do
 
     before do

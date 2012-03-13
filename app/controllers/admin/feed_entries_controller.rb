@@ -18,6 +18,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     @feed_entry = @news_feed.entries.build(params[:feed_entry])
 
     if @feed_entry.save
+      flash[:notice] = "News Feed entry was successfully created"
       redirect_to admin_news_feed_feed_entries_path(@news_feed)
     else
       render :new
@@ -32,6 +33,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     @feed_entry = @news_feed.entries.find(params[:id])
    
     if @feed_entry.update_attributes(params[:feed_entry])
+      flash[:notice] = "News Feed entry was successfully updated"
       redirect_to admin_news_feed_feed_entries_path(@news_feed)
     else
       render :edit
@@ -58,6 +60,17 @@ class Admin::FeedEntriesController < Admin::BaseController
       data = {:message => "we couldn't process your entry", :error => entry.fetch_errors.values}
     end
     render :json => data
+  end
+
+  def process_entry
+    entry = @news_feed.entries.find(params[:id])
+    case params[:current]
+    when "fetched"
+      FeedEntry.localize(entry.id)
+      flash[:notice] = "Feed Entry successfully localized"
+    end
+
+    redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
   end
 
   def destroy

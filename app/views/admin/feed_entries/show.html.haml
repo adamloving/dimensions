@@ -10,6 +10,12 @@
       Visibility
     %p
       = @feed_entry.visible? ? "Showing" : "Hidden"
+    %p
+    - if @feed_entry.downloaded?
+      = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
+    - elsif @feed_entry.fetched?
+      = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"
+
 %table
   %tbody
     %tr
@@ -42,7 +48,7 @@
         Content
       %td
         - if @feed_entry.content.nil?
-          = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
+          = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry",:style=>"float:left;", 'data-entry-id' => @feed_entry.id
         - else
           .more-less
             .text-block
@@ -75,28 +81,5 @@
 
 .ajax_loading
 
-:javascript
-  $(function(){
-    $(document).moreless({
-      anchorClass: 'adjust',
-      contentContainer: 'text-block',
-      lessText: 'Show Less',
-      moreText: 'Show More',
-      outerContainer: 'more-less',
-      startHeight: 90
-    });
+= javascript_include_tag "feed_entries/show.onready.js"
 
-    var link = $('a.process-entry');
-    link.click(function(){
-      $.ajax({
-        url: link.attr('href'),
-        type: 'POST',
-        dataType: 'json',
-        data: "id=" + link.data('entry-id'),
-        success: function(data){
-          console.log(data);
-        }
-      });
-      return false;
-    });
-  });
