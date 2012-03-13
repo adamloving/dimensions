@@ -23,6 +23,13 @@ class FeedEntry < ActiveRecord::Base
       transition :localized => :tagged
     end
 
+    event :next do
+      transition :new => :downloaded
+      transition :downloaded => :fetched
+      transition :fetched => :localized
+      transition :localized => :tagged
+    end
+
   end
 
   def self.update_from_feed(feed_url)

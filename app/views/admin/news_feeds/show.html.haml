@@ -8,6 +8,9 @@
       = link_to "Process", load_entries_admin_news_feed_path(@news_feed), :method => :post, :remote => true,:class=>"button_link",:id=>"news_feed_proccess"
     %p
     %h4
+      = link_to "Process Entries", process_entries_admin_news_feed_path(@news_feed),:class=>"button_link"
+    %p
+    %h4
       = link_to "View Entries", admin_news_feed_feed_entries_path(@news_feed),:class=>"button_link"
     %p
     %h4
