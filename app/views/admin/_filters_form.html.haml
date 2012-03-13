@@ -6,8 +6,8 @@
     = label_tag(:q_url, "Search url:") 
     = text_field_tag(:q_url) 
   .filter_form_field.filter_date_range
-    = label_tag(:q_created_at_gte, "Created at:",:class=>'label') 
+    = label_tag(:q_created_at_gte, "Created at:") 
     = text_field_tag(:q_created_at_gte,nil,:class=>'datepicker',:size=>12,:max=>10,:mame=>"q[created_at_gte]") 
-    span.separator -
+    %span.separator -
     = text_field_tag(:q_created_at_lte,nil,:class=>'datepicker',:size=>12,:max=>10) 
     = submit_tag("Submit") 
