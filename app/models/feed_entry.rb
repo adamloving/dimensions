@@ -97,36 +97,4 @@ class FeedEntry < ActiveRecord::Base
       return nil
     end
   end
-
-  def self.batch_index!
-    begin
-      self.find_each do |e|
-        self.searchify_me(e.id)
-      end
-    rescue Exception => e
-      puts e.to_s
-      return nil
-    end
-  end
-
-  def self.searchify_me(id)
-    begin
-      entry = self.find(id)
-      if entry.localized?
-        api = IndexTank::Client.new "http://:8c3vN9XtuEPi53@do1vj.api.searchify.com"
-        index = api.indexes "idx"
-        fields = { :text => entry.name }
-        variables = entry.entities.
-        index.document(entry.id).add(fields, :variables => variables)
-        entry.tag
-        entry.save
-        return true
-      else
-        return nil
-      end
-    rescue Exception => e
-      puts e.to_s
-      return nil
-    end
-  end
 end
