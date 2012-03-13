@@ -15,6 +15,7 @@ RailsBootstrap::Application.routes.draw do
   namespace :admin do
     resources :news_feeds do
       post :load_entries, :on => :member
+      get :search, :on => :collection
 
       resources :feed_entries do
         put :toggle_visible, :on => :member

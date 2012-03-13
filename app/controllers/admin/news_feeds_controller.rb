@@ -54,6 +54,12 @@ class Admin::NewsFeedsController < Admin::BaseController
     end
   end
 
+  def search
+    @search = NewsFeed.search(params[:q])
+    @news_feeds = @search.page(params[:page]).per(20)
+    render :index
+  end
+
   private
 
   def find_the_news_feed
