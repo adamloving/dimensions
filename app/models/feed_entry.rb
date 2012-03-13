@@ -83,9 +83,9 @@ class FeedEntry < ActiveRecord::Base
       if entry.fetched?
         location = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
         unless location.geographies.first.nil?
-          geography = location.geographies.first.attributes
-          geography.delete("docId")
-          entity = Entity.new(:type => "location", :serialized_data => geography, :feed_entry_id => entry.id)
+          data = location.geographies.first.attributes
+          data.delete("docId")
+          entity = entry.entities.build(:type => "location", :serialized_data => data)
           entity.save
           entry.localize
           entry.save
@@ -115,11 +115,8 @@ class FeedEntry < ActiveRecord::Base
       if entry.localized?
         api = IndexTank::Client.new "http://:8c3vN9XtuEPi53@do1vj.api.searchify.com"
         index = api.indexes "idx"
-        fields = { :text => entry.content }
-        variables = {
-          0 => entry.latitude,
-          1 => entry.longitude
-        }
+        fields = { :text => entry.name }
+        variables = entry.entities.
         index.document(entry.id).add(fields, :variables => variables)
         entry.tag
         entry.save
