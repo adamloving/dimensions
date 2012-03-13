@@ -56,41 +56,46 @@ describe FeedEntry do
         calais_proxy.stub_chain(:geographies, :first, :attributes){
           {
             "shortname" => "Colima",
+            "containedbystate" => "Colima",
             "containedbycountry" => "Mexico",
             "latitude" => "123456",
             "longitude" => "654321"
           }
         }
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
-        FeedEntry.localize(@entry.id).should be_true
-        FeedEntry.find(@entry.id).tap do |entry|
-          entry.shortname.should == "Colima"
-          entry.country.should == "Mexico"
-          entry.latitude.should == "123456"
-          entry.longitude.should == "654321"
+        lambda{
+          FeedEntry.localize(@entry.id).should be_true
+        }.should change(Entity, :count).by(1)
+
+        FeedEntry.find(@entry.id).entities.last.tap do |entity|
+          entity.serialized_data["shortname"].should == "Colima"
+          entity.serialized_data["containedbystate"].should == "Colima"
+          entity.serialized_data["containedbycountry"].should == "Mexico"
+          entity.serialized_data["latitude"].should == "123456"
+          entity.serialized_data["longitude"].should == "654321"
         end
       end
     end
   end
 
-  describe "self.searchify_me" do
-    context "unlocalized entry" do
-      it "should return false" do
-        @entry = FactoryGirl.create(:feed_entry)
-        FeedEntry.stub(:find).with(@entry.id){@entry}
-        @entry.stub(:localized?){false}
-        FeedEntry.localize(@entry.id)should be_false
-      end
-    end
-    context "succesfully tagging the entry" do
-      it "should return true and must index the entry on searchify" do
-        @entry = FactoryGirl.create(:feed_entry)
-        FeedEntry.stub(:find).with(@entry.id){@entry}
-        @entry.stub(:localized?){true}
-        @entry.stub(:content){"this is the content of the entry"}
-      end
-    end
-  end
+  #describe "self.searchify_me" do
+    #context "unlocalized entry" do
+      #it "should return false" do
+        #@entry = FactoryGirl.create(:feed_entry)
+        #FeedEntry.stub(:find).with(@entry.id){@entry}
+        #@entry.stub(:localized?){false}
+        #FeedEntry.localize(@entry.id)should be_false
+      #end
+    #end
+    #context "succesfully tagging the entry" do
+      #it "should return true and must index the entry on searchify" do
+        #@entry = FactoryGirl.create(:feed_entry)
+        #FeedEntry.stub(:find).with(@entry.id){@entry}
+        #@entry.stub(:localized?){true}
+        #@entry.stub(:content){"this is the content of the entry"}
+      #end
+    #end
+  #end
 
 
   describe "#fetch content" do
