@@ -43,11 +43,13 @@
         Summary
       %td
         = @feed_entry.summary
-    - if @feed_entry.content.present?
-      %tr
-        %td
-          Content
-        %td
+    %tr
+      %td
+        Content
+      %td
+        - if @feed_entry.content.nil?
+          = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry",:style=>"float:left;", 'data-entry-id' => @feed_entry.id
+        - else
           .more-less
             .text-block
               %p
