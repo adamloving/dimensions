@@ -26,7 +26,11 @@ RailsBootstrap::Application.routes.draw do
     resources :feed_entries, :only => :index do
       get :search, :on => :collection
     end
+    root :to => "news_feeds#index"
   end
+
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
