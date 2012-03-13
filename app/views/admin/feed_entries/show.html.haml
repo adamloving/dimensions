@@ -60,22 +60,22 @@
         %td
           City
         %td
-          = @feed_entry.shortname
+          = @feed_entry.entities.locations.first.serialized_data["shortname"]
       %tr
         %td
           Country
         %td
-          = @feed_entry.country
+          = @feed_entry.entities.locations.first.serialized_data["containedbycountry"]
       %tr
         %td
           Latitude
         %td
-          = @feed_entry.latitude
+          = @feed_entry.entities.locations.first.serialized_data["latitude"]
       %tr
         %td
           Longitude
         %td
-          = @feed_entry.longitude
+          = @feed_entry.entities.locations.first.serialized_data["longitude"]
 
 = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
 
