@@ -67,7 +67,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     entry = @news_feed.entries.find(params[:id])
     case params[:current]
     when "fetched"
-      FeedEntry.localize(entry.id)
+      FeedEntry.localize(entry)
       flash[:notice] = "Feed Entry successfully localized"
     end
 

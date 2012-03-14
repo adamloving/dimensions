@@ -175,7 +175,7 @@ describe Admin::FeedEntriesController do
 
       context "succesul localization" do
         it "redirects to the the entry path and sets a notice" do
-          FeedEntry.stub(:localize).with(@entry.id){true}
+          FeedEntry.stub(:localize).with(@entry){true}
           subject
           response.should redirect_to admin_news_feed_feed_entry_path(@news_feed, @entry)
         end

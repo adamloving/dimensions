@@ -78,8 +78,8 @@ class FeedEntry < ActiveRecord::Base
 
   def self.batch_localize
     begin
-      self.find_each do |e|
-        self.localize(e.id)
+      self.find_each do |entry|
+        self.localize(entry)
       end
     rescue Exception => e
       puts e.to_s
@@ -87,17 +87,15 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  def self.localize(id)
+  def self.localize(entry)
     begin
-      entry = self.find(id)
       if entry.fetched?
         doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
         entry.published_at||= doc.doc_date
 
         unless doc.geographies.first.nil?
-          data = doc.geographies.first.attributes.except("docId")
-          entity = entry.entities.build(:type => "location", :serialized_data => data)
-          entity.save
+          entity = Dimensions::Locator.open_calais_location(doc.geographies)
+          entry.entities << entity
           entry.localize
           entry.save
           return true

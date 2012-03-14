@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120312230701) do
+ActiveRecord::Schema.define(:version => 20120314184141) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20120312230701) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "feed_entry_id"
+    t.string   "name"
   end
 
   create_table "feed_entries", :force => true do |t|
@@ -61,14 +62,14 @@ ActiveRecord::Schema.define(:version => 20120312230701) do
     t.datetime "published_at"
     t.string   "guid"
     t.string   "author"
-    t.string   "content"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.text     "content"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.integer  "news_feed_id"
     t.boolean  "visible",      :default => true
     t.text     "fetch_errors"
     t.string   "state"
-    t.boolean  "failed"
+    t.boolean  "failed",       :default => false
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true

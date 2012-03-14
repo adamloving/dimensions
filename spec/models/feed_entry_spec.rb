@@ -61,51 +61,40 @@ describe FeedEntry do
     context "unfetched entry" do
       it "should return false" do
         @entry = mock_model(FeedEntry)
-        FeedEntry.stub(:find).with(@entry.id){@entry}
         @entry.stub(:fetched?){false}
-        FeedEntry.localize(@entry.id).should be_false
+        FeedEntry.localize(@entry).should be_false
       end
     end
 
     context 'successfully localizing the entry' do
       it "should return true and must save the new localization" do
         @entry = FactoryGirl.create(:feed_entry, :published_at => nil)
-        FeedEntry.stub(:find).with(@entry.id){@entry}
+
         @entry.stub(:fetched?){true}
         @entry.stub(:content){"some content"}
 
         calais_proxy = mock
 
-        @now = Time.zone.now
+        now = Time.zone.now
+        calais_proxy.stub(:doc_date){now}
 
-        calais_proxy.stub(:doc_date){@now}
-        calais_proxy.stub_chain(:geographies, :first, :attributes){
-          {
-            "docId" => "do not show me",
-            "shortname" => "Colima",
-            "containedbystate" => "Colima",
-            "containedbycountry" => "Mexico",
-            "latitude" => "123456",
-            "longitude" => "654321"
-          }
-        }
+        calais_proxy.stub_chain(:geographies){["This is a dummy argument"]}
+
+        Dimensions::Locator.stub(:open_calais_location).with(calais_proxy.geographies){FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )}
 
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
+
         lambda{
-          FeedEntry.localize(@entry.id).should be_true
+          FeedEntry.localize(@entry).should be_true
         }.should change(Entity, :count).by(1)
 
         entry = FeedEntry.find(@entry.id)
-        entry.published_at.should == @now
 
-        entry.entities.last.tap do |entity|
-          entity.serialized_data["shortname"].should            == "Colima"
-          entity.serialized_data["containedbystate"].should     == "Colima"
-          entity.serialized_data["containedbycountry"].should   == "Mexico"
-          entity.serialized_data["latitude"].should             == "123456"
-          entity.serialized_data["longitude"].should            == "654321"
-          entity.serialized_data["docId"].should                == nil
-        end
+        entry.published_at.should_not be_nil
+        
+        entity = entry.entities.where(:name => "Seattle").first
+        entity.should_not be_nil
+        entity.feed_entry.should == entry
       end
     end
   end
@@ -138,8 +127,10 @@ describe FeedEntry do
       it "should rescue the exception and add this to serialized fetch errors" do
         scraper = mock
         Scraper.stub(:define){ scraper }
+
         uri = mock
         URI.stub(:parse).with(@entry.url){uri}
+
         scraper.should_receive(:scrape).with(uri).and_raise(Scraper::Reader::HTMLParseError)
         @entry.fetch_content!.should be_nil
         @entry.fetch_errors.should == {:error => "Scraper::Reader::HTMLParseError"}
