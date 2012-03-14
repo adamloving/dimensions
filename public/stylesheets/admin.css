@@ -1414,14 +1414,14 @@ table tr td {
 }
 
 /* line 11, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table {
+table {
   width: 100%;
   margin-bottom: 10px;
   border: 0;
   border-spacing: 0;
 }
 /* line 17, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th {
+table th {
   background: #efefef;
   background: -webkit-gradient(linear, left top, left bottom, from(#efefef), to(#dfe1e2));
   background: -moz-linear-gradient(-90deg, #efefef, #dfe1e2);
@@ -1449,41 +1449,41 @@ table.index_table th {
   padding-right: 12px;
 }
 /* line 6, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/mixins/_icons.css.scss */
-table.index_table th span.icon svg path, table.index_table th span.icon svg polygon, table.index_table th span.icon svg rect, table.index_table th span.icon svg circle {
+table th span.icon svg path, table.index_table th span.icon svg polygon, table.index_table th span.icon svg rect, table.index_table th span.icon svg circle {
   fill: #5e6469 !important;
 }
 /* line 11, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/mixins/_icons.css.scss */
-table.index_table th span.icon {
+table th span.icon {
   width: 1em;
   height: 1em;
 }
 /* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/mixins/_icons.css.scss */
-table.index_table th span.icon svg {
+table th span.icon svg {
   width: 1em;
   height: 1em;
 }
 /* line 24, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th a, table.index_table th a:link, table.index_table th a:visited {
+table th a, table.index_table th a:link, table.index_table th a:visited {
   color: #5e6469;
   text-decoration: none;
   display: block;
   white-space: nowrap;
 }
 /* line 31, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th.sortable a {
+table th.sortable a {
   background: url("/images/active_admin/orderable.png") no-repeat 0 4px;
   padding-left: 13px;
 }
 /* line 35, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th.sorted-asc a {
+table th.sorted-asc a {
   background-position: 0 -27px;
 }
 /* line 36, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th.sorted-desc a {
+table th.sorted-desc a {
   background-position: 0 -56px;
 }
 /* line 38, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th.sorted-asc, table.index_table th.sorted-desc {
+table th.sorted-asc, table.index_table th.sorted-desc {
   background: #e2e2e2;
   background: -webkit-gradient(linear, left top, left bottom, from(#e2e2e2), to(#d2d4d6));
   background: -moz-linear-gradient(-90deg, #e2e2e2, #d2d4d6);
@@ -1491,19 +1491,19 @@ table.index_table th.sorted-asc, table.index_table th.sorted-desc {
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#e2e2e2, endColorstr=#d2d4d6);
 }
 /* line 42, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table th:last-child {
+table th:last-child {
   border-right: solid 1px #d4d4d4;
 }
 /* line 48, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table tr.even td {
+table tr.even td {
   background: #f4f5f5;
 }
 /* line 50, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table tr.selected td {
+table tr.selected td {
   background: #d9e4ec;
 }
 /* line 54, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
-table.index_table td {
+table td {
   padding: 10px 12px 8px 12px;
   border-bottom: 1px solid #e8e8e8;
   vertical-align: top;
@@ -2515,9 +2515,7 @@ body.logged_out #login a {
 /* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #main_content_wrapper {
   float: left;
-  max-width: 70%;
-  margin: 0 10px;
-  min-width: 500px;
+  width: 100%;
 }
 /* line 14, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #main_content_wrapper #main_content {
@@ -2529,8 +2527,13 @@ body.logged_out #login a {
 }
 /* line 21, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_main_structure.scss */
 #active_admin_content #sidebar {
-  float: right;
+  float: left;
   width: 270px;
+  margin-left: -270px;
+}
+
+#active_admin_content #main_content_wrapper.with_sidebar #main_content {
+  margin-right: 300px;
 }
 
 /* line 1, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/structure/_title_bar.scss */
@@ -2786,4 +2789,115 @@ a.button_link:hover{
   background: -moz-linear-gradient(-90deg, #8b9297, #484d51);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#8b9297, endColorstr=#484d51);
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#8b9297, endColorstr=#484d51);
+}
+
+table tr td {
+  vertical-align: top;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 0;
+  border-spacing: 0;
+}
+/* line 17, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th {
+  background: #efefef;
+  background: -webkit-gradient(linear, left top, left bottom, from(#efefef), to(#dfe1e2));
+  background: -moz-linear-gradient(-90deg, #efefef, #dfe1e2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#efefef, endColorstr=#dfe1e2);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#efefef, endColorstr=#dfe1e2);
+  text-shadow: white 0 1px 0;
+  border: solid 1px #cdcdcd;
+  border-color: #d4d4d4;
+  border-top-color: #e6e6e6;
+  border-right-color: #d4d4d4;
+  border-bottom-color: #cdcdcd;
+  border-left-color: #d4d4d4;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 1px white inset;
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 1px white inset;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 1px white inset;
+  font-size: 1.0em;
+  font-weight: bold;
+  line-height: 18px;
+  margin-bottom: 0.5em;
+  color: #5e6469;
+  padding: 5px 10px 3px 10px;
+  border-right: none;
+  text-align: left;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+/* line 6, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/mixins/_icons.css.scss */
+table th span.icon svg path, table.index_table th span.icon svg polygon, table.index_table th span.icon svg rect, table.index_table th span.icon svg circle {
+  fill: #5e6469 !important;
+}
+/* line 11, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/mixins/_icons.css.scss */
+table th span.icon {
+  width: 1em;
+  height: 1em;
+}
+/* line 12, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/mixins/_icons.css.scss */
+table th span.icon svg {
+  width: 1em;
+  height: 1em;
+}
+/* line 24, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th a, table.index_table th a:link, table.index_table th a:visited {
+  color: #5e6469;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+/* line 31, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th.sortable a {
+  background: url("/images/active_admin/orderable.png") no-repeat 0 4px;
+  padding-left: 13px;
+}
+/* line 35, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th.sorted-asc a {
+  background-position: 0 -27px;
+}
+/* line 36, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th.sorted-desc a {
+  background-position: 0 -56px;
+}
+/* line 38, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th.sorted-asc, table.index_table th.sorted-desc {
+  background: #e2e2e2;
+  background: -webkit-gradient(linear, left top, left bottom, from(#e2e2e2), to(#d2d4d6));
+  background: -moz-linear-gradient(-90deg, #e2e2e2, #d2d4d6);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#e2e2e2, endColorstr=#d2d4d6);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#e2e2e2, endColorstr=#d2d4d6);
+}
+/* line 42, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th:last-child {
+  border-right: solid 1px #d4d4d4;
+}
+/* line 48, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table tr.even td {
+  background: #f4f5f5;
+}
+/* line 50, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table tr.selected td {
+  background: #d9e4ec;
+}
+/* line 54, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table td {
+  padding: 10px 12px 8px 12px;
+  font-size: 11px;
+  border-bottom: 1px solid #E8E8E8;
+  line-height: 12px;
+  vertical-align: top;
+  border-left: none;
+}
+
+/* line 63, ../../../../.rvm/gems/ruby-1.9.2-head@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_tables.css.scss */
+table th + th, table td + td, table tr + tr td {
+  border-top: none;
+  border-left: none;
+}
+table tr:nth-of-type(2n) td {
+  background: #F4F5F5;
 }
