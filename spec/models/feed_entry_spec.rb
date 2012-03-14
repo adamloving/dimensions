@@ -82,7 +82,7 @@ describe FeedEntry do
 
         Dimensions::Locator.stub(:open_calais_location).with(calais_proxy.geographies){FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )}
 
-        Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
+        Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
 
         lambda{
           FeedEntry.localize(@entry).should be_true

@@ -90,7 +90,7 @@ class FeedEntry < ActiveRecord::Base
   def self.localize(entry)
     begin
       if entry.fetched?
-        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy")
+        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
         entry.published_at||= doc.doc_date
 
         unless doc.geographies.first.nil?

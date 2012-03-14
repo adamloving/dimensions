@@ -1,0 +1,18 @@
+searchify: &searchify
+  searchify_api_url: http://:rT47ovaCmkY3X4@8sk9q.api.searchify.com
+
+open_calais: &open_calais
+  open_calais_api_key: du295ff4zrg3rd4bwdk86xhy
+  
+development:
+  <<: *open_calais
+  <<: *searchify
+  searchify_indices:
+    locations: 'locations_staging'
+
+test:
+  <<: *open_calais
+
+production:
+  <<: *open_calais
+  <<: *searchify
