@@ -4,10 +4,14 @@
   #panel_contents
     = render 'filters_form', news_feeds: NewsFeed.all
 
-%p#feed_entries_tabs
-  = link_to "all", search_admin_feed_entries_path, :class=>"btn"
-  = link_to "normal", search_admin_feed_entries_path(:q => {:failed_equals => false}), :class=>"btn"
-  = link_to "failed", search_admin_feed_entries_path(:q => {:failed_equals => true}), :class=>"btn"
+.table_tools
+  %ul.scopes.table_tools_segmented_control
+    %li.scoope
+      = link_to "all", search_admin_feed_entries_path, :class=>"table_tools_button"
+    %li.scoope
+      = link_to "normal", search_admin_feed_entries_path(:q => {:failed_equals => false}), :class=>"table_tools_button"
+    %li.scoope
+      = link_to "failed", search_admin_feed_entries_path(:q => {:failed_equals => true}), :class=>"table_tools_button"
 
 .pagination
   = paginate @feed_entries
