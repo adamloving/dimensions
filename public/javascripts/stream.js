@@ -4,7 +4,9 @@
 
 (function() {
   var Stream;
+
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   Stream = (function() {
     var firstMapEvent;
     function Stream() {
@@ -14,21 +16,35 @@
       this.loadItems();
       console.log('stream constructor');
     }
+
     Stream.prototype.loadItems = function() {
       $("#stream").empty().append('<p style="text-align: center; margin-top: 200px">Loading...</p>');
-      $.ajax('/search', {
-        type: 'GET',
-        dataType: 'json',
-        data: window.filter.getQuery(),
-        error: __bind(function(jqXHR, textStatus, errorThrown) {
-          return $('.alert-message.error').text('Error: #{textStatus}');
-        }, this),
-        success: __bind(function(data, textStatus, jqXHR) {
-          console.log(data);
-          return this.onLoadItemsComplete(data);
-        }, this)
-      });
+
+
+      //$.ajax({
+        //type: "POST",
+        //url: "",
+        //dataType: "json",
+        //data: 
+      //}).done(function(data){
+      //}).error(function(err){
+        //alert(JSON.stringify(err));
+      //});
+
+      //$.ajax('/search', {
+        //type: 'GET',
+        //dataType: 'json',
+        //data: window.filter.getQuery(),
+        //error: __bind(function(jqXHR, textStatus, errorThrown) {
+          //return $('.alert-message.error').text('Error: #{textStatus}');
+        //}, this),
+        //success: __bind(function(data, textStatus, jqXHR) {
+          //console.log(data);
+          //return this.onLoadItemsComplete(data);
+        //}, this)
+      //});
     };
+
     Stream.prototype.onLoadItemsComplete = function(data) {
       this.data = data;
       $.each(this.data.results, function(i, r) {
