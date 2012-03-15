@@ -29,6 +29,9 @@ class FeedEntry < ActiveRecord::Base
       transition :fetched => :localized
       transition :localized => :tagged
     end
+    event :untag do
+      transition :tagged => :localized
+    end
 
   end
 
