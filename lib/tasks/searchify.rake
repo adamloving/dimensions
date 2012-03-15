@@ -5,7 +5,7 @@ namespace :searchify do
   task :index => :environment do
 
     # Obtain an IndexTank client
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['test'])
     
     FeedEntry.find_each do |entry|
       begin
@@ -13,7 +13,7 @@ namespace :searchify do
           raise("Entry has no locations") if entry.entities.locations.first.nil?
           serialized_hash = entry.entities.locations.first.serialized_data
           if serialized_hash["latitude"] && serialized_hash["longitude"]
-            puts "====================================================================================="
+            puts "==================================================================================="
             location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"]}
             index.document(entry.id).add(:text => entry.name, :variables => location.to_s)
             entry.tag
@@ -52,4 +52,28 @@ namespace :searchify do
     STDOUT.flush   
   end
 
+  task :clean_index => :environment do
+    # Obtain an IndexTank client
+    raise("Usage: rake searchify:clean_index INDEX_NAME=<INDEX_NAME>") if ENV["INDEX_NAME"].nil?
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices'][ENV['INDEX_NAME']])
+
+    FeedEntry.find_each do |entry|
+      begin
+        if entry.tagged?
+          puts "===================================================================================="
+          index.document(entry.id).delete
+          entry.untag
+          entry.save
+          puts "Succesfully removed #{entry.name}."
+          puts "==================================================================================="
+        else
+          puts "==================================================================================="
+          puts "#{entry.name} is not tagged yet, nothing to do..."
+          puts "==================================================================================="
+        end
+      rescue
+        puts "Error: #{$!}"
+      end
+    end
+  end
 end
