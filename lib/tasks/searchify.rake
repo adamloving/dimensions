@@ -10,23 +10,28 @@ namespace :searchify do
     FeedEntry.find_each do |entry|
       begin
         if entry.localized?
-          puts "======================================================================"
           raise("Entry has no locations") if entry.entities.locations.first.nil?
           serialized_hash = entry.entities.locations.first.serialized_data
-          length = serialized_hash.length
-          keys = 0.upto(length - 1).to_a
-          location = Hash[[keys, serialized_hash.values].transpose]
-          index.document(entry.id).add(:text => entry.name, :variables => location.to_s)
-          entry.tag
-          entry.save
-          puts "Succesfully indexed #{entry.name}"
-          puts "======================================================================"
+          if serialized_hash["latitude"] && serialized_hash["longitude"]
+            puts "====================================================================================="
+            location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"]}
+            index.document(entry.id).add(:text => entry.name, :variables => location.to_s)
+            entry.tag
+            entry.save
+            puts "Succesfully indexed #{entry.name}"
+            puts "With latitude: #{location[0]}, longitude: #{location[1]}"
+            puts "==================================================================================="
+          else
+            puts "==================================================================================="
+            puts "#{entry.name} has no latitude and longitude #{serialized_hash}"
+            puts "==================================================================================="
+          end
         else
-          return nil
+          puts "This entry is already processed #{entry.name}"
         end
   
       rescue
-        print "Error: ",$!,"\\n"
+        puts "Error: #{$!}"
       end
     end
   end
