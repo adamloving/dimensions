@@ -12,6 +12,7 @@ development:
 
 test:
   <<: *open_calais
+  <<: *searchify
 
 production:
   <<: *open_calais
