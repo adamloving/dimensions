@@ -15,7 +15,7 @@ namespace :searchify do
           if serialized_hash["latitude"] && serialized_hash["longitude"]
             puts "==================================================================================="
             location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"]}
-            index.document(entry.id).add(:text => entry.name, :variables => location.to_s)
+            index.document(entry.id).add(:url => entry.url, :text => entry.name, :variables => location.to_s)
             entry.tag
             entry.save
             puts "Succesfully indexed #{entry.name}"
