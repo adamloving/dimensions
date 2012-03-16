@@ -43,12 +43,15 @@
         var q, s;
         q = this.getQuery();
         s = "?";
+
+        if (q.search) {
+          s += "q=" + q.search + '&';
+        }
+
         if (q.start_date) {
           s += "start_date=" + q.start_date + '&';
         }
-        if (q.search) {
-          s += "search=" + q.search + '&';
-        }
+        
         if (q.tags) {
           s += "tags=" + q.tags.join(', ') + '&';
         }
@@ -68,7 +71,7 @@
         var query;
         query = {};
         if (this.search && this.search.trim()) {
-          query.search = this.search;
+          query.q = this.search;
         }
         if (this.tags.length > 0) {
           query.tag = this.tags.join(',');
@@ -138,7 +141,6 @@
 
       onSearchChange : function(e) {
         this.search = e.target.value;
-        console.log("Chichoooooooooooo!");
         return window.stream.loadItems();
       },
 

@@ -6,16 +6,15 @@
   $namespace('Searchify').Client.prototype = {
     search : function(term, options){
       self = this;
-      var settings = $.extend({
-        fetch: "text"
-      },options || {});
-
+      var settings = $.extend(term,$.extend(options,{
+        fetch: "*"
+      }));
       var result = undefined;
 
       $.ajax({
         url: apiURL + "/v1/indexes/locations_staging/search",
         dataType: "jsonp",
-        data: {q: term, fetch: settings.fetch},
+        data:settings,
         success: function(data){
           self.onSearchSuccess(data);
         }
@@ -25,6 +24,5 @@
     bind: function(name, fn){
       Searchify.Client.method(name, fn);
     }
-
   }
 })(jQuery);
