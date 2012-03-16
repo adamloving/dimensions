@@ -4,17 +4,19 @@
   $namespace('Searchify').Client = function(){};
   
   $namespace('Searchify').Client.prototype = {
-    search : function(term, options){
+    search : function(options){
       self = this;
-      var settings = $.extend(term,$.extend(options,{
-        fetch: "*"
-      }));
+
+      var settings = $.extend({
+        fetch: "text"
+      }, options || {});
+
       var result = undefined;
 
       $.ajax({
         url: apiURL + "/v1/indexes/locations_staging/search",
         dataType: "jsonp",
-        data:settings,
+        data: settings,
         success: function(data){
           self.onSearchSuccess(data);
         }
