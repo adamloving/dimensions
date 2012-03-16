@@ -1,11 +1,12 @@
-(function(){
+$(function(){
   window.stream = window.searchify = searchify = new Searchify.Client;
+  $("#item-template").template("NewsStreams");
 
   searchify.bind('render',function(){
     $("#stream").empty();
     console.log("results",this.data.results.length)
     if(this.data.results.length > 0){
-      $.tmpl("<div class=item>${console.log(items)}{{each(i,item) items}}<p>${item.text}</p>{{/each}}</div>",{items:this.data.results}).appendTo("#stream");
+      $.tmpl("NewsStreams",{items:this.data.results}).appendTo("#stream");
       clearMap();
       $.each(this.data.results,function(i,r){
         console.log("latitude for each topic");
@@ -48,5 +49,5 @@
   });
 
   $(function(){searchify.search({q:"obama"});});
-}).call(this)
+})();
 
