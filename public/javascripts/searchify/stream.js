@@ -15,6 +15,7 @@ $(function(){
     }else{
       $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
     }
+    FB.XFBML.parse(); 
     return searchify
   });
 
@@ -32,11 +33,11 @@ $(function(){
       x = Math.random()*10;
       //window.tagList.render(data.facets.tags);
       //if (data.facets.tags.length > 0){
-       //window.groupList.render(data.facets.tags);
+      //window.groupList.render(data.facets.tags);
       //}
 
     });
-    
+
     this.render();
     firstMapEvent=true;
   })
@@ -47,7 +48,5 @@ $(function(){
     console.log(searchify.search(window.filter.getQuery()));
     console.log("start search");
   });
-
-  $(function(){searchify.search({q:"obama"});});
-})();
-
+  $(function(){searchify.search({q:"seattle"});});
+})
