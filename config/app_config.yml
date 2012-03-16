@@ -9,6 +9,7 @@ development:
   <<: *searchify
   searchify_indices:
     locations: 'locations_staging'
+    test: 'test_index'
 
 test:
   <<: *open_calais
