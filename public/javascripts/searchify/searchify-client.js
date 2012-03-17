@@ -25,6 +25,10 @@
 
     bind: function(name, fn){
       Searchify.Client.method(name, fn);
+    },
+
+    unbind: function(name, fn){
+      Searchify.Client.method(name, nil);
     }
   }
 })(jQuery);

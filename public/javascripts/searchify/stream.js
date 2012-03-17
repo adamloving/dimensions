@@ -1,5 +1,5 @@
 $(function(){
-  window.stream = window.searchify = searchify = new Searchify.Client;
+  window.stream = window.searchify = searchify = new Searchify.Client();
 
   $("#item-template").template("NewsStreams");
 
