@@ -29,7 +29,6 @@
       this.tags       = [];
       this.groups     = [];
       this.coords     = null;
-      console.log('gotcha');
     }
 
     Filter.prototype = {

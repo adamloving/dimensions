@@ -14,7 +14,6 @@ $(window).ready(function(event){
 
 function SearchController(){
   this.init=function(){
-    console.log("instancia de search");
     window.dimensions = new Dimensions.Renderer();
     window.dimensions.template =$("#item-template").template("NewsStreams");
     window.dimensions.element = "#stream"; // render on this element
