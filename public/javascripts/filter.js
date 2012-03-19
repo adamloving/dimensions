@@ -85,7 +85,7 @@
           query.ne_lat    = this.coords.northEast.lat();
           query.ne_long   = this.coords.northEast.lng();
         }
-        query.start_date  = this.startDate;
+        query.timestamp  = "<" + this.startDate;
         return query;
       },
 
@@ -134,14 +134,18 @@
         var duration, minutes;
         duration = $('#date-filter').val();
         minutes = this.durationToMinutes(duration);
-        this.startDate = Date.now().addMinutes(-minutes).toISOString();
+        //this.startDate = Date.now().addMinutes(-minutes).toISOString();
+        this.startDate = Math.round(Date.now().addMinutes(-minutes)/1000);
+        //console.log(Math.round(Date.now().addMinutes(-minutes)/1000));
         console.log("duration changed: ", duration, this.startDate);
-        return window.stream.loadItems();
+        //return window.stream.loadItems();
+        return Router.handleRequest("search");
       },
 
       onSearchChange : function(e) {
         this.search = e.target.value;
-        return window.stream.loadItems();
+        //return window.stream.loadItems();
+        //Router.handleRequest("search");
       },
 
       addGroup : function(t) {
