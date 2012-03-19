@@ -24,11 +24,12 @@ class FeedEntry < ActiveRecord::Base
     end
 
     event :next do
-      transition :new => :downloaded
-      transition :downloaded => :fetched
-      transition :fetched => :localized
-      transition :localized => :tagged
+      transition :new         => :downloaded
+      transition :downloaded  => :fetched
+      transition :fetched     => :localized
+      transition :localized   => :tagged
     end
+
     event :untag do
       transition :tagged => :localized
     end
