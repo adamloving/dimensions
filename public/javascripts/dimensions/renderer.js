@@ -40,7 +40,7 @@ $(function(){
         }
         FB.XFBML.parse();//reload facebook events 
       }else{
-        console.log(this.element+"  does not exist!");
+        //console.log(this.element+"  does not exist!");
       }
       this.unbind("loadItems");
     },
