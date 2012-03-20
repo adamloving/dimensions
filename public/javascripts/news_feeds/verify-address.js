@@ -36,6 +36,15 @@ $(function(){
 
     $('#news_feed_location_longitude').val(longitude);
     $('#news_feed_location_latitude').val(latitude);
+    $(".subm input").css("display","initial");
+  });
+
+  $(function(){
+    $("input[type='hidden']").each(function(e){
+      if($(this).val() == ""){
+        $(".subm input").css("display","none");
+      }
+    });
   });
 
 
