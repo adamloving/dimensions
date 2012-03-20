@@ -210,6 +210,50 @@ describe FeedEntry do
     end
 
   end
+
+  describe 'primary_location' do
+    context "when the entry has no locations at all" do
+      it 'should return nil' do
+        @feed_entry = FactoryGirl.create(:feed_entry)
+        @feed_entry.primary_location.should  be_nil
+      end
+    end
+
+    context "when the entry has locations" do
+      it 'should return only the one marked as primary' do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location', :default => true)
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+
+        @feed_entry.primary_location.should == location_1
+      end
+    end
+  end
+
+  describe 'secondary_locations' do
+    context "when the entry has no locations at all" do
+      it 'should return empty array' do
+        @feed_entry = FactoryGirl.create(:feed_entry)
+        @feed_entry.secondary_locations.should  be_empty
+      end
+    end
+
+    context "when the entry has locations" do
+      it 'should return the array of the secondary locations' do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location', :default => true)
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+
+        @feed_entry.secondary_locations.should == [location_2]
+      end
+    end
+  end
   # -------- State machine tests --------
   describe "change state" do
     before do
