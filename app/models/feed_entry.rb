@@ -62,13 +62,14 @@ class FeedEntry < ActiveRecord::Base
         doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
         entry.published_at||= doc.doc_date
 
-        unless doc.geographies.first.nil?
-          entity = Dimensions::Locator.open_calais_location(doc.geographies) || entry.feed.location
-          entry.entities << entity
-          entry.localize
-          entry.save
-          return true
+        unless doc.geographies.empty?
+          locations = Dimensions::Locator.parse_locations(doc.geographies)
+          entry.entities = locations
         end
+        entry.entities.push(entry.feed.location)
+        entry.localize
+        entry.save
+        return true
       end
     rescue Exception => e
       puts e.to_s

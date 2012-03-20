@@ -7,5 +7,7 @@ class Entity < ActiveRecord::Base
   # we fucked up with the naming of the STI names.
   Entity.inheritance_column= "ruby_type"
 
-  scope :location, where(:type => "location")
+  scope     :location, where(:type => "location")
+
+  validates :name, :uniqueness => {:scope => :type}
 end

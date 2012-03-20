@@ -81,9 +81,7 @@ describe FeedEntry do
 
           calais_proxy = mock
           calais_proxy.stub(:doc_date){now}
-          calais_proxy.stub_chain(:geographies){["This is a dummy argument"]}
-
-          Dimensions::Locator.stub(:open_calais_location).with(calais_proxy.geographies){ nil }
+          calais_proxy.stub_chain(:geographies){[]}
           Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
         end
 
@@ -106,9 +104,15 @@ describe FeedEntry do
     end
 
     context 'successfully localizing the entry' do
-      it "should return true and must save the new localization" do
-        @entry = FactoryGirl.create(:feed_entry, :published_at => nil)
 
+      before do
+        @entry               = FactoryGirl.create(:feed_entry, :published_at => nil)
+        @entry.feed          = FactoryGirl.create(:news_feed, :name => "The Washington Post", :url => "http://thewashingtonpost.com")
+        @entry.feed.entities << FactoryGirl.create(:entity, :type => 'location', :serialized_data => {'longitude' => '1.0', 'latitude' => '2.0'})
+        @entry.feed.save
+      end
+
+      it "should return true and must save the new localization" do
         @entry.stub(:fetched?){true}
         @entry.stub(:content){"some content"}
 
@@ -117,9 +121,9 @@ describe FeedEntry do
         now = Time.zone.now
         calais_proxy.stub(:doc_date){now}
 
-        calais_proxy.stub_chain(:geographies){["This is a dummy argument"]}
+        calais_proxy.stub_chain(:geographies){["dummy"]}
 
-        Dimensions::Locator.stub(:open_calais_location).with(calais_proxy.geographies){FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )}
+        Dimensions::Locator.stub(:parse_locations).with(calais_proxy.geographies){[FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )]}
 
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
 
@@ -128,6 +132,7 @@ describe FeedEntry do
         }.should change(Entity, :count).by(1)
 
         entry = FeedEntry.find(@entry.id)
+
 
         entry.published_at.should_not be_nil
         

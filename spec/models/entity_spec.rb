@@ -11,4 +11,12 @@ describe Entity do
       results.should_not include(@person)
     end
   end
+
+  describe "name" do
+    it "should be unique" do
+      entity    = FactoryGirl.create(:entity, :name => 'Seattle, Washington', :type => 'location')
+      repeated  = FactoryGirl.build(:entity, :name => 'Seattle, Washington', :type => 'location')
+      repeated.should_not be_valid
+    end
+  end
 end
