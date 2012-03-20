@@ -1,18 +1,20 @@
-script#item-template(type="text/x-jquery-tmpl")
+%script#item-template{:type=>"text/x-jquery-tmpl"}
+  {{each(i,item) items}}
   .item
     .post-it
-      | {{html post_it_html}}
-      
+      ${console.log(items)}
+      {{html img}}
     .body
-      h3.headline.unread ${title}
+      %h3.headline.unread ${text}
       .article-details
-        | {{if photo_url}}
-        / img(src='${photo_url}' class="show")
-        | {{/if}}
+        {{if photo_url}}
+        %img{:src=>'${photo_url}',:class=>"show"}
+        {{/if}}
 
         .text
-          | {{html body}}
-        a(href='${article_link}') ${article_link}
+          {{html text}}
+        %a{:href=>'${url}'} ${url}
         .date ${created_at}
 
-        .fb-like data-href="${article_link}" data-send="true" data-width="450" data-show-faces="true"
+        .fb-like{"data-href"=>"${url}", "data-send"=>"true", "data-width"=>"450", "data-show-faces"=>"true"}
+  {{/each}}

@@ -49,7 +49,7 @@ RailsBootstrap::Application.configure do
   # Send email when something is wrong on dimensions
   config.middleware.use ExceptionNotifier,
     :email_prefix => "[Dimensions-ExceptionNotifier-Production]",
-    :sender_address => %{"Exception Notifier" <app3148068@heroku.com>},
-    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com eric@tangosource.com alejandro.espinoza@tangosource.com}
+    :sender_address => %{"Exception Notifier" <app3219037@heroku.com>},
+    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com alejandro.espinoza@tangosource.com}
 
 end

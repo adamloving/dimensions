@@ -61,51 +61,84 @@ describe FeedEntry do
     context "unfetched entry" do
       it "should return false" do
         @entry = mock_model(FeedEntry)
-        FeedEntry.stub(:find).with(@entry.id){@entry}
         @entry.stub(:fetched?){false}
-        FeedEntry.localize(@entry.id).should be_false
+        FeedEntry.localize(@entry).should be_false
+      end
+    end
+
+    context "when the entry belongs to a localized newsfeed" do
+      before do
+        @feed_entry               = FactoryGirl.create(:feed_entry)
+        @feed_entry.feed          = FactoryGirl.create(:news_feed, :name => "The Washington Post", :url => "http://thewashingtonpost.com")
+        @feed_entry.feed.entities << FactoryGirl.create(:entity, :type => 'location', :serialized_data => {'longitude' => '1.0', 'latitude' => '2.0'})
+        @feed_entry.feed.save
+      end
+
+      context "and the localization has not been successful" do
+        before do
+          @feed_entry.stub(:fetched?){true}
+          @feed_entry.stub(:content){"some content"}
+
+          calais_proxy = mock
+          calais_proxy.stub(:doc_date){now}
+          calais_proxy.stub_chain(:geographies){[]}
+          Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
+        end
+
+        it "should get the localization of the news feed" do
+          lambda{
+            FeedEntry.localize(@feed_entry).should be_true
+          }.should change(Entity, :count).by(0)
+
+          feed_entry = FeedEntry.find(@feed_entry.id)
+
+          locations_map = feed_entry.entities.location.map do|location|
+            coordinates = location.serialized_data
+            [location.name, coordinates['longitude'], coordinates['latitude']]
+          end
+          
+          location = @feed_entry.feed.location 
+          locations_map.should include([location.name, location.serialized_data['longitude'], location.serialized_data['latitude']])
+        end
       end
     end
 
     context 'successfully localizing the entry' do
+
+      before do
+        @entry               = FactoryGirl.create(:feed_entry, :published_at => nil)
+        @entry.feed          = FactoryGirl.create(:news_feed, :name => "The Washington Post", :url => "http://thewashingtonpost.com")
+        @entry.feed.entities << FactoryGirl.create(:entity, :type => 'location', :serialized_data => {'longitude' => '1.0', 'latitude' => '2.0'})
+        @entry.feed.save
+      end
+
       it "should return true and must save the new localization" do
-        @entry = FactoryGirl.create(:feed_entry, :published_at => nil)
-        FeedEntry.stub(:find).with(@entry.id){@entry}
         @entry.stub(:fetched?){true}
         @entry.stub(:content){"some content"}
 
         calais_proxy = mock
 
-        @now = Time.zone.now
+        now = Time.zone.now
+        calais_proxy.stub(:doc_date){now}
 
-        calais_proxy.stub(:doc_date){@now}
-        calais_proxy.stub_chain(:geographies, :first, :attributes){
-          {
-            "docId" => "do not show me",
-            "shortname" => "Colima",
-            "containedbystate" => "Colima",
-            "containedbycountry" => "Mexico",
-            "latitude" => "123456",
-            "longitude" => "654321"
-          }
-        }
+        calais_proxy.stub_chain(:geographies){["dummy"]}
 
-        Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => "du295ff4zrg3rd4bwdk86xhy" ){calais_proxy}
+        Dimensions::Locator.stub(:parse_locations).with(calais_proxy.geographies){[FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )]}
+
+        Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
+
         lambda{
-          FeedEntry.localize(@entry.id).should be_true
+          FeedEntry.localize(@entry).should be_true
         }.should change(Entity, :count).by(1)
 
         entry = FeedEntry.find(@entry.id)
-        entry.published_at.should == @now
 
-        entry.entities.last.tap do |entity|
-          entity.serialized_data["shortname"].should            == "Colima"
-          entity.serialized_data["containedbystate"].should     == "Colima"
-          entity.serialized_data["containedbycountry"].should   == "Mexico"
-          entity.serialized_data["latitude"].should             == "123456"
-          entity.serialized_data["longitude"].should            == "654321"
-          entity.serialized_data["docId"].should                == nil
-        end
+
+        entry.published_at.should_not be_nil
+        
+        entity = entry.entities.where(:name => "Seattle").first
+        entity.should_not be_nil
+        entity.feed_entries.find(entry.id).should_not be_nil
       end
     end
   end
@@ -138,8 +171,10 @@ describe FeedEntry do
       it "should rescue the exception and add this to serialized fetch errors" do
         scraper = mock
         Scraper.stub(:define){ scraper }
+
         uri = mock
         URI.stub(:parse).with(@entry.url){uri}
+
         scraper.should_receive(:scrape).with(uri).and_raise(Scraper::Reader::HTMLParseError)
         @entry.fetch_content!.should be_nil
         @entry.fetch_errors.should == {:error => "Scraper::Reader::HTMLParseError"}
@@ -149,6 +184,32 @@ describe FeedEntry do
     end
   end
 
+  describe 'locations' do
+    context "when the entry has no locations at all" do
+      it 'should return an empty array' do
+        @feed_entry = FactoryGirl.create(:feed_entry)
+        @feed_entry.locations.should == []
+      end
+    end
+
+    context "when the entry has locations" do
+      it 'should return them' do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+        person        = FactoryGirl.build(:entity, :name => 'Jaime', :type => 'person')
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+        @feed_entry.entities << person
+
+        results = @feed_entry.locations
+        results.should include(location_1)
+        results.should include(location_2)
+        results.should_not include(person)
+      end
+    end
+
+  end
   # -------- State machine tests --------
   describe "change state" do
     before do

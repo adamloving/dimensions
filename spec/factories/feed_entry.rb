@@ -12,5 +12,7 @@ FactoryGirl.define do
     author        'Inaki'
     visible        true
     state         'new'
+
+    #association :feed, :factory => :news_feed
   end
 end
