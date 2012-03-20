@@ -22,7 +22,7 @@
   %body.index.admin_dashboard.logged_in.admin_namespace
     = render 'layouts/admin_top_nav' if admin_user_signed_in?
     #active_admin_content
-      #main_content_wrapper
+      #main_content_wrapper.with_sidebar
         #main_content
           .blank_slate_container#dashboard_default_message
             .admin_page

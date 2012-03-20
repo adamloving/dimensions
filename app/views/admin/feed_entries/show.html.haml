@@ -54,27 +54,27 @@
             %p
               = @feed_entry.content
 
-    - if @feed_entry.localized? && @feed_entry.entities.locations.first.present?
+    - if @feed_entry.localized? && @feed_entry.entities.location.first.present?
       %tr
         %td
           City
         %td
-          = @feed_entry.entities.locations.first.serialized_data["shortname"]
+          = @feed_entry.entities.location.first.serialized_data["shortname"]
       %tr
         %td
           Country
         %td
-          = @feed_entry.entities.locations.first.serialized_data["containedbycountry"]
+          = @feed_entry.entities.location.first.serialized_data["containedbycountry"]
       %tr
         %td
           Latitude
         %td
-          = @feed_entry.entities.locations.first.serialized_data["latitude"]
+          = @feed_entry.entities.location.first.serialized_data["latitude"]
       %tr
         %td
           Longitude
         %td
-          = @feed_entry.entities.locations.first.serialized_data["longitude"]
+          = @feed_entry.entities.location.first.serialized_data["longitude"]
 
 
 .ajax_loading

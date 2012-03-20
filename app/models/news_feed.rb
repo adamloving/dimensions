@@ -2,8 +2,8 @@ require 'dimensions/netutils'
 
 class NewsFeed < ActiveRecord::Base
   include Dimensions::Netutils
-  has_one   :location, :class_name => Entity
-  has_many  :entries, :class_name =>  FeedEntry, :dependent => :restrict
+  has_and_belongs_to_many   :entities
+  has_many                  :entries, :class_name =>  FeedEntry, :dependent => :restrict
 
 
   attr_accessor :location_values
@@ -35,6 +35,11 @@ class NewsFeed < ActiveRecord::Base
   end
 
   
+  def location
+    return nil if self.entities.blank?
+    self.entities.location.first
+  end
+
   def location_values
     @location_values ||= {:serialized_data => {}}
   end
@@ -69,6 +74,11 @@ class NewsFeed < ActiveRecord::Base
   private
 
   def build_location
-    self.location = Entity.new(location_values.merge(:type => 'location'))
+    location = self.entities.find_by_type('location')
+    if location
+      location.update_attributes(location_values.merge(:type => 'location'))
+    else
+      self.entities << Entity.create(location_values.merge(:type => 'location')) unless location_values.except(:serialized_data).blank?
+    end
   end
 end
