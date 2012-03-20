@@ -5,18 +5,18 @@ namespace :searchify do
   task :index => :environment do
 
     # Obtain an IndexTank client
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['location'])
     
     FeedEntry.find_each do |entry|
       begin
-        if entry.localized?
+        if entry.fetched?
           raise("Entry has no locations") if entry.entities.locations.empty?
 
           serialized_hash = entry.entities.locations.first.serialized_data
 
           if serialized_hash["latitude"].present? && serialized_hash["longitude"].present?
             puts "==================================================================================="
-            location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"]}
+            location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"], 2 => entry.published_at.to_i}
             index.document(entry.id).add(:url => entry.url, :published_date => entry.published_at , :text => entry.name, :variables => location.to_s)
             puts "Succesfully indexed #{entry.name}"
             puts "With latitude: #{location[0]}, longitude: #{location[1]}"
