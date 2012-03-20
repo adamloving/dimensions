@@ -1,6 +1,6 @@
 class FeedEntry < ActiveRecord::Base
   belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
-  has_many :entities
+  has_and_belongs_to_many :entities
   serialize :fetch_errors
 
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
@@ -56,6 +56,37 @@ class FeedEntry < ActiveRecord::Base
     entries
   end
 
+  def self.localize(entry)
+    begin
+      if entry.fetched?
+        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
+        entry.published_at||= doc.doc_date
+
+        unless doc.geographies.first.nil?
+          entity = Dimensions::Locator.open_calais_location(doc.geographies) || entry.feed.location
+          entry.entities << entity
+          entry.localize
+          entry.save
+          return true
+        end
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
+  def self.batch_localize
+    begin
+      self.find_each do |entry|
+        self.localize(entry)
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
   def fetch_content!
     return self.content if self.content.present?
 
@@ -80,34 +111,8 @@ class FeedEntry < ActiveRecord::Base
     return self.content
   end
 
-  def self.batch_localize
-    begin
-      self.find_each do |entry|
-        self.localize(entry)
-      end
-    rescue Exception => e
-      puts e.to_s
-      return nil
-    end
+  def locations
+    self.entities.location
   end
 
-  def self.localize(entry)
-    begin
-      if entry.fetched?
-        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
-        entry.published_at||= doc.doc_date
-
-        unless doc.geographies.first.nil?
-          entity = Dimensions::Locator.open_calais_location(doc.geographies)
-          entry.entities << entity
-          entry.localize
-          entry.save
-          return true
-        end
-      end
-    rescue Exception => e
-      puts e.to_s
-      return nil
-    end
-  end
 end
