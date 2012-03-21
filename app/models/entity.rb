@@ -1,6 +1,9 @@
 class Entity < ActiveRecord::Base
-  has_and_belongs_to_many  :feed_entries
-  has_and_belongs_to_many  :news_feeds
+
+  has_many  :feed_entries, :through => :entity_feed_entries
+  has_many  :entity_feed_entries
+  has_and_belongs_to_many :news_feeds
+
 
   serialize   :serialized_data, Hash
 

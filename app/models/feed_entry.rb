@@ -1,6 +1,16 @@
 class FeedEntry < ActiveRecord::Base
-  belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
-  has_and_belongs_to_many :entities
+  belongs_to  :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
+  has_many    :entity_feed_entries
+  has_many    :entities, :through => :entity_feed_entries do
+    def primary
+     where("entity_feed_entries.default = ?", true)
+    end
+
+    def secondary
+     where("entity_feed_entries.default = ?", false)
+    end
+  end
+
   serialize :fetch_errors
 
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
@@ -117,6 +127,14 @@ class FeedEntry < ActiveRecord::Base
 
   def primary_location
     self.entities.location.primary.first
+  end
+
+  def primary_location=(location)
+    self.entity_feed_entries.all.each do|join_object|
+      join_object.update_attributes(:default => false)
+    end
+    join_object = self.entity_feed_entries.find_by_entity_id(location.id)
+    join_object.update_attributes(:default => true)
   end
 
   def secondary_locations

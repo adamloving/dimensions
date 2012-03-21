@@ -212,6 +212,7 @@ describe FeedEntry do
   end
 
   describe 'primary_location' do
+
     context "when the entry has no locations at all" do
       it 'should return nil' do
         @feed_entry = FactoryGirl.create(:feed_entry)
@@ -222,14 +223,55 @@ describe FeedEntry do
     context "when the entry has locations" do
       it 'should return only the one marked as primary' do
         @feed_entry   = FactoryGirl.create(:feed_entry)
-        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location', :default => true)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
         location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
 
         @feed_entry.entities << location_1
         @feed_entry.entities << location_2
 
+        @feed_entry.primary_location = location_1
+
         @feed_entry.primary_location.should == location_1
       end
+
+      it "should return the last location marked as primary" do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+
+        @feed_entry.primary_location = location_1
+        @feed_entry.primary_location = location_2
+
+
+
+        @feed_entry.primary_location.should == location_2
+        @feed_entry.secondary_locations.should == [location_1]
+
+      end
+    end
+
+    
+    it "should be independent for each entry and unique" do
+      entry   = FactoryGirl.create(:feed_entry)
+      entry2  = FactoryGirl.create(:feed_entry)
+
+      locations = [ FactoryGirl.build(:entity, :name => 'GDL', :type => 'location'),
+                    FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')]
+
+      entry.entities  = locations
+      entry2.entities = locations
+
+      guadalajara = entry.locations.find_by_name('GDL')
+      entry.primary_location = guadalajara
+
+      manzanillo  = entry2.locations.find_by_name('Manzanillo')
+      entry2.primary_location = manzanillo
+      
+      entry.primary_location.should  == guadalajara
+      entry2.primary_location.should == manzanillo
     end
   end
 
@@ -244,12 +286,14 @@ describe FeedEntry do
     context "when the entry has locations" do
       it 'should return the array of the secondary locations' do
         @feed_entry   = FactoryGirl.create(:feed_entry)
-        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location', :default => true)
-        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+        
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo')
 
         @feed_entry.entities << location_1
         @feed_entry.entities << location_2
 
+        @feed_entry.primary_location = location_1
         @feed_entry.secondary_locations.should == [location_2]
       end
     end
