@@ -15,7 +15,7 @@
   = f.hidden_field :location_longitude
 
   %p
-    = link_to "Verify Address", "#", :id => "verify_address"
+    = link_to "Verify Address", "#", :id => "verify_address", :class=>"label label-info"
   %p.subm
     = f.submit feed.new_record? ? "Create" : "Update"
 

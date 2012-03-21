@@ -16,7 +16,7 @@ $(document).ready(function(){
           var index = 0;
 
           _.each(results, function(result){
-            locations += "<p data-location-index=" + index + ">" +  result.formatted_address +"<a href='#' class='pick_location' data-location='"+result.formatted_address+"'>Select this location</a></p>";
+            locations += "<p data-location-index=" + index + ">" +  result.formatted_address +"<a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p>";
             index++;
             return locations;
           });
@@ -29,7 +29,7 @@ $(document).ready(function(){
     return false;
   });
 
-  $(".pick_location").live("click", function(){
+  $("#pick_location").live("click", function(){
     var index       = $(this).parents("p").data('location-index')
        ,locations   = $('.address_results').data('locations')
        ,latitude    = locations[index].geometry.location.lat()

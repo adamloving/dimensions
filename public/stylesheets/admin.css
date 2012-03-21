@@ -993,6 +993,35 @@ form fieldset.buttons li.cancel a span.icon svg {
   -webkit-box-shadow:3px 1px 12px 1px #ccc;   
  }
 
+ form#new_news_feed.new_news_feed p{
+   padding:0;
+   margin: 10px;
+   overflow:hidden;
+ }
+ form#new_news_feed.new_news_feed p label{
+  line-height: 35px;
+  font-size: 14px;
+  font-weight: bold;
+  float:left;
+  width:150px;
+  margin-right: 20px;
+ }
+ form#new_news_feed.new_news_feed p input{
+  border: 1px solid #C9D0D6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 0.95em;
+  font-family: Helvetica, Arial, sans-serif;
+  outline: none;
+  padding: 8px 10px;
+  float:left;
+ }
+ form#new_news_feed.new_news_feed p.subm input{
+   float:initial;
+ }
+
+
 /* line 192, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/_forms.css.scss */
 .sidebar_section label {
   display: block;
@@ -2263,6 +2292,37 @@ a.table_tools_button.dropdown_button .arrow {
   top: 8px;
   right: 9px;
   width: 0;
+}
+a#pick_location.btn.btn-info{
+  color:white;
+  text-decoration:initial;
+}
+.btn-info{
+  background-color: #49AFCD;
+  background-image: -moz-linear-gradient(top, #5bc0de, #2f96b4);
+  background-image: -ms-linear-gradient(top, #5bc0de, #2f96b4);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5bc0de), to(#2f96b4));
+  background-image: -webkit-linear-gradient(top, #5bc0de, #2f96b4);
+  background-image: -o-linear-gradient(top, #5bc0de, #2f96b4);
+  background-image: linear-gradient(top, #5bc0de, #2f96b4);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5bc0de', endColorstr='#2f96b4', GradientType=0);
+  border-color: #2F96B4 #2F96B4 #1F6377;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.icon-ok{
+background-position: -288px 0px;
+}
+[class^="icon-"], [class*=" icon-"] {
+display: inline-block;
+width: 14px;
+height: 14px;
+line-height: 14px;
+vertical-align: text-top;
+background-image: url("../images/glyphicons-halflings-white.png");
+background-repeat: no-repeat;
+}
 }
 
 /* line 54, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_table_tools.css.scss */
