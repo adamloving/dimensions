@@ -15,7 +15,7 @@ $(document).ready(function(){
           var locations = "";
           var index = 0;
 
-          locations+="<table>";
+          locations+="<table class='table table-striped'>";
           console.log(locations);
           _.each(results, function(result){
             locations += "<tr><td><p>" +  result.formatted_address +"</p></td> <td> <p data-location-index=" + index + "><a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p></td></tr>";
@@ -26,7 +26,7 @@ $(document).ready(function(){
           locations+="</table>";
 
           $('.address_results').data('locations', results);
-          $('.address_results').html("<p>Is any of the following locations correct? </p>" + locations);
+          $('.address_results').html("<p class='title'>Is any of the following locations correct? </p>" + locations);
           $('.errors_for_address').empty();
         }
     });
