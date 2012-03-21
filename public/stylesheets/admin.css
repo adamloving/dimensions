@@ -1053,6 +1053,15 @@ form fieldset.buttons li.cancel a span.icon svg {
  form#new_news_feed.new_news_feed p.subm input{
    float:initial;
  }
+ form.edit_news_feed p.subm input{
+   float:initial;
+ }
+ .address_results .newsfeed-table{
+   padding: 0 10%;
+ }
+ .address_results .newsfeed-table td{
+   padding: 0 12px 12px 12px;
+ }
 
  .address_results p.title {
    color: #f00;
