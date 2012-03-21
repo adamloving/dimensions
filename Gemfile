@@ -19,6 +19,9 @@ gem 'sass-rails'
 #========================================
 gem 'feedzirra'
 
+# background jobs
+#========================================
+gem 'resque'
 
 gem 'rake'
 gem 'haml-rails'
