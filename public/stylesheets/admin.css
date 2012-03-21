@@ -1786,11 +1786,6 @@ table.index_grid td {
   float: left;
 }
 
-/* line 1, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_links.scss */
-a, a:link, a:visited {
-  color: #38678b;
-  text-decoration: underline;
-}
 
 /* line 5, ../../../../.rvm/gems/ruby-1.9.2-p290@dimensions/gems/activeadmin-0.4.2/app/assets/stylesheets/active_admin/components/_links.scss */
 a:hover {

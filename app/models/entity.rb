@@ -8,6 +8,8 @@ class Entity < ActiveRecord::Base
   Entity.inheritance_column= "ruby_type"
 
   scope     :location, where(:type => "location")
+  scope     :primary, where(:default => true)
+  scope     :secondary, where(:default => false)
 
   validates :name, :uniqueness => {:scope => :type}
 end

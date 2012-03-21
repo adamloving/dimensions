@@ -116,4 +116,11 @@ class FeedEntry < ActiveRecord::Base
     self.entities.location
   end
 
+  def primary_location
+    self.entities.location.primary.first
+  end
+
+  def secondary_locations
+    self.entities.location.secondary
+  end
 end
