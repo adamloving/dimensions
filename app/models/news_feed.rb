@@ -2,8 +2,9 @@ require 'dimensions/netutils'
 
 class NewsFeed < ActiveRecord::Base
   include Dimensions::Netutils
-  has_and_belongs_to_many   :entities
-  has_many                  :entries, :class_name =>  FeedEntry, :dependent => :restrict
+
+  has_and_belongs_to_many :entities
+  has_many  :entries, :class_name =>  FeedEntry, :dependent => :restrict
 
 
   attr_accessor :location_values
