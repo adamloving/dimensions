@@ -72,7 +72,6 @@ class FeedEntry < ActiveRecord::Base
         return true
       end
     rescue Exception => e
-      puts e.to_s
       return nil
     end
   end
