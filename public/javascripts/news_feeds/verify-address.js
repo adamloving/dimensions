@@ -15,11 +15,15 @@ $(document).ready(function(){
           var locations = "";
           var index = 0;
 
+          locations+="<table>";
+          console.log(locations);
           _.each(results, function(result){
-            locations += "<p data-location-index=" + index + ">" +  result.formatted_address +"<a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p>";
+            locations += "<tr><td><p>" +  result.formatted_address +"</p></td> <td> <p data-location-index=" + index + "><a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p></td></tr>";
             index++;
             return locations;
           });
+          console.log(locations);
+          locations+="</table>";
 
           $('.address_results').data('locations', results);
           $('.address_results').html("<p>Is any of the following locations correct? </p>" + locations);

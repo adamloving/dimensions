@@ -1017,6 +1017,30 @@ form fieldset.buttons li.cancel a span.icon svg {
   padding: 8px 10px;
   float:left;
  }
+ form.edit_news_feed p{
+   padding:0;
+   margin: 10px;
+   overflow:hidden;
+ }
+ form.edit_news_feed p label{
+  line-height: 35px;
+  font-size: 14px;
+  font-weight: bold;
+  float:left;
+  width:150px;
+  margin-right: 20px;
+ }
+ form.edit_news_feed p input{
+  border: 1px solid #C9D0D6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 0.95em;
+  font-family: Helvetica, Arial, sans-serif;
+  outline: none;
+  padding: 8px 10px;
+  float:left;
+ }
  form#new_news_feed.new_news_feed p.subm input{
    float:initial;
  }
@@ -2312,7 +2336,7 @@ a#pick_location.btn.btn-info{
   filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 }
 .icon-ok{
-background-position: -288px 0px;
+background-position: -144px -96px;
 }
 [class^="icon-"], [class*=" icon-"] {
 display: inline-block;
