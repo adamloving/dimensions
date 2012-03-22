@@ -23,8 +23,7 @@ function SearchController(){
     $(this.element).empty().append("<p>Loading...</p>")
     query = window.filter.getQuery();
     if(!query.q){
-      query.q = "seattle";
-      query.fetch = '*';
+      query.fetch = 'text,url,timestamp';
     }
       window.searchify.search(query);
     });

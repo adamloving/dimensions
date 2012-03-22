@@ -17,7 +17,7 @@ $(document).ready(function(){
           var locations = "";
           var index = 0;
 
-          locations+="<table class='newsfeed-table'>";
+          locations+="<table>";
           _.each(results, function(result){
             if (loc!=result.formatted_address){
               locations += "<tr><td><p>" +  result.formatted_address +"</p></td> <td> <p data-location-index=" + index + "><a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p></td></tr>";
