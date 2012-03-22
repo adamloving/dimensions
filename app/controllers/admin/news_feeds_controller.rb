@@ -36,7 +36,7 @@ class Admin::NewsFeedsController < Admin::BaseController
   
   def load_entries
     begin
-      @news_feed.load_entries
+      @news_feed.bg_load_entries
       flash[:notice] = "We are processing the feeds for '#{@news_feed.name}'..."
       redirect_to :action => :index
     rescue Exception => e
