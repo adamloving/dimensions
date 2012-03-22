@@ -20,18 +20,3 @@ $(function(){
     $(hideMessage);
   });
 });
-function set_primary_location(response){
-  $("span.feed_entry_"+response.entry).each(function(){
-    $(this).removeClass("label-success").addClass("label-info")
-  });
-
-  current = $("span.feed_entry_"+response.entry).
-    find("a.location_"+response.location.entity.id).parent();
-
-  current.removeClass("label-info").addClass("label-success");
-
-   container =  current.parent();
-   current.remove();
-
-   container.effect("highlight", {}, 3000).prepend(current)
-}

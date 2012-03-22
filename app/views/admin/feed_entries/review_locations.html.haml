@@ -1,12 +1,3 @@
-.table_tools
-  %ul.scopes.table_tools_segmented_control
-    %li.scoope
-      = link_to "all", search_admin_feed_entries_path, :class=>"table_tools_button"
-    %li.scoope
-      = link_to "normal", search_admin_feed_entries_path(:q => {:failed_equals => false}), :class=>"table_tools_button"
-    %li.scoope
-      = link_to "failed", search_admin_feed_entries_path(:q => {:failed_equals => true}), :class=>"table_tools_button"
-
 .pagination
   = paginate @feed_entries
 %table.feed_entries.table-striped.table
@@ -29,12 +20,12 @@
         %td= entry.name
         %td
           - unless entry.primary_location.nil?
-            %span.label.label-success
-              = link_to entry.primary_location.name, "#"
+            %span.label.label-success{:id=>"feed_entry_#{entry.id}"}
+              = link_to entry.primary_location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => entry.primary_location.id), :method => :put, :remote => true, :rel => :nofollow, :id => "location_#{entry.primary_location.id}", :class => 'location'
 
           - for location in entry.secondary_locations
-            %span.label.label-info
-              = link_to location.name, '#' 
+            %span.label.label-info{:id=>"feed_entry_#{entry.id}"}
+              = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :method => :put, :remote => true, :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
         %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
             = entry.state
@@ -46,3 +37,4 @@ entry)
           = "|"
           = link_to "Delete", admin_news_feed_feed_entry_path(entry.feed, entry), :method => :delete, :confirm => "Are you sure?"
 
+= javascript_include_tag 'feed_entries/review_locations.onReady'

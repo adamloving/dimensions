@@ -1,5 +1,5 @@
 class Admin::FeedEntriesController < Admin::BaseController
-  before_filter :find_feed, :except => [:index, :search]
+  before_filter :find_feed, :except => [:index, :search, :review_locations, :set_primary_location]
 
   def index
     @feed_entries = if params[:news_feed_id]
@@ -59,10 +59,12 @@ class Admin::FeedEntriesController < Admin::BaseController
   end
 
   def set_primary_location
-    location = @news_feed.entries.find(params[:feed_entry_id]).entities.find(params[:id])
-    @news_feed.entries.find(params[:feed_entry_id]).primary_location=(location)
-    respond_to do |format| 
-      format.js {render :json=>{:location=>location,:entry=>params[:feed_entry_id]},:callback=>"set_primary_location"}
+    entry     = FeedEntry.find(params[:feed_entry_id])
+    location  = entry.locations.find(params[:location_id])
+    entry.primary_location = location
+
+    respond_to do |format|
+      format.js { render :json=> {:location=>location, :entry=>params[:feed_entry_id]}}
     end
   end
 
