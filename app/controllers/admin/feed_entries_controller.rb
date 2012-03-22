@@ -53,9 +53,9 @@ class Admin::FeedEntriesController < Admin::BaseController
 
   def fetch_content
     entry = @news_feed.entries.find(params[:id])
+    entry.fetch
 
-    if entry.fetch_content!.present?
-      entry.save
+    if entry.save
       flash[:notice] = "Entry successfully processed"
     else
       flash[:error] = "There are some errors trying to process the entry: #{entry.fetch_errors.values.join(',')}"

@@ -7,6 +7,8 @@ class FeedEntry < ActiveRecord::Base
 
   state_machine :initial => :new do
 
+    after_transition :on => :fetch, :do => :fetch_content!
+
     event :download do
       transition :new => :downloaded
     end
@@ -57,26 +59,8 @@ class FeedEntry < ActiveRecord::Base
 
   def fetch_content!
     return self.content if self.content.present?
-
-    begin
-      scraper = Scraper.define do
-        array :content
-
-        process "p", :content => :text
-        result :content
-      end
-      uri = URI.parse(self.url)
-      self.content = scraper.scrape(uri).join(" ")
-      self.save
-      self.fetch
-    rescue Exception => e
-      self.fetch_errors = {:error => e.to_s}
-      self.failed = true
-      self.save
-      return nil
-    end
-
-    return self.content
+    Resque.enqueue(EntryContentFetcher, self.id)
+    self.content
   end
 
   def self.batch_localize
