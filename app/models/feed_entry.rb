@@ -144,4 +144,36 @@ class FeedEntry < ActiveRecord::Base
   def secondary_locations
     self.entities.location.secondary
   end
+
+  def self.batch_tag
+    begin
+      self.find_each do |entry|
+        self.tag(entry)
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
+  def self.tag(entry)
+    begin
+      if entry.localized?
+        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
+        unless doc.categories.empty?
+          entity = Dimensions::Tagger.open_calais_tag(doc.categories, doc.entities, entry.name)
+          entry.entities << entity
+          entry.tag
+          entry.save
+          return true
+        end
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
+  def self.tags
+  end
 end
