@@ -37,7 +37,8 @@ class Admin::NewsFeedsController < Admin::BaseController
   def load_entries
     begin
       @news_feed.load_entries
-      render :text => "We have successfully loaded your news feed"
+      flash[:notice] = "We are processing the feeds for '#{@news_feed.name}'..."
+      redirect_to :action => :index
     rescue Exception => e
       render :text => "We have had errors loading your feed: #{e.to_s}"
     end

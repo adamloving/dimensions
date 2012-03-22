@@ -12,7 +12,7 @@ class NewsFeed < ActiveRecord::Base
   before_save :url_connection_valid? unless Rails.env.test?
 
   def load_entries
-    entries = FeedEntry.update_from_feed(self.url)
+    entries = Resque.enqueue(FeedLoader, self.url)
     self.entries += entries
     self.save
     entries.each do|entry|

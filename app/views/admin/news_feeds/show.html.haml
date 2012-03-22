@@ -5,7 +5,7 @@
     NewsFeed - Actions
   #panel_contents
     %h4
-      = link_to "Process", load_entries_admin_news_feed_path(@news_feed), :method => :post, :remote => true,:class=>"button_link",:id=>"news_feed_proccess"
+      = link_to "Process", load_entries_admin_news_feed_path(@news_feed), :method => :post, :class=>"button_link",:id=>"news_feed_proccess"
     %p
     %h4
       = link_to "Process Entries", process_entries_admin_news_feed_path(@news_feed),:class=>"button_link"
