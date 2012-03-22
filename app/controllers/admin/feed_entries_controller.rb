@@ -52,7 +52,7 @@ class Admin::FeedEntriesController < Admin::BaseController
 
   def fetch_content
     entry = @news_feed.entries.find(params[:id])
-    entry.fetch
+    Resque.enqueue(EntryContentFetcher, entry.id)
 
     if entry.save
       flash[:notice]  = "Entry successfully processed"

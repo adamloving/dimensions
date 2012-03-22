@@ -3,6 +3,6 @@ class EntryContentFetcher
 
   def self.perform(entry_id)
     entry = FeedEntry.find_by_id(entry_id)
-    entry.fetch_content!
+    entry.fetch
   end
 end
