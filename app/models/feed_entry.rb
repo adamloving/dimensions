@@ -179,6 +179,7 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  def self.tags
+  def self.tags(id)
+    self.find(id).entities.tag
   end
 end

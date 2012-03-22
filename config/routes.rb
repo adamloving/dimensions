@@ -13,6 +13,8 @@ RailsBootstrap::Application.routes.draw do
   end
 
   namespace :admin do
+    
+    match "tags/:id/index" => "tags#index"
     resources :news_feeds do
       get :process_entries, :on => :member
       post :load_entries, :on => :member
