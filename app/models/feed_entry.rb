@@ -103,9 +103,6 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  def bg_fetch_content
-    Resque.enqueue(EntryContentFetcher, self.id)
-  end
   def fetch_content!
     return self.content if self.content.present?
     begin
