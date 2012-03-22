@@ -6,6 +6,7 @@ class Entity < ActiveRecord::Base
 
 
   serialize   :serialized_data, Hash
+  serialize   :tags, Array
 
   # we fucked up with the naming of the STI names.
   Entity.inheritance_column= "ruby_type"
