@@ -22,6 +22,7 @@ RailsBootstrap::Application.routes.draw do
         put :toggle_visible, :on => :member
         post :fetch_content, :on => :member
         post :process_entry, :on => :member
+        get :review_locations , :on => :collection
       end
     end
 

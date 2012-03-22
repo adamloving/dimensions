@@ -9,6 +9,14 @@ class Admin::FeedEntriesController < Admin::BaseController
     end
   end
 
+  def review_locations
+    @feed_entries = if params[:news_feed_id]
+      NewsFeed.find(params[:news_feed_id]).entries.localized.page(params[:page]).per(20)
+    else
+      FeedEntry.localized.page(params[:page]).per(20)
+    end
+  end
+
   def new
     @feed_entry = @news_feed.entries.build
   end

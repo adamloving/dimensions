@@ -14,6 +14,7 @@ class FeedEntry < ActiveRecord::Base
   serialize :fetch_errors
 
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
+  scope :localized, where("state = ?","localized")
 
   state_machine :initial => :new do
 
