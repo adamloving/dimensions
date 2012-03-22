@@ -3,7 +3,7 @@
 %head
   %title Dimensions
   %meta{:name=>"keywords", :content=>"template language"}
-  = stylesheet_link_tag 'bootstrap.min'
+  = stylesheet_link_tag 'bootstrap.css'
   = stylesheet_link_tag 'jquery-ui-1.8.16.custom.css'
   = stylesheet_link_tag "ui.slider.extras.css"
   = stylesheet_link_tag 'main.css'
@@ -15,8 +15,8 @@
   = javascript_include_tag 'app.js'
   = javascript_include_tag 'application'
   = javascript_include_tag 'filter.js'
-  -#= javascript_include_tag 'tag_list.js'
-  -#= javascript_include_tag 'groups.js'
+  = javascript_include_tag 'tag_list.js'
+  = javascript_include_tag 'groups.js'
   -#= javascript_include_tag 'stream.js'
   = javascript_include_tag 'bootstrap-dropdown.js'
   = javascript_include_tag 'jquery.tmpl.min.js'
@@ -25,7 +25,13 @@
   = javascript_include_tag 'jquery.ui.map.full.min.js'
   = javascript_include_tag 'map_controls.js'
   = javascript_include_tag 'searchify/searchify-client'
+  -#= javascript_include_tag 'searchify/stream.js'
+  = javascript_include_tag 'searchify/searchify-client'
   = javascript_include_tag 'searchify/stream.js'
+  = javascript_include_tag 'dimensions/jquery.address-1.4.min.js/'
+  = javascript_include_tag 'dimensions/router.js'
+  = javascript_include_tag 'dimensions/controllers.js'
+  = javascript_include_tag 'dimensions/renderer.js'
 %body
   = render :partial => 'layouts/facebook_sdk'
   = render :partial => 'layouts/top_nav'

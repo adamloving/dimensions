@@ -19,5 +19,4 @@ $(function(){
     flashMessage("notice",response.responseText);
     $(hideMessage);
   });
-
 });

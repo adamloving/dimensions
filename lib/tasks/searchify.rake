@@ -5,33 +5,29 @@ namespace :searchify do
   task :index => :environment do
 
     # Obtain an IndexTank client
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['location'])
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
     
     FeedEntry.find_each do |entry|
       begin
-        if entry.fetched?
-          raise("Entry has no locations") if entry.entities.locations.empty?
+        if entry.localized?
+          raise("Entry has no locations") if entry.primary_location.nil?
 
-          serialized_hash = entry.entities.locations.first.serialized_data
+          serialized_hash = entry.primary_location.serialized_data
 
           if serialized_hash["latitude"].present? && serialized_hash["longitude"].present?
-            puts "==================================================================================="
-            location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"], 2 => entry.published_at.to_i}
-            index.document(entry.id).add(:url => entry.url, :published_date => entry.published_at , :text => entry.name, :variables => location.to_s)
-            puts "Succesfully indexed #{entry.name}"
-            puts "With latitude: #{location[0]}, longitude: #{location[1]}"
-            puts "==================================================================================="
+            doc_variables = { 0 => serialized_hash["latitude"],
+                              1 => serialized_hash["longitude"],
+                              2 => entry.published_at.to_i }
+
+            fields = {:url => entry.url, :timestamp => entry.published_at.to_i , :text => entry.name}
+            index.document(entry.id).add(fields, :variables => doc_variables)
+            puts "[\033[32mSuccesfully indexed #{entry.name}\033[0m]"
           else
-            puts "==================================================================================="
-            puts "#{entry.name} has no latitude and longitude #{serialized_hash}"
-            puts "==================================================================================="
+            puts "[\033[31m#{entry.name} has no latitude and longitude #{serialized_hash}\033[0m]"
           end
-        else
-          puts "This entry is not localized #{entry.name}"
         end
-  
       rescue
-        puts "Error: #{$!}"
+        puts "[\033[31mError: #{$!}\033[0m]"
       end
     end
   end
@@ -41,10 +37,10 @@ namespace :searchify do
     index = Dimensions::SearchifyApi.instance.indexes(ENV['INDEX_NAME'])
     index.add()
 
-    print "Waiting for index to be ready"
+    print "\033[33mWaiting for index to be ready\033[0m"
 
     while not index.running?
-        print "."
+        print "\033[32m.\033[0m"
         STDOUT.flush
         sleep 0.5
     end
@@ -65,6 +61,17 @@ namespace :searchify do
       rescue
         puts "Error: #{$!}"
       end
+    end
+  end
+
+  task :delete_index => :environment do
+    raise("Usage: rake searchify:delete_index INDEX_NAME=<INDEX_NAME>") if ENV["INDEX_NAME"].nil?
+    begin
+      index = Dimensions::SearchifyApi.instance.indexes(ENV['INDEX_NAME'])
+      index.delete
+      puts "Deleting index [ \033[32mDONE\033[0m ]"
+    rescue IndexTank::NonExistentIndex => e
+      puts " [ \033[31mIndex doesn't exist\033[0m ]"
     end
   end
 end
