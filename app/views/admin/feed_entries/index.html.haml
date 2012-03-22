@@ -35,6 +35,14 @@
         %td= entry.name
         %td= entry.published_at
         %td
+          - unless entry.primary_location.nil?
+            %span.label.label-success{:class=>"feed_entry_#{entry.id}"}
+              = link_to entry.primary_location.name, "#primary"
+
+          - for location in entry.secondary_locations
+            %span.label.label-info{:class=>"feed_entry_#{entry.id}"}
+              = link_to location.name, set_primary_location_admin_news_feed_feed_entry_entity_path(entry.feed,entry,location),:method=>:put,:remote=>true,:rel=>:nofollow,:class=>"location_#{location.id}"
+        %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
             = entry.state
           

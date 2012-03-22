@@ -17,12 +17,14 @@ RailsBootstrap::Application.routes.draw do
       get :process_entries, :on => :member
       post :load_entries, :on => :member
       get :search, :on => :collection
-
       resources :feed_entries do
         put :toggle_visible, :on => :member
         post :fetch_content, :on => :member
         post :process_entry, :on => :member
-        get :review_locations , :on => :collection
+        get :review_locations, :on => :collection
+        resources :entities do
+          put :set_primary_location,:on => :member,:controller=>:feed_entries
+        end
       end
     end
 
@@ -31,7 +33,6 @@ RailsBootstrap::Application.routes.draw do
     end
     root :to => "news_feeds#index"
   end
-
 
 
   # The priority is based upon order of creation:

@@ -58,6 +58,14 @@ class Admin::FeedEntriesController < Admin::BaseController
     redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
   end
 
+  def set_primary_location
+    location = @news_feed.entries.find(params[:feed_entry_id]).entities.find(params[:id])
+    @news_feed.entries.find(params[:feed_entry_id]).primary_location=(location)
+    respond_to do |format| 
+      format.js {render :json=>{:location=>location,:entry=>params[:feed_entry_id]},:callback=>"set_primary_location"}
+    end
+  end
+
   def fetch_content
     entry = @news_feed.entries.find(params[:id])
 
