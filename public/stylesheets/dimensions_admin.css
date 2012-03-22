@@ -1,0 +1,9 @@
+.label {
+  display: inline-block;
+  margin-right: 5px; }
+  .label a {
+    text-decoration: none; }
+  .label.label-success a {
+    color: #fff; }
+  .label.label-info a {
+    color: #fff; }

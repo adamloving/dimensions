@@ -5,19 +5,19 @@ namespace :searchify do
   task :index => :environment do
 
     # Obtain an IndexTank client
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['location'])
     
     FeedEntry.find_each do |entry|
       begin
-        if entry.localized?
-          raise("Entry has no locations") if entry.entities.locations.first.nil?
+        if entry.fetched?
+          raise("Entry has no locations") if entry.entities.locations.empty?
+
           serialized_hash = entry.entities.locations.first.serialized_data
-          if serialized_hash["latitude"] && serialized_hash["longitude"]
+
+          if serialized_hash["latitude"].present? && serialized_hash["longitude"].present?
             puts "==================================================================================="
-            location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"]}
+            location = {0 => serialized_hash["latitude"], 1 => serialized_hash["longitude"], 2 => entry.published_at.to_i}
             index.document(entry.id).add(:url => entry.url, :published_date => entry.published_at , :text => entry.name, :variables => location.to_s)
-            entry.tag
-            entry.save
             puts "Succesfully indexed #{entry.name}"
             puts "With latitude: #{location[0]}, longitude: #{location[1]}"
             puts "==================================================================================="
@@ -27,7 +27,7 @@ namespace :searchify do
             puts "==================================================================================="
           end
         else
-          puts "This entry is already processed #{entry.name}"
+          puts "This entry is not localized #{entry.name}"
         end
   
       rescue
@@ -53,24 +53,15 @@ namespace :searchify do
   end
 
   task :clean_index => :environment do
-    # Obtain an IndexTank client
     raise("Usage: rake searchify:clean_index INDEX_NAME=<INDEX_NAME>") if ENV["INDEX_NAME"].nil?
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices'][ENV['INDEX_NAME']])
+    index = Dimensions::SearchifyApi.instance.indexes(ENV['INDEX_NAME'])
 
     FeedEntry.find_each do |entry|
       begin
-        if entry.tagged?
-          puts "===================================================================================="
-          index.document(entry.id).delete
-          entry.untag
-          entry.save
-          puts "Succesfully removed #{entry.name}."
-          puts "==================================================================================="
-        else
-          puts "==================================================================================="
-          puts "#{entry.name} is not tagged yet, nothing to do..."
-          puts "==================================================================================="
-        end
+        puts "===================================================================================="
+        index.document(entry.id).delete
+        puts "Succesfully removed #{entry.name}."
+        puts "==================================================================================="
       rescue
         puts "Error: #{$!}"
       end

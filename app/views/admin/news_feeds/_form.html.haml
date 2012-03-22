@@ -7,5 +7,17 @@
     = f.label :name
     = f.text_field :name
   %p
+    = f.label :address
+    = f.text_field :address
+    .address_results
+    .errors_for_address
+  = f.hidden_field :location_latitude
+  = f.hidden_field :location_longitude
+
+  %p
+    = link_to "Verify Address", "#", :id => "verify_address", :class=>"label label-info"
+  %p.subm
     = f.submit feed.new_record? ? "Create" : "Update"
 
+  = javascript_include_tag "news_feeds/verify-address.js"
+    

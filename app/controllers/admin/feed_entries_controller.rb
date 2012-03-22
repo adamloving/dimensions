@@ -2,7 +2,6 @@ class Admin::FeedEntriesController < Admin::BaseController
   before_filter :find_feed, :except => [:index, :search]
 
   def index
-    #@feed_entries = @news_feed.entries
     @feed_entries = if params[:news_feed_id]
       NewsFeed.find(params[:news_feed_id]).entries.page(params[:page]).per(20)
     else

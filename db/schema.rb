@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120314184141) do
+ActiveRecord::Schema.define(:version => 20120321170724) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -51,8 +51,18 @@ ActiveRecord::Schema.define(:version => 20120314184141) do
     t.string   "serialized_data"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
-    t.integer  "feed_entry_id"
     t.string   "name"
+  end
+
+  create_table "entities_news_feeds", :id => false, :force => true do |t|
+    t.integer "entity_id"
+    t.integer "news_feed_id"
+  end
+
+  create_table "entity_feed_entries", :force => true do |t|
+    t.integer "entity_id"
+    t.integer "feed_entry_id"
+    t.boolean "default",       :default => false
   end
 
   create_table "feed_entries", :force => true do |t|

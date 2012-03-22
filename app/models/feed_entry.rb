@@ -1,6 +1,16 @@
 class FeedEntry < ActiveRecord::Base
-  belongs_to :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
-  has_many :entities
+  belongs_to  :feed, class_name: NewsFeed, foreign_key: "news_feed_id"
+  has_many    :entity_feed_entries
+  has_many    :entities, :through => :entity_feed_entries do
+    def primary
+     where("entity_feed_entries.default = ?", true)
+    end
+
+    def secondary
+     where("entity_feed_entries.default = ?", false)
+    end
+  end
+
   serialize :fetch_errors
 
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
@@ -26,11 +36,12 @@ class FeedEntry < ActiveRecord::Base
     end
 
     event :next do
-      transition :new => :downloaded
-      transition :downloaded => :fetched
-      transition :fetched => :localized
-      transition :localized => :tagged
+      transition :new         => :downloaded
+      transition :downloaded  => :fetched
+      transition :fetched     => :localized
+      transition :localized   => :tagged
     end
+
     event :untag do
       transition :tagged => :localized
     end
@@ -57,10 +68,28 @@ class FeedEntry < ActiveRecord::Base
     entries
   end
 
-  def fetch_content!
-    return self.content if self.content.present?
-    Resque.enqueue(EntryContentFetcher, self.id)
-    self.content
+  def self.localize(entry)
+    begin
+      if entry.fetched?
+        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
+        entry.published_at||= doc.doc_date
+
+        entry.entities.push(entry.feed.location)
+        entry.primary_location = entry.feed.location
+
+        unless doc.geographies.empty?
+          locations = Dimensions::Locator.parse_locations(doc.geographies)
+          entry.entities = locations
+          entry.primary_location = locations.first
+        end
+
+        entry.localize
+        entry.save
+        return true
+      end
+    rescue Exception => e
+      return nil
+    end
   end
 
   def self.batch_localize
@@ -74,23 +103,29 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  def self.localize(entry)
-    begin
-      if entry.fetched?
-        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
-        entry.published_at||= doc.doc_date
+  def fetch_content!
+    return self.content if self.content.present?
+    Resque.enqueue(EntryContentFetcher, self.id)
+    self.content
+  end
 
-        unless doc.geographies.first.nil?
-          entity = Dimensions::Locator.open_calais_location(doc.geographies)
-          entry.entities << entity
-          entry.localize
-          entry.save
-          return true
-        end
-      end
-    rescue Exception => e
-      puts e.to_s
-      return nil
+  def locations
+    self.entities.location
+  end
+
+  def primary_location
+    self.entities.location.primary.first
+  end
+
+  def primary_location=(location)
+    self.entity_feed_entries.all.each do|join_object|
+      join_object.update_attributes(:default => false)
     end
+    join_object = self.entity_feed_entries.find_by_entity_id(location.id)
+    join_object.update_attributes(:default => true)
+  end
+
+  def secondary_locations
+    self.entities.location.secondary
   end
 end

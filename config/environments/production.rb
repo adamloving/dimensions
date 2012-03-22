@@ -50,6 +50,6 @@ RailsBootstrap::Application.configure do
   config.middleware.use ExceptionNotifier,
     :email_prefix => "[Dimensions-ExceptionNotifier-Production]",
     :sender_address => %{"Exception Notifier" <app3219037@heroku.com>},
-    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com eric@tangosource.com alejandro.espinoza@tangosource.com}
+    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com alejandro.espinoza@tangosource.com}
 
 end

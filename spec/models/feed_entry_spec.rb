@@ -66,10 +66,54 @@ describe FeedEntry do
       end
     end
 
-    context 'successfully localizing the entry' do
-      it "should return true and must save the new localization" do
-        @entry = FactoryGirl.create(:feed_entry, :published_at => nil)
+    context "when the entry belongs to a localized newsfeed" do
+      before do
+        @feed_entry               = FactoryGirl.create(:feed_entry)
+        @feed_entry.feed          = FactoryGirl.create(:news_feed, :name => "The Washington Post", :url => "http://thewashingtonpost.com")
+        @feed_entry.feed.entities << FactoryGirl.create(:entity, :type => 'location', :serialized_data => {'longitude' => '1.0', 'latitude' => '2.0'})
+        @feed_entry.feed.save
+      end
 
+      context "and the localization has not been successful" do
+        before do
+          @feed_entry.stub(:fetched?){true}
+          @feed_entry.stub(:content){"some content"}
+
+          calais_proxy = mock
+          calais_proxy.stub(:doc_date){now}
+          calais_proxy.stub_chain(:geographies){[]}
+          Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
+          @feed_entry.stub(:primary_location=).with(@feed_entry.feed.location){true}
+        end
+
+        it "should get the localization of the news feed" do
+          lambda{
+            FeedEntry.localize(@feed_entry).should be_true
+          }.should change(Entity, :count).by(0)
+
+          feed_entry = FeedEntry.find(@feed_entry.id)
+
+          locations_map = feed_entry.entities.location.map do|location|
+            coordinates = location.serialized_data
+            [location.name, coordinates['longitude'], coordinates['latitude']]
+          end
+          
+          location = @feed_entry.feed.location 
+          locations_map.should include([location.name, location.serialized_data['longitude'], location.serialized_data['latitude']])
+        end
+      end
+    end
+
+    context 'successfully localizing the entry' do
+
+      before do
+        @entry               = FactoryGirl.create(:feed_entry, :published_at => nil)
+        @entry.feed          = FactoryGirl.create(:news_feed, :name => "The Washington Post", :url => "http://thewashingtonpost.com")
+        @entry.feed.entities << FactoryGirl.create(:entity, :type => 'location', :serialized_data => {'longitude' => '1.0', 'latitude' => '2.0'})
+        @entry.feed.save
+      end
+
+      it "should return true and must save the new localization" do
         @entry.stub(:fetched?){true}
         @entry.stub(:content){"some content"}
 
@@ -78,9 +122,11 @@ describe FeedEntry do
         now = Time.zone.now
         calais_proxy.stub(:doc_date){now}
 
-        calais_proxy.stub_chain(:geographies){["This is a dummy argument"]}
+        calais_proxy.stub_chain(:geographies){["dummy"]}
 
-        Dimensions::Locator.stub(:open_calais_location).with(calais_proxy.geographies){FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )}
+        location = FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )
+        Dimensions::Locator.stub(:parse_locations).with(calais_proxy.geographies){[location]}
+        @feed_entry.stub(:primary_location=).with(location){true}
 
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
 
@@ -90,11 +136,12 @@ describe FeedEntry do
 
         entry = FeedEntry.find(@entry.id)
 
+
         entry.published_at.should_not be_nil
         
         entity = entry.entities.where(:name => "Seattle").first
         entity.should_not be_nil
-        entity.feed_entry.should == entry
+        entity.feed_entries.find(entry.id).should_not be_nil
       end
     end
   end
@@ -140,6 +187,120 @@ describe FeedEntry do
     end
   end
 
+  describe 'locations' do
+    context "when the entry has no locations at all" do
+      it 'should return an empty array' do
+        @feed_entry = FactoryGirl.create(:feed_entry)
+        @feed_entry.locations.should == []
+      end
+    end
+
+    context "when the entry has locations" do
+      it 'should return them' do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+        person        = FactoryGirl.build(:entity, :name => 'Jaime', :type => 'person')
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+        @feed_entry.entities << person
+
+        results = @feed_entry.locations
+        results.should include(location_1)
+        results.should include(location_2)
+        results.should_not include(person)
+      end
+    end
+
+  end
+
+  describe 'primary_location' do
+
+    context "when the entry has no locations at all" do
+      it 'should return nil' do
+        @feed_entry = FactoryGirl.create(:feed_entry)
+        @feed_entry.primary_location.should  be_nil
+      end
+    end
+
+    context "when the entry has locations" do
+      it 'should return only the one marked as primary' do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+
+        @feed_entry.primary_location = location_1
+
+        @feed_entry.primary_location.should == location_1
+      end
+
+      it "should return the last location marked as primary" do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')
+
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+
+        @feed_entry.primary_location = location_1
+        @feed_entry.primary_location = location_2
+
+
+
+        @feed_entry.primary_location.should == location_2
+        @feed_entry.secondary_locations.should == [location_1]
+
+      end
+    end
+
+    
+    it "should be independent for each entry and unique" do
+      entry   = FactoryGirl.create(:feed_entry)
+      entry2  = FactoryGirl.create(:feed_entry)
+
+      locations = [ FactoryGirl.build(:entity, :name => 'GDL', :type => 'location'),
+                    FactoryGirl.build(:entity, :name => 'Manzanillo', :type => 'location')]
+
+      entry.entities  = locations
+      entry2.entities = locations
+
+      guadalajara = entry.locations.find_by_name('GDL')
+      entry.primary_location = guadalajara
+
+      manzanillo  = entry2.locations.find_by_name('Manzanillo')
+      entry2.primary_location = manzanillo
+      
+      entry.primary_location.should  == guadalajara
+      entry2.primary_location.should == manzanillo
+    end
+  end
+
+  describe 'secondary_locations' do
+    context "when the entry has no locations at all" do
+      it 'should return empty array' do
+        @feed_entry = FactoryGirl.create(:feed_entry)
+        @feed_entry.secondary_locations.should  be_empty
+      end
+    end
+
+    context "when the entry has locations" do
+      it 'should return the array of the secondary locations' do
+        @feed_entry   = FactoryGirl.create(:feed_entry)
+        
+        location_1    = FactoryGirl.build(:entity, :name => 'GDL', :type => 'location')
+        location_2    = FactoryGirl.build(:entity, :name => 'Manzanillo')
+
+        @feed_entry.entities << location_1
+        @feed_entry.entities << location_2
+
+        @feed_entry.primary_location = location_1
+        @feed_entry.secondary_locations.should == [location_2]
+      end
+    end
+  end
   # -------- State machine tests --------
   describe "change state" do
     before do
