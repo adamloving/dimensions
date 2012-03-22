@@ -14,8 +14,6 @@ RailsBootstrap::Application.routes.draw do
 
   namespace :admin do
     
-    match "tags/:id/index" => "tags#index"
-    match "tags/:id/delete/:tag" => "tags#destroy"
     resources :news_feeds do
       get :process_entries, :on => :member
       post :load_entries, :on => :member
@@ -32,6 +30,11 @@ RailsBootstrap::Application.routes.draw do
       end
     end
 
+    resources :feed_entries do
+      resources :tags, :only => [:index, :delete] do
+        get :delete
+      end
+    end
     resources :feed_entries, :only => :index do
       put   :set_primary_location
 
