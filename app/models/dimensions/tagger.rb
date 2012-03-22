@@ -7,6 +7,6 @@ class Dimensions::Tagger
         tags.push(entity.attributes["name"])
       end
     end
-    entity = Entity.new(:name => name, :tags => tags, :type => "tags")
+    entity = Entity.new(:name => name, :tags => tags, :type => "tag")
   end
 end

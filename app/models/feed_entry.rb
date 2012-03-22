@@ -77,10 +77,15 @@ class FeedEntry < ActiveRecord::Base
 
         unless doc.geographies.empty?
           locations = Dimensions::Locator.parse_locations(doc.geographies)
-          entry.entities = locations
+          locations.each do |location|
+            if location.nil?
+              puts ":("
+            else
+              entry.entities << location
+            end
+          end
           entry.primary_location = locations.first
         end
-
         entry.localize
         entry.save
         return true

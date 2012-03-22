@@ -14,6 +14,7 @@ class Entity < ActiveRecord::Base
   scope     :location, where(:type => "location")
   scope     :primary, where(:default => true)
   scope     :secondary, where(:default => false)
+  scope     :tag, where(:type => "tag")
 
   validates :name, :uniqueness => {:scope => :type}
 end
