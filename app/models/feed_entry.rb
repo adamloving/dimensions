@@ -180,6 +180,6 @@ class FeedEntry < ActiveRecord::Base
   end
 
   def self.tags(id)
-    self.find(id).entities.tag
+    self.find(id).entities.tag.first
   end
 end

@@ -15,6 +15,7 @@ RailsBootstrap::Application.routes.draw do
   namespace :admin do
     
     match "tags/:id/index" => "tags#index"
+    match "tags/:id/delete/:tag" => "tags#destroy"
     resources :news_feeds do
       get :process_entries, :on => :member
       post :load_entries, :on => :member
