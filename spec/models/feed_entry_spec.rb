@@ -83,6 +83,7 @@ describe FeedEntry do
           calais_proxy.stub(:doc_date){now}
           calais_proxy.stub_chain(:geographies){[]}
           Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
+          @feed_entry.stub(:primary_location=).with(@feed_entry.feed.location){true}
         end
 
         it "should get the localization of the news feed" do
@@ -123,7 +124,9 @@ describe FeedEntry do
 
         calais_proxy.stub_chain(:geographies){["dummy"]}
 
-        Dimensions::Locator.stub(:parse_locations).with(calais_proxy.geographies){[FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )]}
+        location = FactoryGirl.build(:entity, :type => 'location', :name => "Seattle" )
+        Dimensions::Locator.stub(:parse_locations).with(calais_proxy.geographies){[location]}
+        @feed_entry.stub(:primary_location=).with(location){true}
 
         Calais.stub(:process_document).with(:content => "some content", :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'] ){calais_proxy}
 

@@ -977,12 +977,19 @@ form fieldset.buttons li.cancel a span.icon svg {
  }
  form#new_admin_user.new_admin_user div label{
    line-height: 60px;
+   float: left;
+   margin: 0 50px;
+   width: 20%;
+   text-align:left;
+   font-weight: bold;
  }
  form#new_admin_user.new_admin_user div #admin_user_email,#admin_user_password{
    width: 300px;
+   float: left;
  }
  form#new_admin_user.new_admin_user div input#admin_user_remember_me{
    height: 50px;
+   margin-right: 50%;
  }
  form#new_admin_user.new_admin_user{
   padding: 22px 0;
@@ -995,7 +1002,8 @@ form fieldset.buttons li.cancel a span.icon svg {
 
  form#new_news_feed.new_news_feed p{
    padding:0;
-   margin: 10px;
+   margin: 0 25%;
+   margin-top: 15px;
    overflow:hidden;
  }
  form#new_news_feed.new_news_feed p label{
@@ -1003,8 +1011,8 @@ form fieldset.buttons li.cancel a span.icon svg {
   font-size: 14px;
   font-weight: bold;
   float:left;
-  width:150px;
-  margin-right: 20px;
+  width: 95px;
+  text-align: left;
  }
  form#new_news_feed.new_news_feed p input{
   border: 1px solid #C9D0D6;
@@ -1019,7 +1027,8 @@ form fieldset.buttons li.cancel a span.icon svg {
  }
  form.edit_news_feed p{
    padding:0;
-   margin: 10px;
+   margin: 0 25%;
+   margin-top: 15px;
    overflow:hidden;
  }
  form.edit_news_feed p label{
@@ -1027,8 +1036,8 @@ form fieldset.buttons li.cancel a span.icon svg {
   font-size: 14px;
   font-weight: bold;
   float:left;
-  width:150px;
-  margin-right: 20px;
+  width: 95px;
+  text-align: left;
  }
  form.edit_news_feed p input{
   border: 1px solid #C9D0D6;
@@ -1043,6 +1052,19 @@ form fieldset.buttons li.cancel a span.icon svg {
  }
  form#new_news_feed.new_news_feed p.subm input{
    float:initial;
+ }
+ form.edit_news_feed p.subm input{
+   float:initial;
+ }
+ .address_results .newsfeed-table{
+   padding: 0 10%;
+ }
+ .address_results .newsfeed-table td{
+   padding: 0 12px 12px 12px;
+ }
+
+ .address_results p.title {
+   color: #f00;
  }
 
 

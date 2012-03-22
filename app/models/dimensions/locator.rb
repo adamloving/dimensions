@@ -7,8 +7,10 @@ class Dimensions::Locator
 
   def self.parse_locations(geographies)
     locations = geographies.map do|geography|
-      serialized_data = geography.attributes.except("docId")
-      Entity.find_or_initialize_by_name(:name => geography.name, :serialized_data => serialized_data, :type => "location")
+      if geography.attributes["longitude"] && geography.attributes["latitude"]
+        serialized_data = geography.attributes.except("docId")
+        Entity.find_or_initialize_by_name(:name => geography.name, :serialized_data => serialized_data, :type => "location")
+      end
     end
   end
 end

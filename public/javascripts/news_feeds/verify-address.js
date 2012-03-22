@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  var loc = $("#news_feed_address").val();
   $("#verify_address").click(function(){ 
     var myAddressQuery = $("#news_feed_address").val();
 
@@ -15,18 +16,20 @@ $(document).ready(function(){
           var locations = "";
           var index = 0;
 
-          locations+="<table>";
-          console.log(locations);
+          locations+="<table class='newsfeed-table'>";
           _.each(results, function(result){
-            locations += "<tr><td><p>" +  result.formatted_address +"</p></td> <td> <p data-location-index=" + index + "><a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p></td></tr>";
+            if (loc!=result.formatted_address){
+              locations += "<tr><td><p>" +  result.formatted_address +"</p></td> <td> <p data-location-index=" + index + "><a href='#' class='btn btn-info' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p></td></tr>";
+            } else {
+              locations += "<tr><td><p>" +  result.formatted_address +"</p></td> <td> <p data-location-index=" + index + "><a href='#' class='btn btn-success' id='pick_location' data-location='"+result.formatted_address+"'><i class='icon-ok'></i>Select</a></p></td></tr>";
+            } 
             index++;
             return locations;
           });
-          console.log(locations);
           locations+="</table>";
 
           $('.address_results').data('locations', results);
-          $('.address_results').html("<p>Is any of the following locations correct? </p>" + locations);
+          $('.address_results').html("<p class='title'>Is any of the following locations correct? </p>" + locations);
           $('.errors_for_address').empty();
         }
     });
@@ -44,6 +47,8 @@ $(document).ready(function(){
     $(".subm input").css("display","initial");
     var location = $(this).data('location');
     $("#news_feed_address").val(location);
+    $(".btn.btn-success").attr('class','btn btn-info');
+    $(this).attr('class','btn btn-success');
 
   });
 
