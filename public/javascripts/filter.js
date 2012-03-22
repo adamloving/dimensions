@@ -73,7 +73,7 @@
         if (this.search && this.search.trim()) {
           query.q = this.search;
         }else{
-          query.q="all";
+          query.q = "all:1";
         }
         if (this.tags.length > 0) {
           query.tag = this.tags.join(',');
