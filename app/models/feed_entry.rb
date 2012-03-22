@@ -69,7 +69,27 @@ class FeedEntry < ActiveRecord::Base
   end
 
   def self.localize(entry)
-    Resque.enqueue(EntryLocalizer, entry.id)
+    begin
+      if entry.fetched?
+        doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
+        entry.published_at||= doc.doc_date
+
+        entry.entities.push(entry.feed.location)
+        entry.primary_location = entry.feed.location
+
+        unless doc.geographies.empty?
+          locations = Dimensions::Locator.parse_locations(doc.geographies)
+          entry.entities = locations
+          entry.primary_location = locations.first
+        end
+
+        entry.localize
+        entry.save
+        return true
+      end
+    rescue Exception => e
+      return nil
+    end
   end
 
   def self.batch_localize
@@ -83,9 +103,27 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
+  def bg_fetch_content
+    Resque.enqueue(EntryContentFetcher, self.id)
+  end
   def fetch_content!
     return self.content if self.content.present?
-    Resque.enqueue(EntryContentFetcher, self.id)
+    begin
+      scraper = Scraper.define do
+        array :content
+
+        process "p", :content => :text
+        result :content
+      end
+      uri = URI.parse(self.url)
+      self.content = scraper.scrape(uri).join(" ") 
+      self.save
+    rescue Exception => e
+      self.fetch_errors = {:error => e.to_s}
+      self.failed = true
+      self.save
+      return nil
+    end
     self.content
   end
 

@@ -152,16 +152,17 @@ describe Admin::NewsFeedsController do
 
     describe "a succesful load" do
       it "should render a text with  a successful message" do
-        @news_feed.stub(:load_entries){true}
+        @news_feed.stub(:bg_load_entries){true}
+        @news_feed.stub(:name){"Seattle News"}
         subject
         response.should be_successful
-        response.body.should == "We have successfully loaded your news feed"
+        response.body.should == "We are processing the feeds for 'Seattle News'..."
       end
     end
 
     describe "a load that raised error" do
       it "should call the load entries method" do
-        @news_feed.should_receive(:load_entries).and_raise(NotImplementedError)
+        @news_feed.should_receive(:bg_load_entries).and_raise(NotImplementedError)
         subject
         response.should be_successful
         response.body.should == "We have had errors loading your feed: NotImplementedError"

@@ -164,7 +164,6 @@ describe FeedEntry do
       scraper.stub(:scrape).with(uri){
         ["Hola", "Mundo"]
       }
-      @entry.should_receive(:fetch)
       @entry.fetch_content!.should == "Hola Mundo"
       @entry.content.should == "Hola Mundo"
       FeedEntry.find(@entry.id).content.should == "Hola Mundo"
@@ -321,5 +320,15 @@ describe FeedEntry do
       @entry.tag
       @entry.tagged?.should == true
     end
+
+    #describe 'fetch' do
+      #before do
+        #ResqueSpec.reset!
+      #end
+      #it 'should enqueue the job to fetch content' do
+        #@entry.fetch
+        #EntryContentFetcher.should have_queued(@entry.id).in(:entries)
+      #end
+    #end
   end
 end

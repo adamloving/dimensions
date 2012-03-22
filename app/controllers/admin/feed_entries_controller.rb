@@ -55,9 +55,9 @@ class Admin::FeedEntriesController < Admin::BaseController
     entry.fetch
 
     if entry.save
-      flash[:notice] = "Entry successfully processed"
+      flash[:notice]  = "Entry successfully processed"
     else
-      flash[:error] = "There are some errors trying to process the entry: #{entry.fetch_errors.values.join(',')}"
+      flash[:error]   = "There was an error saving the entry"
     end
     redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
   end
@@ -66,7 +66,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     entry = @news_feed.entries.find(params[:id])
     case params[:current]
     when "fetched"
-      FeedEntry.localize(entry)
+      Resque.enqueue(EntryLocalizer, entry.id)
       flash[:notice] = "Feed Entry successfully localized"
     end
 
