@@ -82,9 +82,11 @@
           Tags
         %td
           - @feed_entry.get_tags.tags.each do|tag|
-            %span.label.label_info
-              = tag
+            %span.label.label-info.tag
+              %a.close(data-dismiss="alert" style="color:#000;font-size:small; cursor:pointer;") x
+              %em
+                = tag
 .ajax_loading
 
 = javascript_include_tag "feed_entries/show.onready.js"
-
+#confirm_tag_delete

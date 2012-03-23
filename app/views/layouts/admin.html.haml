@@ -3,7 +3,7 @@
   %head
     %title Dimensions
     %meta{:name=> "keywords", :content=> "template language"}
-    = stylesheet_link_tag 'bootstrap.min'
+    = stylesheet_link_tag 'bootstrap'
     = stylesheet_link_tag 'jquery-ui-1.8.16.custom.css'
     = stylesheet_link_tag 'dimensions_admin', 'admin'
     = stylesheet_link_tag 'dimensions.css'
@@ -17,6 +17,9 @@
     = javascript_include_tag "flash_messages"
     = javascript_include_tag "http://maps.google.com/maps/api/js?sensor=false"
     = javascript_include_tag "underscore-min"
+    = javascript_include_tag "news_feeds/tags"
+    = javascript_include_tag "news_feeds/modal_tag_confirm"
+    = javascript_include_tag "bootstrap-modal"
     
     = csrf_meta_tag
 
