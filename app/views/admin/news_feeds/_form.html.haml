@@ -8,7 +8,7 @@
     = f.text_field :name
   %p
     = f.label :address
-    = f.text_field :address
+    = f.text_field :address, :autocomplete => "off"
     .address_results
     .errors_for_address
   = f.hidden_field :location_latitude
