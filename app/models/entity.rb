@@ -17,4 +17,9 @@ class Entity < ActiveRecord::Base
   scope     :tag, where(:type => "tag")
 
   validates :name, :uniqueness => {:scope => :type}
+
+  def clear_tag(name)
+    return false if self.tags.blank? || self.type != 'tag'
+    self.tags.delete(name)
+  end
 end

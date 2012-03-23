@@ -76,7 +76,14 @@
         %td
           = @feed_entry.entities.location.first.serialized_data["longitude"]
 
-
+    - if @feed_entry.tagged?
+      %tr
+        %td
+          Tags
+        %td
+          - @feed_entry.get_tags.tags.each do|tag|
+            %span.label.label_info
+              = tag
 .ajax_loading
 
 = javascript_include_tag "feed_entries/show.onready.js"

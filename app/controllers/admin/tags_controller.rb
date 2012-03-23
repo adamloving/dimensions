@@ -3,14 +3,13 @@ class Admin::TagsController < Admin::BaseController
 
   def index
     @feed_entry = FeedEntry.find(params[:feed_entry_id])
-    @tags = FeedEntry.tags(params[:feed_entry_id]).tags
-    respond_with @tags
+    respond_with @feed_entry.get_tags
   end
 
   def delete
-    @tags = FeedEntry.tags(params[:feed_entry_id])
-    @tags.tags.delete(params[:tag_id])
-    @tags.save
+    feed_entry = FeedEntry.find(params[:feed_entry_id])
+    tag = feed_entry.get_tags
+    tag.clear_tag(params[:tag])
+    tag.save
   end
-
 end

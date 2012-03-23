@@ -30,12 +30,11 @@ RailsBootstrap::Application.routes.draw do
       end
     end
 
-    resources :feed_entries do
-      resources :tags, :only => [:index, :delete] do
-        get :delete
-      end
-    end
     resources :feed_entries, :only => :index do
+      resources :tags, :only => :index do
+        put :delete, :on => :collection
+      end
+
       put   :set_primary_location
 
       collection do
