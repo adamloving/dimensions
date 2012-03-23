@@ -334,5 +334,17 @@ describe FeedEntry do
         EntryContentFetcher.should have_queued(@entry.id).in(:entries)
       end
     end
+
+    describe 'after localize' do
+      before do
+        ResqueSpec.reset!
+      end
+
+      it 'should enque the entry to be fetched' do
+        @entry.update_attribute(:state, 'fetched')
+        @entry.localize
+        EntryTagger.should have_queued(@entry.id).in(:entries)
+      end
+    end
   end
 end

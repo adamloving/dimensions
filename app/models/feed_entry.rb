@@ -47,6 +47,7 @@ class FeedEntry < ActiveRecord::Base
 
     after_transition :on => :fetch, :do => :fetch_content!
     after_transition :on => :download, :do => :enqueue_to_fetch
+    after_transition :on => :localize, :do => :enqueue_to_tag
   end
 
   def self.update_from_feed(feed_url)
@@ -80,13 +81,13 @@ class FeedEntry < ActiveRecord::Base
       unless doc.geographies.empty?
         #test no location is returned as nil!
         locations = Dimensions::Locator.parse_locations(doc.geographies)
+
         unless locations.empty?
           locations.each {|location| entry.entities << location unless location.nil?}
-          entry.primary_location = locations.first
+          entry.primary_location = locations.first if locations.first.present? &&  !locations.first.new_record?
         end
       end
-
-      entry.next
+      entry.localize
       entry.save!
       return true
     end
@@ -105,6 +106,10 @@ class FeedEntry < ActiveRecord::Base
 
   def enqueue_to_fetch
     Resque.enqueue(EntryContentFetcher, self.id)
+  end
+
+  def enqueue_to_tag
+    Resque.enqueue(EntryTagger, self.id)
   end
 
   def fetch_content!
