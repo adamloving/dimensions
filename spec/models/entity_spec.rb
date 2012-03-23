@@ -19,4 +19,18 @@ describe Entity do
       repeated.should_not be_valid
     end
   end
+
+  describe "clear tag" do
+  
+    before do
+      @tag = Entity.create(:name => 'the tag', :tags => ['twitter', 'facebook', 'linkedin'], :type => 'tag')
+    end
+
+    it "should clear the specified tag from the list of tags" do
+      @tag.clear_tag('twitter')
+      @tag.save
+      tag = Entity.find(@tag.id)
+      tag.tags.should =~ ['facebook', 'linkedin']
+    end
+  end
 end

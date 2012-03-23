@@ -13,7 +13,7 @@
 
         .text
           {{html text}}
-        %a{:href=>'${url}'} ${url}
+        %a{:href=>'${item.url}'} ${item.url}
         .date ${created_at}
 
         .fb-like{"data-href"=>"${url}", "data-send"=>"true", "data-width"=>"450", "data-show-faces"=>"true"}

@@ -1,11 +1,20 @@
 class Admin::FeedEntriesController < Admin::BaseController
-  before_filter :find_feed, :except => [:index, :search]
+  before_filter :find_feed, :except => [:index, :search, :review_locations, :set_primary_location]
 
   def index
     @feed_entries = if params[:news_feed_id]
       NewsFeed.find(params[:news_feed_id]).entries.page(params[:page]).per(20)
     else
       FeedEntry.page(params[:page]).per(20)
+    end
+  end
+
+  def review_locations
+    @entries = NewsFeed.find(params[:news_feed_id]).entries
+    if @entries.localized || @entries.tagged
+      @feed_entries = @entries.page(params[:page]).per(20)
+    else
+      FeedEntry.localized.page(params[:page]).per(20)
     end
   end
 
@@ -48,6 +57,16 @@ class Admin::FeedEntriesController < Admin::BaseController
     entry.toggle(:visible)
     entry.save
     redirect_to admin_news_feed_feed_entry_path(@news_feed, entry)
+  end
+
+  def set_primary_location
+    entry     = FeedEntry.find(params[:feed_entry_id])
+    location  = entry.locations.find(params[:location_id])
+    entry.primary_location = location
+
+    respond_to do |format|
+      format.js { render :json=> {:location=>location, :entry=>params[:feed_entry_id]}}
+    end
   end
 
   def fetch_content

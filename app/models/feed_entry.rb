@@ -14,6 +14,7 @@ class FeedEntry < ActiveRecord::Base
   serialize :fetch_errors
 
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
+  scope :localized, where("state = ?","localized")
 
   state_machine :initial => :new do
 
@@ -132,6 +133,22 @@ class FeedEntry < ActiveRecord::Base
     self.content
   end
 
+
+  def index_in_searchify(index)
+    location = self.primary_location.serialized_data
+    if location["latitude"].present? && location["longitude"].present?
+      doc_variables = { 0 => location["latitude"],
+                        1 => location["longitude"],
+                        2 => self.published_at.to_i }
+
+      fields = {:url => self.url, :timestamp => self.published_at.to_i , :text => self.name, :all => '1'}
+      index.document(self.id).add(fields, :variables => doc_variables)
+      true
+    else
+      false
+    end
+  end
+
   def locations
     self.entities.location
   end
@@ -150,5 +167,37 @@ class FeedEntry < ActiveRecord::Base
 
   def secondary_locations
     self.entities.location.secondary
+  end
+
+  def self.batch_tag
+    begin
+      self.find_each do |entry|
+        self.tag(entry)
+      end
+    rescue Exception => e
+      puts e.to_s
+      return nil
+    end
+  end
+
+  def self.tag(entry)
+    if entry.localized?
+      doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
+      unless doc.categories.empty?
+        entity = Dimensions::Tagger.open_calais_tag(doc.categories, doc.entities, entry.name)
+        entry.entities << entity
+        entry.tag
+        entry.save
+        return true
+      end
+    end
+  end
+
+  def self.tags(id)
+    self.find(id).entities.tag.first
+  end
+
+  def get_tags
+    self.entities.tag.first
   end
 end

@@ -6,6 +6,7 @@ class Entity < ActiveRecord::Base
 
 
   serialize   :serialized_data, Hash
+  serialize   :tags, Array
 
   # we fucked up with the naming of the STI names.
   Entity.inheritance_column= "ruby_type"
@@ -13,6 +14,12 @@ class Entity < ActiveRecord::Base
   scope     :location, where(:type => "location")
   scope     :primary, where(:default => true)
   scope     :secondary, where(:default => false)
+  scope     :tag, where(:type => "tag")
 
   validates :name, :uniqueness => {:scope => :type}
+
+  def clear_tag(name)
+    return false if self.tags.blank? || self.type != 'tag'
+    self.tags.delete(name)
+  end
 end

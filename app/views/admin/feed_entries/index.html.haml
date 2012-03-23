@@ -23,7 +23,6 @@
         %th Feed
       %th Name
       %th Published At
-      %th Locations
       %th
       %th
 
@@ -35,14 +34,6 @@
           %td= entry.feed.name
         %td= entry.name
         %td= entry.published_at
-        %td
-          - unless entry.primary_location.nil?
-            %span.label.label-success
-              = link_to entry.primary_location.name, "#"
-
-          - for location in entry.secondary_locations
-            %span.label.label-info
-              = link_to location.name, '#' 
         %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
             = entry.state
