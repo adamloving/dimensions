@@ -31,10 +31,6 @@
             = entry.state
           
         %td
-          = link_to "View",
-admin_news_feed_feed_entry_path(entry.feed,
-entry)
-          = "|"
-          = link_to "Delete", admin_news_feed_feed_entry_path(entry.feed, entry), :method => :delete, :confirm => "Are you sure?"
+          = link_to "Enqueue", "#", :class => "btn btn-inverse"
 
 = javascript_include_tag 'feed_entries/review_locations.onReady'
