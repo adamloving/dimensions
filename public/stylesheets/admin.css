@@ -1051,10 +1051,12 @@ form fieldset.buttons li.cancel a span.icon svg {
   float:left;
  }
  form#new_news_feed.new_news_feed p.subm input{
-   float:initial;
+   float:none;
+   margin: 0 auto;
  }
  form.edit_news_feed p.subm input{
-   float:initial;
+   float:none;
+   margin: 0 auto;
  }
  .address_results .newsfeed-table{
    padding: 0 10%;

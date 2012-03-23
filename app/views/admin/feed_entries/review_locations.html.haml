@@ -22,11 +22,11 @@
         %td
           - unless entry.primary_location.nil?
             %span.label.label-success{:id=>"feed_entry_#{entry.id}"}
-              = link_to entry.primary_location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => entry.primary_location.id), :method => :put, :remote => true, :rel => :nofollow, :id => "location_#{entry.primary_location.id}", :class => 'location'
+              = link_to entry.primary_location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => entry.primary_location.id), :rel => :nofollow, :id => "location_#{entry.primary_location.id}", :class => 'location'
 
           - for location in entry.secondary_locations
             %span.label.label-info{:id=>"feed_entry_#{entry.id}"}
-              = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :method => :put, :remote => true, :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
+              = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
         %td
           - unless entry.get_tags.nil?
             - entry.get_tags.tags.each do |tag|
