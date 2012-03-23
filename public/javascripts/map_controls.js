@@ -70,8 +70,8 @@ $(function() {
         centerMapToCurrentLocation();
 
         $(map).dragend( function() {
-            //filterByBoundary(map);
-            filterByClick(map);
+            filterByBoundary(map);
+            //filterByClick(map);
         });
         
         var firstEvent = true;
