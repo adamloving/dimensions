@@ -1,5 +1,6 @@
 $(document).ready(function(){
   var loc = $("#news_feed_address").val();
+  $(".subm input").css("display","none");
   $("#verify_address").click(function(){ 
     var myAddressQuery = $("#news_feed_address").val();
 
