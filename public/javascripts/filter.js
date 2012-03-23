@@ -83,8 +83,8 @@
           query.owner = this.groups.join(',');
         }
         if (this.neCoords && this.swCoords) {
-          query.filter_docvar0 = this.neCoords.Ua + ':' + this.neCoords.Va
-          query.filter_docvar1 = this.swCoords.Ua + ':' + this.swCoords.Va
+          query.filter_docvar0 = this.swCoords.Ua + ':' + this.neCoords.Ua
+          query.filter_docvar1 = this.swCoords.Va + ':' + this.neCoords.Va
         }
         query.start_date = this.startDate;
         query.filter_docvar2  = this.startDate+':'+this.endDate;
@@ -205,8 +205,8 @@
         return Router.handleRequest("search");
       },
 
-      setCoords : function(nortEast, southWest) {
-        this.neCoords = nortEast;
+      setCoords : function(northEast, southWest) {
+        this.neCoords = northEast;
         this.swCoords = southWest;
         return Router.handleRequest("search");
       },
