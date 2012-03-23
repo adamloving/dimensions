@@ -38,6 +38,7 @@ function centerMapToCurrentLocation()
     navigator.geolocation.getCurrentPosition(function(position) {
         currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         $('#map').gmap({ 'center': currentPosition });
+        filterByBoundary(map);
     });
 }
 
@@ -54,7 +55,6 @@ function filterByBoundary(map)
     boundary = "Visible map viewport has changed.\n\n";
     boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
     boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
-    console.log(boundary);
     window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
 }
 
@@ -67,11 +67,20 @@ $(function() {
     $('#map').gmap();
     
     $('#map').gmap().bind('init', function(event, map) {
+
+        //make map variable accessible for filterByBoundary in centerMapToCurrentPosition
+        window.map = map
+
         centerMapToCurrentLocation();
 
         $(map).dragend( function() {
             filterByBoundary(map);
-            //filterByClick(map);
+
+            //retrieves entries stored on map
+            entries = $.data($('#map')[0],'entries');
+            $(entries).each(function(){
+              addMarker(this.variable_0,this.variable_1);
+            });
         });
         
         var firstEvent = true;
