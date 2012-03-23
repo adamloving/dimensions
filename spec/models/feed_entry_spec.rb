@@ -152,8 +152,10 @@ describe FeedEntry do
     end
 
     it "should return true if content is already there" do
-      @entry.content = "blah"
-      @entry.fetch_content!.should == "blah"
+      other_entry = FactoryGirl.create(:feed_entry)
+      other_entry.content = "blah"
+      other_entry.fetch_content!.should == "blah"
+      EntryLocalizer.should have_queued(other_entry.id).in(:entries)
     end
 
     it "should fetch all the content existing between p tags in the requested url" do
@@ -167,6 +169,7 @@ describe FeedEntry do
       @entry.fetch_content!.should == "Hola Mundo"
       @entry.content.should == "Hola Mundo"
       FeedEntry.find(@entry.id).content.should == "Hola Mundo"
+      EntryLocalizer.should have_queued(@entry.id).in(:entries)
     end
 
     context "failure to fetch content" do
@@ -321,14 +324,15 @@ describe FeedEntry do
       @entry.tagged?.should == true
     end
 
-    #describe 'fetch' do
-      #before do
-        #ResqueSpec.reset!
-      #end
-      #it 'should enqueue the job to fetch content' do
-        #@entry.fetch
-        #EntryContentFetcher.should have_queued(@entry.id).in(:entries)
-      #end
-    #end
+    describe 'after download' do
+      before do
+        ResqueSpec.reset!
+      end
+
+      it 'should enque the entry to be fetched' do
+        @entry.download
+        EntryContentFetcher.should have_queued(@entry.id).in(:entries)
+      end
+    end
   end
 end

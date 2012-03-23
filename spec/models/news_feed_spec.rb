@@ -32,7 +32,7 @@ describe NewsFeed do
     end
   end
 
-  describe "after save" do
+  describe "before save" do
     context "the news feed has no location and parameters for the location are sent" do
       it "should create a new location entity for the news feed with that data" do
         news_feed = FactoryGirl.build(:news_feed)
@@ -68,6 +68,18 @@ describe NewsFeed do
     end
   end
 
+  describe "after create hook" do
+    before do
+      ResqueSpec.reset!
+      @news_feed = FactoryGirl.build(:news_feed)
+      @news_feed.stub(:url_connection_valid?){true}
+    end
+
+    it "should enqueue a task in resque to load entries " do
+      @news_feed.save
+      FeedLoader.should have_queued(@news_feed.id).in(:feeds)
+    end
+  end
   describe "#load_entries" do
     before do
       @news_feed = FactoryGirl.build(:news_feed)

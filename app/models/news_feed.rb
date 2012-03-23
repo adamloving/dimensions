@@ -14,8 +14,19 @@ class NewsFeed < ActiveRecord::Base
   validates_uniqueness_of :name, :url
 
 
+  after_save  :enqueue_entries_loading
   before_save :url_connection_valid? unless Rails.env.test?
   before_save :build_location
+
+
+  def address
+    return "" if self.location.nil?
+    self.location.name 
+  end
+
+  def address=(address)
+    location_values[:name] = address
+  end
 
   def bg_load_entries
     Resque.enqueue(FeedLoader, self.id)
@@ -31,13 +42,6 @@ class NewsFeed < ActiveRecord::Base
       entry.download
     end
   end
-
-  def process_entries
-    entries.each do |entry|
-      entry.next
-    end
-  end
-
   
   def location
     return nil if self.entities.blank?
@@ -46,15 +50,6 @@ class NewsFeed < ActiveRecord::Base
 
   def location_values
     @location_values ||= {:serialized_data => {}}
-  end
-
-  def address=(address)
-    location_values[:name] = address
-  end
-
-  def address
-    return "" if self.location.nil?
-    self.location.name 
   end
 
   def location_latitude
@@ -75,14 +70,25 @@ class NewsFeed < ActiveRecord::Base
     location_values[:serialized_data]['longitude'] = longitude
   end
 
+  def process_entries
+    entries.each do |entry|
+      entry.next
+    end
+  end
+
   private
 
   def build_location
     location = self.entities.find_by_type('location')
+
     if location
       location.update_attributes(location_values.merge(:type => 'location'))
     else
-      self.entities << Entity.create(location_values.merge(:type => 'location')) unless location_values.except(:serialized_data).blank?
+      self.entities << Entity.find_or_create_by_name(location_values.merge(:type => 'location')) unless location_values.except(:serialized_data).blank?
     end
+  end
+
+  def enqueue_entries_loading
+    Resque.enqueue(FeedLoader, self.id)
   end
 end

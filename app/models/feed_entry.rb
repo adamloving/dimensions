@@ -17,8 +17,6 @@ class FeedEntry < ActiveRecord::Base
 
   state_machine :initial => :new do
 
-    after_transition :on => :fetch, :do => :fetch_content!
-
     event :download do
       transition :new => :downloaded
     end
@@ -46,6 +44,8 @@ class FeedEntry < ActiveRecord::Base
       transition :tagged => :localized
     end
 
+    after_transition :on => :fetch, :do => :fetch_content!
+    after_transition :on => :download, :do => :enqueue_to_fetch
   end
 
   def self.update_from_feed(feed_url)
@@ -102,8 +102,16 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
+  def enqueue_to_fetch
+    Resque.enqueue(EntryContentFetcher, self.id)
+  end
+
   def fetch_content!
-    return self.content if self.content.present?
+    if self.content.present?
+      Resque.enqueue(EntryLocalizer, self.id)
+      return self.content
+    end
+
     begin
       scraper = Scraper.define do
         array :content
@@ -114,6 +122,7 @@ class FeedEntry < ActiveRecord::Base
       uri = URI.parse(self.url)
       self.content = scraper.scrape(uri).join(" ") 
       self.save
+      Resque.enqueue(EntryLocalizer, self.id)
     rescue Exception => e
       self.fetch_errors = {:error => e.to_s}
       self.failed = true
