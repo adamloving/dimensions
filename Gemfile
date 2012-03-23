@@ -21,7 +21,7 @@ gem 'feedzirra'
 
 # background jobs
 #========================================
-gem 'resque'
+gem 'resque', :require => "resque/server"
 
 gem 'rake'
 gem 'haml-rails'

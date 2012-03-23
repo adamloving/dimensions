@@ -1,18 +1,15 @@
 RailsBootstrap::Application.routes.draw do
-
   devise_for :admin_users,{
     :path => :admin,
     :path_names => { :sign_in => 'login', :sign_out => "logout" }
   }
 
-
-
   devise_for :users
-  namespace :admin do
-    resources :pages, :only => :index
-  end
 
+  
   namespace :admin do
+    mount SecureResqueServer.new, :at => "/resque"
+
     resources :news_feeds do
       get :process_entries, :on => :member
       post :load_entries, :on => :member
@@ -28,6 +25,7 @@ RailsBootstrap::Application.routes.draw do
     resources :feed_entries, :only => :index do
       get :search, :on => :collection
     end
+
     root :to => "news_feeds#index"
   end
 
