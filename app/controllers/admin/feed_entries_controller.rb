@@ -10,8 +10,9 @@ class Admin::FeedEntriesController < Admin::BaseController
   end
 
   def review_locations
-    @feed_entries = if params[:news_feed_id]
-      NewsFeed.find(params[:news_feed_id]).entries.localized.page(params[:page]).per(20)
+    @entries = NewsFeed.find(params[:news_feed_id]).entries
+    if @entries.localized || @entries.tagged
+      @feed_entries = @entries.page(params[:page]).per(20)
     else
       FeedEntry.localized.page(params[:page]).per(20)
     end

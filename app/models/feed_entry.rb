@@ -183,4 +183,8 @@ class FeedEntry < ActiveRecord::Base
   def self.tags(id)
     self.find(id).entities.tag.first
   end
+
+  def get_tags
+    self.entities.tag.first
+  end
 end

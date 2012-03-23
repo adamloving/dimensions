@@ -8,8 +8,9 @@
         %th Feed
       %th Name
       %th Locations
+      %th Tags
       %th
-      %th
+      %th(width = "65px")
 
   %tbody
     - @feed_entries.each do|entry|
@@ -26,6 +27,10 @@
           - for location in entry.secondary_locations
             %span.label.label-info{:id=>"feed_entry_#{entry.id}"}
               = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :method => :put, :remote => true, :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
+        %td
+          - unless entry.get_tags.nil?
+            - entry.get_tags.tags.each do |tag|
+              %span.label.label-inverse= tag
         %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
             = entry.state
