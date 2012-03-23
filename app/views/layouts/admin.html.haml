@@ -23,8 +23,11 @@
   %body.index.admin_dashboard.logged_in.admin_namespace
     = render 'layouts/admin_top_nav' if admin_user_signed_in?
     #active_admin_content
-      - if params[:action] == "edit" || params[:action] == "new"
-        = render 'layouts/without_sidebar'
-      - else
-        = render 'layouts/with_sidebar'
+      #main_content_wrapper(class='#{(params[:action]=="edit" || params[:action]=="new") ? "" : "with_sidebar"}')
+        #main_content
+          .blank_slate_container#dashboard_default_message
+            .admin_page
+              = yield
+      #sidebar.sidebar_section.panel
+        = yield :sidebar
     #footer
