@@ -131,6 +131,22 @@ class FeedEntry < ActiveRecord::Base
     return self.content
   end
 
+
+  def index_in_searchify(index)
+    location = self.primary_location.serialized_data
+    if location["latitude"].present? && location["longitude"].present?
+      doc_variables = { 0 => location["latitude"],
+                        1 => location["longitude"],
+                        2 => self.published_at.to_i }
+
+      fields = {:url => self.url, :timestamp => self.published_at.to_i , :text => self.name, :all => '1'}
+      index.document(self.id).add(fields, :variables => doc_variables)
+      true
+    else
+      false
+    end
+  end
+
   def locations
     self.entities.location
   end

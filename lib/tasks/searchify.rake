@@ -11,20 +11,7 @@ namespace :searchify do
       begin
         if entry.localized?
           raise("Entry has no locations") if entry.primary_location.nil?
-
-          serialized_hash = entry.primary_location.serialized_data
-
-          if serialized_hash["latitude"].present? && serialized_hash["longitude"].present?
-            doc_variables = { 0 => serialized_hash["latitude"],
-                              1 => serialized_hash["longitude"],
-                              2 => entry.published_at.to_i }
-
-            fields = {:url => entry.url, :timestamp => entry.published_at.to_i , :text => entry.name}
-            index.document(entry.id).add(fields, :variables => doc_variables)
-            puts "[\033[32mSuccesfully indexed #{entry.name}\033[0m]"
-          else
-            puts "[\033[31m#{entry.name} has no latitude and longitude #{serialized_hash}\033[0m]"
-          end
+          puts entry.index_in_searchify(index) ? "[\033[32mSuccesfully indexed #{entry.name}\033[0m]": "[\033[31m#{entry.name} has no latitude and longitude #{serialized_hash}\033[0m]"
         end
       rescue
         puts "[\033[31mError: #{$!}\033[0m]"
