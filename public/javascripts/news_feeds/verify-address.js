@@ -1,5 +1,6 @@
 $(document).ready(function(){
   var loc = $("#news_feed_address").val();
+  $(".subm input").css("display","none");
   $("#verify_address").click(function(){ 
     var myAddressQuery = $("#news_feed_address").val();
 
@@ -41,10 +42,11 @@ $(document).ready(function(){
        ,locations   = $('.address_results').data('locations')
        ,latitude    = locations[index].geometry.location.lat()
        ,longitude   = locations[index].geometry.location.lng();
+       loc          = $(this).data('location');
 
     $('#news_feed_location_longitude').val(longitude);
     $('#news_feed_location_latitude').val(latitude);
-    $(".subm input").css("display","initial");
+    $(".subm input").css("display","inline-block");
     var location = $(this).data('location');
     $("#news_feed_address").val(location);
     $(".btn.btn-success").attr('class','btn btn-info');
