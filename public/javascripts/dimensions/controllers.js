@@ -1,14 +1,8 @@
-$(window).ready(function(event){
+$(window).load(function(event){
 
- $('#search').change(function(e){
-    Router.handleRequest("search");
- });
- 
- 
-
- $.address.change(function(e){
-   Router.handleRequest(e,"search");
- })
+   $('#search').change(function(e){
+      Router.handleRequest("search");
+   });
 
 });
 
