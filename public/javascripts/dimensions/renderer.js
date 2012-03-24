@@ -6,7 +6,6 @@ $(function(){
         $(this.element).empty();
         if(this.data.results.length > 0){
           $.tmpl(this.template,{items:this.data.results}).appendTo(this.element);
-          clearMap()
           $.each(this.data.results, function(i, r) {
             var breakingNews, displayMarker, latitude, longitude, _ref, _ref2;
             if(r.variable_0 && r.variable_1){
