@@ -22,9 +22,11 @@
         if(options.callback!=null)
           options.callback();
         $(context).modal('hide');
+        return false;
       });
       $('#cancelAction',this).click(function(){
         $(context).modal('hide');
+        return false;
       });
     }
   });
