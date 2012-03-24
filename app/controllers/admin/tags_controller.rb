@@ -11,5 +11,8 @@ class Admin::TagsController < Admin::BaseController
     tag = feed_entry.get_tags
     tag.clear_tag(params[:tag])
     tag.save
+    respond_to do |format|
+      format.js { render :json=> {:tag=>params[:tag]}}
+    end
   end
 end
