@@ -75,6 +75,13 @@
           query.q = this.search;
         }else{
           query.q = "all:1";
+          if(typeof(map.center) != 'undefined'){
+            //Sets marker by first time the page is loaded
+            entries = $.data($('#map')[0],'entries');
+            $(entries).each(function(){
+              addMarker(this.variable_0,this.variable_1);
+            });
+          }
         }
         if (this.tags.length > 0) {
           query.tag = this.tags.join(',');
