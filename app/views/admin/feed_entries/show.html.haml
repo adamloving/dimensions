@@ -18,7 +18,7 @@
     %p
       = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
 
-%table
+%table.feed_entry
   %tbody
     %tr
       %td
@@ -53,28 +53,37 @@
           .text-block
             %p
               = @feed_entry.content
+  
+    - if @feed_entry.failed?
+      %tr
+        %td
+          %span.entry.failed
+            Fetch errors
+        %td
+          %span.entry.failed
+            = @feed_entry.fetch_errors[:error]
 
-    - if @feed_entry.localized? && @feed_entry.entities.location.first.present?
+    - if @feed_entry.primary_location.present?
       %tr
         %td
           City
         %td
-          = @feed_entry.entities.location.first.serialized_data["shortname"]
+          = @feed_entry.primary_location.serialized_data["shortname"]
       %tr
         %td
           Country
         %td
-          = @feed_entry.entities.location.first.serialized_data["containedbycountry"]
+          = @feed_entry.primary_location.serialized_data["containedbycountry"]
       %tr
         %td
           Latitude
         %td
-          = @feed_entry.entities.location.first.serialized_data["latitude"]
+          = @feed_entry.primary_location.serialized_data["latitude"]
       %tr
         %td
           Longitude
         %td
-          = @feed_entry.entities.location.first.serialized_data["longitude"]
+          = @feed_entry.primary_location.serialized_data["longitude"]
 
     - if @feed_entry.tagged?
       %tr

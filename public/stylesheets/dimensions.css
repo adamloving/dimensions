@@ -1,6 +1,6 @@
-.admin_page table.feed_entries td span.entry.failed {
+.admin_page table.feed_entries td span.entry.failed, .admin_page table.feed_entry td span.entry.failed {
   color: red; }
-.admin_page table.feed_entries td span.entry-progress-block {
+.admin_page table.feed_entries td span.entry-progress-block, .admin_page table.feed_entry td span.entry-progress-block {
   background-color: blue;
   min-width: 10px;
   min-height: 20px;
