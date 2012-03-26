@@ -29,7 +29,8 @@
       this.search     = null;
       this.tags       = [];
       this.groups     = [];
-      this.coords     = null;
+      this.neCoords     = null;
+      this.swCoords     = null;
     }
 
     Filter.prototype = {
@@ -73,7 +74,14 @@
         if (this.search && this.search.trim()) {
           query.q = this.search;
         }else{
-          query.q="all";
+          query.q = "all:1";
+          if(typeof(map.center) != 'undefined'){
+            //Sets marker by first time the page is loaded
+            entries = $.data($('#map')[0],'entries');
+            $(entries).each(function(){
+              addMarker(this.variable_0,this.variable_1);
+            });
+          }
         }
         if (this.tags.length > 0) {
           query.tag = this.tags.join(',');
@@ -81,11 +89,9 @@
         if (this.groups.length > 0) {
           query.owner = this.groups.join(',');
         }
-        if (this.coords) {
-          query.sw_lat    = this.coords.southWest.lat();
-          query.sw_long   = this.coords.southWest.lng();
-          query.ne_lat    = this.coords.northEast.lat();
-          query.ne_long   = this.coords.northEast.lng();
+        if (this.neCoords && this.swCoords) {
+          query.filter_docvar0 = this.swCoords.Ua + ':' + this.neCoords.Ua
+          query.filter_docvar1 = this.swCoords.Va + ':' + this.neCoords.Va
         }
         query.start_date = this.startDate;
         query.filter_docvar2  = this.startDate+':'+this.endDate;
@@ -207,6 +213,9 @@
       },
 
       setCoords : function(northEast, southWest) {
+        this.neCoords = northEast;
+        this.swCoords = southWest;
+        return Router.handleRequest("search");
       },
 
       setSearch : function(searchterm) {

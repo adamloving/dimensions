@@ -1,14 +1,8 @@
-$(window).ready(function(event){
+$(window).load(function(event){
 
- $('#search').change(function(e){
-    Router.handleRequest("search");
- });
- 
- 
-
- $.address.change(function(e){
-   Router.handleRequest(e,"search");
- })
+   $('#search').change(function(e){
+      Router.handleRequest("search");
+   });
 
 });
 
@@ -22,9 +16,7 @@ function SearchController(){
     window.dimensions.bind("loadItems",function(){
     $(this.element).empty().append("<p>Loading...</p>")
     query = window.filter.getQuery();
-    if(!query.q){
       query.fetch = 'text,url,timestamp';
-    }
       window.searchify.search(query);
     });
     window.dimensions.loadItems();
