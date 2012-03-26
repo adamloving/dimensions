@@ -28,6 +28,19 @@
         Url
       %td
         = @news_feed.url
+    %tr
+      %td
+        Location
+      %td= @news_feed.location.name
+    %tr
+      %td
+        Longitude
+      %td= @news_feed.location.serialized_data['longitude']
+    %tr
+      %td
+        Latitude
+      %td= @news_feed.location.serialized_data['latitude']
+
     - if @news_feed.entries.present?
       %tr
         %td

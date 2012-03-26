@@ -66,6 +66,12 @@
     - if @feed_entry.primary_location.present?
       %tr
         %td
+          Location
+        %td
+          %span.label.label-success
+            = @feed_entry.primary_location.name
+      %tr
+        %td
           City
         %td
           = @feed_entry.primary_location.serialized_data["shortname"]
