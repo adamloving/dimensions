@@ -21,4 +21,4 @@ NewsFeed.create :name => 'kplu.org' , :url => 'http://kplu.org/rss.xml'
 NewsFeed.create :name => 'pnwlocalnewsall' , :url => 'http://feeds.feedburner.com/pnwlocalnewsall'
 NewsFeed.create :name => 'sample1 ' , :url => 'http://www.xfruits.com/jonsayer/?id=105421'
 NewsFeed.create :name => 'seattletimes' , :url => 'http://seattletimes.nwsource.com/rss/seattletimes.xml'
-
+NewsFeed.create :name => 'kirotv' , :url => 'http://www.kirotv.com/list/rss/news/kiro-7-eyewitness-news-headlines/mq6/'
