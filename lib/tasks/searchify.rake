@@ -5,7 +5,7 @@ namespace :searchify do
   task :index => :environment do
 
     # Obtain an IndexTank client
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
     
     FeedEntry.find_each do |entry|
       begin
