@@ -17,7 +17,7 @@
         %td= entry.id
         - if params[:news_feed_id].nil?
           %td= entry.feed.name
-        %td= entry.name
+        %td= link_to entry.name, admin_news_feed_feed_entry_path(entry.feed,entry)
         %td
           - unless entry.primary_location.nil?
             %span.label.label-success
