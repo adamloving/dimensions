@@ -1,3 +1,4 @@
+= javascript_include_tag 'dimensions/timefield'
 %script#item-template{:type=>"text/x-jquery-tmpl"}
   {{each(i,item) items}}
   .item
@@ -14,7 +15,11 @@
         .text
           {{html text}}
         %a{:href=>'${item.url}'} ${item.url}
-        .date ${Date(timestamp*1000)}
+        {{if variable_2}}
+        .date 
+          Published 
+          %span.date{:class=>"timefield t:${variable_2*1000}"}
+        {{/if}}
         %br
         .tags
           ${tags}

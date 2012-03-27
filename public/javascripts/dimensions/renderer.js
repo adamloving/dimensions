@@ -29,6 +29,7 @@ $(function(){
           });
 
         FB.XFBML.parse();//reload facebook events 
+        $.timeField.init();//to render the dates
         }else{
           $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
                               //$.each(this.data.results,function(i,r){
