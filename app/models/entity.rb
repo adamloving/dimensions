@@ -22,4 +22,11 @@ class Entity < ActiveRecord::Base
     return false if self.tags.blank? || self.type != 'tag'
     self.tags.delete(name)
   end
+
+
+  def as_twitter_tag_list
+    return nil if self.tags.blank? || self.type != 'tag'
+    twitags = self.tags.map{|tag| '#' + tag.titleize.gsub(' ', '')}
+    twitags.uniq
+  end
 end

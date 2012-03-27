@@ -1,4 +1,5 @@
 RailsBootstrap::Application.routes.draw do
+
   devise_for :admin_users,{
     :path => :admin,
     :path_names => { :sign_in => 'login', :sign_out => "logout" }
@@ -40,10 +41,12 @@ RailsBootstrap::Application.routes.draw do
       end
     end
 
+
     root :to => "news_feeds#index"
   end
 
 
+  resources :tags, :only => :index
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
