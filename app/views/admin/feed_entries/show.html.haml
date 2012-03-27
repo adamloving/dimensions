@@ -33,7 +33,7 @@
       %td
         Url
       %td
-        = @feed_entry.url
+        = link_to @feed_entry.url, @feed_entry.url, :target => :blank
     %tr
       %td
         Published At:
