@@ -10,3 +10,14 @@
   width: 150px;
   height: 150px;
   display: none; }
+
+td.ajax_image {
+  width: 45px;
+  height: 45px; }
+
+.ajax_loading_small {
+  background-image: url(../images/ajax_spinner_small.gif);
+  background-repeat: no-repeat;
+  width: 45px;
+  height: 45px;
+  display: none; }

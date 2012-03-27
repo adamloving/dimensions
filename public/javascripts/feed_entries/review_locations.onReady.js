@@ -1,5 +1,6 @@
 $(document).ready(function(){
   $("a.location").click(function(e) {
+    $('')
     url = $(this).attr('href');
     var self = $(this);
 
@@ -17,5 +18,14 @@ $(document).ready(function(){
       }
     });
     return false;
+  });
+
+  $('.ajax_loading_small')
+  .hide()  // hide it initially
+  .ajaxStart(function() {
+    $(this).show();
+  })
+  .ajaxStop(function() {
+    $(this).hide();
   });
 });
