@@ -65,7 +65,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     location  = entry.locations.find(params[:location_id])
     entry.primary_location = location
 
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
     entry.index_in_searchify index
     entry.set_reviewed
 
