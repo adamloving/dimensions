@@ -56,21 +56,13 @@ class FeedEntry < ActiveRecord::Base
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
     raise "The feed is invalid" if feed.nil?
+    entries = add_entries(feed.entries)
+  end
 
-    entries = []
-    feed.entries.each do|entry|
-      unless exists? guid: entry.id
-        entries << create!(name: entry.title,
-               summary: entry.summary,
-               url: entry.url,
-               published_at: entry.published,
-               guid: entry.id,
-               author: entry.author,
-               content: entry.content)
-
-      end
-    end
-    entries
+  def self.update_from_feed_continuosly(feed_url)
+    feed =  Feedzirra::Feed.fetch_and_parse(feed_url)
+    feed = Feedzirra::Feed.update(feed)
+    add_entries(feed.new_entries) if feed.updated?
   end
 
   def self.localize(entry)
@@ -238,5 +230,23 @@ class FeedEntry < ActiveRecord::Base
 
   def set_reviewed
     update_attribute :reviewed, true
+  end
+
+  private 
+  def self.add_entries(entries)
+    entries = []
+    feed.entries.each do|entry|
+      unless exists? guid: entry.id
+        entries << create!(name: entry.title,
+               summary: entry.summary,
+               url: entry.url,
+               published_at: entry.published,
+               guid: entry.id,
+               author: entry.author,
+               content: entry.content)
+
+      end
+    end
+    entries
   end
 end
