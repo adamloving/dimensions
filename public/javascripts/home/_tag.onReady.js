@@ -1,3 +1,14 @@
+function BindTagList(){
+  $("#tag-list li").each(function(e){
+    $(this).find("a").bind("click",function(){
+       tag = $(this).attr("href").replace(/#/i,"");
+       window.filter.setTag(tag);
+       $(this).parent().toggleClass('label-success');
+      return false;
+    });
+  });
+}
+
 $(function(){
   $.getJSON('/tags',  function(data){
     var directive = {
@@ -11,5 +22,6 @@ $(function(){
     }
 
     $('ul#tag-list').render(template, directive);
+    BindTagList();
   })
 });
