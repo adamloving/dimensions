@@ -1007,7 +1007,7 @@ form fieldset.buttons li.cancel a span.icon svg {
    overflow:hidden;
  }
 
- form fieldset .title, form fieldset .errors_for_address {
+ form fieldset .title{
    clear: both;
    padding: 2px 25px 10px 0;
    text-align: right;
@@ -1039,11 +1039,7 @@ form fieldset.buttons li.cancel a span.icon svg {
   float:left;
   width: 80%;
  }
- form#new_news_feed.new_news_feed fieldset.subm input {
-   float:none;
-   margin: 0 auto;
-   width: 75px;
- }
+ form#new_news_feed.new_news_feed fieldset.subm input,
  form.edit_news_feed fieldset.subm input {
    float:none;
    margin: 0 auto;

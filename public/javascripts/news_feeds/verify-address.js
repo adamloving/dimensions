@@ -11,7 +11,6 @@ $(document).ready(function(){
         region: 'no' 
       }, function(results, status){
         if(_.isEmpty(results)){
-          console.log($('.errors_for_address'))
           $('.errors_for_address').html('We couldn\'t verify your address.'); 
           $(".address_results").empty()
           $('p.subm input').css('display','none')
@@ -79,18 +78,15 @@ $(document).ready(function(){
   });
 
   $('#news_feed_url').keydown(function(e){
-    if($(this).val()==""){
-      $(".subm input").css("display","none");
-      $(".address_results").empty()
-      $('.errors_for_address').empty();
-    }else if(e.keyCode == 13){
-      $(".subm input").css("display","inline-block");
-    }else
-      $(".subm input").css("display","inline-block");
+    checkfields($(this),e);
   });
 
   $('#news_feed_name').keydown(function(e){
-    if($(this).val()==""){
+    checkfields($(this),e);
+  });
+
+  function checkfields(element,e){
+    if(element.val()==""){
       $(".subm input").css("display","none");
       $(".address_results").empty()
       $('.errors_for_address').empty();
@@ -98,7 +94,7 @@ $(document).ready(function(){
       $(".subm input").css("display","inline-block");
     }else
       $(".subm input").css("display","inline-block");
-  });
+  }
 
   $(".subm input").click(function(){
     var redirect=false;
