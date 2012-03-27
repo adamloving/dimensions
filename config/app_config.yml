@@ -7,13 +7,16 @@ open_calais: &open_calais
 development:
   <<: *open_calais
   <<: *searchify
-  searchify_indices:
-    locations: 'locations_staging'
-    test: 'test_index'
+  searchify_index: 'development'
 
 test:
   <<: *open_calais
   <<: *searchify
+
+staging:
+  <<: *open_calais
+  <<: *searchify
+  searchify_index: 'staging'
 
 production:
   <<: *open_calais

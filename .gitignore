@@ -13,3 +13,4 @@ data/calais.pyc
 .rvmrc
 config/database.yml
 coverage
+.sass-cache

@@ -38,8 +38,7 @@ gem 'jasmine', :group => [:development, :test]
 group :development do
   gem 'pg'
   gem 'mysql2'
-  # To use debugger
-  gem 'ruby-debug19'
+  gem 'pry'
 end
 
 group :test do

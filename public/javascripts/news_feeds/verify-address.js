@@ -12,6 +12,8 @@ $(document).ready(function(){
       }, function(results, status){
         if(_.isEmpty(results)){
           $('.errors_for_address').html('We couldn\'t verify your address.'); 
+          $(".address_results").empty()
+          $('p.subm input').css('display','none')
         }else{
           
           var locations = "";
@@ -73,6 +75,48 @@ $(document).ready(function(){
     }else
       $('#verify_address').click();
 
+  });
+
+  $('#news_feed_url').keydown(function(e){
+    checkfields($(this),e);
+  });
+
+  $('#news_feed_name').keydown(function(e){
+    checkfields($(this),e);
+  });
+
+  function checkfields(element,e){
+    if(element.val()==""){
+      $(".subm input").css("display","none");
+      $(".address_results").empty()
+      $('.errors_for_address').empty();
+    }else if(e.keyCode == 13){
+      $(".subm input").css("display","inline-block");
+    }else
+      $(".subm input").css("display","inline-block");
+  }
+
+  $(".subm input").click(function(){
+    var redirect=false;
+    if ($('#news_feed_url').val()=="")
+      {
+        $('.errors_for_address').html('Url can\'t be blank');
+        $('#news_feed_url').focus();
+      }
+    if ($('#news_feed_name').val()=="")
+        {
+          $('.errors_for_address').html('Name can\'t be blank');
+          $('#news_feed_name').focus();
+        }
+    if ($('#news_feed_address').val()=="")
+        {
+          $('.errors_for_address').html('Address can\'t be blank');
+          $('#news_feed_address').focus();
+        }
+    if (($('#news_feed_name').val()!="") && ($('#news_feed_url').val()!="") && ($('#news_feed_address').val()!="")){redirect=true;}
+
+    return redirect
+            
   });
 
 

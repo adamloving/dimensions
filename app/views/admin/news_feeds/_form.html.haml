@@ -1,23 +1,24 @@
-= form_for [:admin, feed] do|f|
-  = render 'shared/error_messages', :target => feed
-  %p
-    = f.label :url
-    = f.text_field :url
-  %p
-    = f.label :name
-    = f.text_field :name
-  %p
-    = f.label :address
-    = f.text_field :address, :autocomplete => "off"
-    .address_results
-    .errors_for_address
-  = f.hidden_field :location_latitude
-  = f.hidden_field :location_longitude
+.fixed
+  = form_for [:admin, feed], {:class => "fixed"} do|f|
+    = render 'shared/error_messages', :target => feed
+    %fieldset
+      = f.label :name
+      = f.text_field :name
+    %fieldset
+      = f.label :url
+      = f.text_field :url
+    %fieldset
+      = f.label :address
+      = f.text_field :address, :autocomplete => "off"
+      .address_results
+      .errors_for_address
+    = f.hidden_field :location_latitude
+    = f.hidden_field :location_longitude
 
-  %p
-    = link_to "Verify Address", "#", :id => "verify_address", :class=>"label label-info"
-  %p.subm
-    = f.submit feed.new_record? ? "Create" : "Update"
+    %fieldset
+      = link_to "Verify Address", "#", :id => "verify_address", :class=>"label label-info"
+    %fieldset.subm
+      = f.submit feed.new_record? ? "Create" : "Update"
 
-  = javascript_include_tag "news_feeds/verify-address.js"
-    
+    = javascript_include_tag "news_feeds/verify-address.js"
+      

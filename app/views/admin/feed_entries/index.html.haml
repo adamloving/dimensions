@@ -34,7 +34,7 @@
         %td= entry.id
         - if params[:news_feed_id].nil?
           %td= entry.feed.name
-        %td= entry.name
+        %td= link_to entry.name, admin_news_feed_feed_entry_path(entry.feed,entry)
         %td= entry.published_at
         %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
@@ -42,9 +42,5 @@
         %td
           = "*" if entry.indexed?
         %td
-          = link_to "View",
-admin_news_feed_feed_entry_path(entry.feed,
-entry)
-          = "|"
           = link_to "Delete", admin_news_feed_feed_entry_path(entry.feed, entry), :method => :delete, :confirm => "Are you sure?"
 

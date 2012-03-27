@@ -19,14 +19,11 @@
     - @news_feeds.each do|feed|
       %tr
         %td= feed.id
-        %td= feed.name
+        %td= link_to feed.name, admin_news_feed_path(feed)
         %td= feed.entries.failed(false).count
         %td= feed.entries.failed(true).count
-        %td= feed.url
+        %td= link_to "#{feed.url}", feed.url, :target => "blank"
         %td
-          = link_to "View",
-admin_news_feed_path(feed)
-          = "|"
           = link_to "Delete", admin_news_feed_path(feed), :method => :delete, :confirm => "Are you sure?"
           = "|"
           = link_to "View Entries", admin_news_feed_feed_entries_path(feed)

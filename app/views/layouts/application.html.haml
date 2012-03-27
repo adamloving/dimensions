@@ -34,6 +34,7 @@
   = javascript_include_tag 'dimensions/controllers.js'
   = javascript_include_tag 'dimensions/renderer.js'
 %body
+  #rails_to_js_config{'data-rails-env' => Rails.env}
   = render :partial => 'layouts/facebook_sdk'
   = render :partial => 'layouts/top_nav'
   .container

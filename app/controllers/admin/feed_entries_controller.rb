@@ -110,6 +110,16 @@ class Admin::FeedEntriesController < Admin::BaseController
     render :index
   end
 
+  def re_index
+    if FeedEntry.reindex_in_searchify(params[:id])
+      redirect_to admin_news_feed_feed_entry_path(@news_feed, params[:id])
+      flash[:notice]="Entry succesfully re-indexed"
+    else
+      flash[:alert]="Ups! Something went wrong, try again..."
+      redirect_to :admin_news_feeds
+    end
+  end
+
   private
 
   def find_feed
