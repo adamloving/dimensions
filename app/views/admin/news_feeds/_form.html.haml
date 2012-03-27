@@ -2,11 +2,11 @@
   = form_for [:admin, feed], {:class => "fixed"} do|f|
     = render 'shared/error_messages', :target => feed
     %fieldset
-      = f.label :url
-      = f.text_field :url
-    %fieldset
       = f.label :name
       = f.text_field :name
+    %fieldset
+      = f.label :url
+      = f.text_field :url
     %fieldset
       = f.label :address
       = f.text_field :address, :autocomplete => "off"
