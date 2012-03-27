@@ -19,7 +19,7 @@
     - @news_feeds.each do|feed|
       %tr
         %td= feed.id
-        %td= link_to "#{feed.name}", admin_news_feed_path(feed)
+        %td= link_to feed.name, admin_news_feed_path(feed)
         %td= feed.entries.failed(false).count
         %td= feed.entries.failed(true).count
         %td= link_to "#{feed.url}", feed.url, :target => "blank"
