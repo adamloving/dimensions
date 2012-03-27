@@ -2,4 +2,4 @@ development: localhost:6379
 test: 
 staging:
 fi:
-production:
+production: <%= ENV['REDISTOGO_URL'] %>
