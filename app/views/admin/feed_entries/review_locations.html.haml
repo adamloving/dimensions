@@ -9,7 +9,6 @@
       %th Name
       %th Locations
       %th
-      %th(width = "65px")
 
   %tbody
     - @feed_entries.each do|entry|
@@ -27,10 +26,9 @@
             %span.label.label-info
               = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
         %td
+          .ajax_loading_small
+        %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
             = entry.state
-          
-        %td
-          = link_to "Enqueue", "#", :class => "btn btn-inverse"
 
 = javascript_include_tag 'feed_entries/review_locations.onReady'
