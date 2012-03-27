@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326193030) do
+ActiveRecord::Schema.define(:version => 20120327010122) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20120326193030) do
     t.text     "fetch_errors"
     t.boolean  "failed",       :default => false
     t.boolean  "indexed",      :default => false
+    t.boolean  "reviewed",     :default => false
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true
