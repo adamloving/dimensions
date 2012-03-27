@@ -25,4 +25,24 @@ $(document).ready(function(){
     return false;
   });
 
+  $('#entity_state').change(function(){
+    //Gets the value of 'entity_state' select tag; 
+    //1 = Reviewed, 2 = Not Reviewed
+    if($('#entity_state').val() == 2) {
+      reviewed = 'true';
+      entity_val = 2;
+    } else {
+      reviewed = 'false';
+      entity_val = 1;
+    }
+    $.ajax({
+      type: "GET",
+      url: '/admin/feed_entries/review_locations?reviewed='+reviewed,
+      dataType: 'html',
+      success: function(data){
+        $('body').html(data);
+        $('#entity_state').val(entity_val);
+      },
+    });
+  });
 });
