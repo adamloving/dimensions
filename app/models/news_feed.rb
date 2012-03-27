@@ -14,9 +14,9 @@ class NewsFeed < ActiveRecord::Base
   validates_uniqueness_of :name, :url
 
 
-  after_save  :enqueue_entries_loading
-  before_save :url_connection_valid? unless Rails.env.test?
-  before_save :build_location
+  after_create  :enqueue_entries_loading
+  before_save   :url_connection_valid? unless Rails.env.test?
+  before_save   :build_location
 
 
   def address
