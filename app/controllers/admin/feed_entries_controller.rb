@@ -13,7 +13,7 @@ class Admin::FeedEntriesController < Admin::BaseController
     @feed_entries = if params[:news_feed_id]
       NewsFeed.find(params[:news_feed_id]).entries.for_location_review.page(params[:page]).per(20)
     else
-      FeedEntry.for_location_review.page(params[:page]).per(20)
+      FeedEntry.not_reviewed.for_location_review.page(params[:page]).per(20)
     end
   end
 
@@ -62,6 +62,10 @@ class Admin::FeedEntriesController < Admin::BaseController
     entry     = FeedEntry.find(params[:feed_entry_id])
     location  = entry.locations.find(params[:location_id])
     entry.primary_location = location
+
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    entry.index_in_searchify index
+    entry.set_reviewed
 
     respond_to do |format|
       format.js { render :json=> {:location=>location, :entry=>params[:feed_entry_id]}}

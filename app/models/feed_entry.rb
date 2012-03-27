@@ -15,6 +15,7 @@ class FeedEntry < ActiveRecord::Base
 
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
   scope :for_location_review, where(:state => ['localized', 'tagged'])
+  scope :not_reviewed, where(:reviewed => 'false')
 
   state_machine :initial => :new do
 
@@ -219,5 +220,9 @@ class FeedEntry < ActiveRecord::Base
 
   def get_tags
     self.entities.tag.first
+  end
+
+  def set_reviewed
+    update_attribute :reviewed, true
   end
 end
