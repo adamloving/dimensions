@@ -30,18 +30,21 @@ $(document).ready(function(){
     //1 = Reviewed, 2 = Not Reviewed
     if($('#entity_state').val() == 2) {
       reviewed = 'true';
-      entity_val = 2;
     } else {
       reviewed = 'false';
-      entity_val = 1;
     }
     $.ajax({
       type: "GET",
       url: '/admin/feed_entries/review_locations?reviewed='+reviewed,
       dataType: 'html',
       success: function(data){
-        $('body').html(data);
-        $('#entity_state').val(entity_val);
+
+        //converts the string into html
+        temporal_div = document.createElement("div");
+        temporal_div.innerHTML = data;
+
+        //replace the table with the table with new values
+        $('table.feed_entries').html($(temporal_div).find('table.feed_entries'));
       },
     });
   });
