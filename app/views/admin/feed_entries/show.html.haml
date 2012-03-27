@@ -5,18 +5,22 @@
     %h4
       State
     %p
-      = @feed_entry.state
+      %span.label.label-info= @feed_entry.state
     %h4
       Visibility
     %p
-      = @feed_entry.visible? ? "Showing" : "Hidden"
+      %span.label.label-inverse= @feed_entry.visible? ? "Showing" : "Hidden"
     %p
-    - if @feed_entry.downloaded?
-      = link_to "Process", fetch_content_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry), :method => :post, :class=>"button_link process-entry", :style=>"float:left;", 'data-entry-id' => @feed_entry.id
-    - elsif @feed_entry.fetched?
+    - if @feed_entry.fetched?
       = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"
     %p
       = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
+    %h4 Indexed?
+    %p
+      - if @feed_entry.indexed?
+        %span.label.label-success= @feed_entry.indexed
+      - else
+        %span.label.label-warning= @feed_entry.indexed
 
 %table.feed_entry
   %tbody
