@@ -223,11 +223,11 @@
       setTag:function(tag){
         if(this.tags.indexOf(tag) == -1){
           this.tags.push(tag);
-          if(this.fetch.indexOf("tags") == -1)
+          if(this.tags.length == 1)
             this.fetch.push("tags");
         }else{
           this.tags.pop(tag);
-          if(this.fetch.indexOf("tags") >= 0)
+          if(this.tags.length == 0)
             this.fetch.pop("tags");
         }
         return Router.handleRequest("search");
