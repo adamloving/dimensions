@@ -3,18 +3,16 @@
   {{each(i,item) items}}
   .item
     .post-it
-      ${console.log(items)}
+      {{if img}}
       {{html img}}
+      {{/if}}
     .body
       %h3.headline.unread ${text}
       .article-details
         {{if photo_url}}
-        %img{:src=>'${photo_url}',:class=>"show"}
+        %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
         {{/if}}
-
-        .text
-          {{html text}}
-        %a{:href=>'${item.url}'} ${item.url}
+        %a{:href=>'${item.url}',:target=>"_blank"} ${item.url}
         {{if variable_2}}
         .date 
           Published 
