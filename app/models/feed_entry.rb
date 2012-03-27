@@ -164,6 +164,12 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
+  def self.reindex_in_searchify(entry_id)
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_indices']['locations'])
+    entry = self.find(entry_id)
+    entry.index_in_searchify(index)
+  end
+
   def locations
     self.entities.location
   end

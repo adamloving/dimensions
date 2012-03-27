@@ -20,6 +20,7 @@ RailsBootstrap::Application.routes.draw do
           put   :toggle_visible
           post  :fetch_content
           post  :process_entry
+          get   :re_index
         end
 
         get :review_locations, :on => :collection

@@ -101,6 +101,13 @@
               = link_to "x", delete_admin_feed_entry_tags_path(@feed_entry,:tag=>tag),:class =>'close', :style=>"color:#000;font-size:small; cursor:pointer;",:data_dismiss=>"alert"
               %em
                 = tag
+    - if @feed_entry.indexed?
+      %tr
+        %td
+          Re index entry
+        %td
+          %div.btn-group
+          = link_to "Accept", re_index_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry.id), :class => "btn btn-primary"
 .ajax_loading
 
 = javascript_include_tag "feed_entries/show.onready.js"
