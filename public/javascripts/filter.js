@@ -76,7 +76,8 @@
           query.q = "all:1";
         }
         if (this.tags.length > 0) {
-          query.tag = this.tags.join(',');
+          //query.tag = this.tags.join(',');
+          query.q = "tags:"+this.tags.join(',');
         }
         if (this.groups.length > 0) {
           query.owner = this.groups.join(',');
@@ -188,12 +189,14 @@
         });
         return found;
       },
-
       addTag : function(t) {
-        this.tags.push(t);
+        if (this.tags.indexOf(t) == -1){
+          this.tags.push(t);
+        }else{
+          this.tags.pop(t);
+        }
         return Router.handleRequest("search");
       },
-
       removeTag : function(t) {
         var temp;
         temp = [];
@@ -211,6 +214,12 @@
 
       setSearch : function(searchterm) {
         this.search = searchterm;
+        return Router.handleRequest("search");
+      },
+      setTag:function(tag){
+        if(this.tags.indexOf(tag) == -1){
+          this.tags.push(tag);
+        }else{this.tags.pop(tag)}
         return Router.handleRequest("search");
       }
 

@@ -63,3 +63,13 @@ function flashMessage(type, message){
   var flashesContainer = $(".flashes");
   flashesContainer.html("<div class='flash flash_" + type + "'>" + message + "</div>");
 }
+$(function(){
+  $("#tag-list li").each(function(e){
+    $(this).find("a").bind("click",function(){
+       tag = $(this).attr("href").replace(/#/i,"");
+       window.filter.setTag(tag);
+       console.log(window.filter.tags);
+      return false;
+    });
+  });
+});
