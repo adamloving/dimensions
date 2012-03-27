@@ -9,6 +9,7 @@
       %th Name
       %th Locations
       %th
+      %th
 
   %tbody
     - @feed_entries.each do|entry|
@@ -25,7 +26,7 @@
           - for location in entry.secondary_locations
             %span.label.label-info
               = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
-        %td
+        %td.ajax_image
           .ajax_loading_small
         %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
