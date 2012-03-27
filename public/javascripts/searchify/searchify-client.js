@@ -1,6 +1,12 @@
 (function($){
+
   var apiURL = "http://8sk9q.api.searchify.com"
- 
+
+  var railsEnv = $('#rails_to_js_config').data('rails-env');
+
+  if(railsEnv == undefined)
+    railsEnv = 'development';
+
   $namespace('Searchify').Client = function(){};
   
   $namespace('Searchify').Client.prototype = {
@@ -14,7 +20,7 @@
       var result = undefined;
 
       $.ajax({
-        url: apiURL + "/v1/indexes/locations_staging/search",
+        url: apiURL + "/v1/indexes/" + railsEnv + "/search",
         dataType: "jsonp",
         data: settings,
         success: function(data){
