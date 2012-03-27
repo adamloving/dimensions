@@ -3,6 +3,9 @@ $(window).ready(function(event){
  $('#search').change(function(e){
     Router.handleRequest("search");
  });
+ $('#search_tag').change(function(e){
+   window.filter.setTag($(this).val());
+ });
  
  
 
@@ -21,11 +24,8 @@ function SearchController(){
   this.indexAction = function(){
     window.dimensions.bind("loadItems",function(){
     $(this.element).empty().append("<p>Loading...</p>")
-    query = window.filter.getQuery();
-    if(!query.q){
-      query.q = "seattle";
-      query.fetch = '*';
-    }
+      query = window.filter.getQuery();
+      console.log($.param(query));
       window.searchify.search(query);
     });
     window.dimensions.loadItems();

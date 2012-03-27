@@ -24,11 +24,13 @@
       this.getQuery       = __bind(this.getQuery, this);
       this.getQueryString = __bind(this.getQueryString, this);
       this.bind           = __bind(this.bind, this);
-      this.startDate  = Date.now().add(-12).hours().toISOString();
+      this.startDate = Math.round(Date.now().add(-this.durationToMinutes("1wk")).hours()/1000);
+      this.endDate = "*";
       this.search     = null;
       this.tags       = [];
       this.groups     = [];
       this.coords     = null;
+      this.fetch      = ["text","url","timestamp"];
     }
 
     Filter.prototype = {
@@ -71,9 +73,15 @@
         query = {};
         if (this.search && this.search.trim()) {
           query.q = this.search;
+        }else{
+          query.q = "all:1";
         }
         if (this.tags.length > 0) {
-          query.tag = this.tags.join(',');
+          query.q = "tags:"+this.tags.join(',');
+        }
+       
+        if (this.fetch.length > 0) {
+         query.fetch =  this.fetch.join(',');
         }
         if (this.groups.length > 0) {
           query.owner = this.groups.join(',');
@@ -84,7 +92,9 @@
           query.ne_lat    = this.coords.northEast.lat();
           query.ne_long   = this.coords.northEast.lng();
         }
-        query.timestamp  = "<" + this.startDate;
+        query.start_date = this.startDate;
+        query.filter_docvar2  = this.startDate+':'+this.endDate;
+        query.fetch_variables = true;
         return query;
       },
 
@@ -93,10 +103,10 @@
         q = this.getQuery();
         s = '<ul>';
         if (q.start_date) {
-          s += '<li>Start date: ' + q.start_date + '</li>';
+          s += '<li>Start date: ' + new Date(q.start_date*1000) + '</li>';
         }
-        if (q.search) {
-          s += '<li>Keyword: ' + q.search + '</li>';
+        if (q.q) {
+          s += '<li>Keyword: ' + q.q + '</li>';
         }
         if (q.tag) {
           s += '<li>Tags: ' + q.tag + '</li>';
@@ -133,24 +143,19 @@
         var duration, minutes;
         duration = $('#date-filter').val();
         minutes = this.durationToMinutes(duration);
-        //this.startDate = Date.now().addMinutes(-minutes).toISOString();
         this.startDate = Math.round(Date.now().addMinutes(-minutes)/1000);
-        //console.log(Math.round(Date.now().addMinutes(-minutes)/1000));
-        console.log("duration changed: ", duration, this.startDate);
-        //return window.stream.loadItems();
+        this.endDate = Math.round(Date.now().hours()/1000);
         return Router.handleRequest("search");
       },
 
       onSearchChange : function(e) {
         this.search = e.target.value;
-        //return window.stream.loadItems();
-        //Router.handleRequest("search");
       },
 
       addGroup : function(t) {
         t = t.split(" ")[0];
         this.groups.push(t);
-        return window.stream.loadItems();
+        return Router.handleRequest("search");
       },
 
       hasGroup : function(t) {
@@ -175,7 +180,7 @@
           }
         });
         this.groups = temp;
-        return window.stream.loadItems();
+        return Router.handleRequest("search");
       },
 
       hasTag : function(t) {
@@ -188,12 +193,14 @@
         });
         return found;
       },
-
       addTag : function(t) {
-        this.tags.push(t);
-        return window.stream.loadItems();
+        if (this.tags.indexOf(t) == -1){
+          this.tags.push(t);       
+        }else{
+          this.tags.pop(t);
+        }
+        return Router.handleRequest("search");
       },
-
       removeTag : function(t) {
         var temp;
         temp = [];
@@ -203,7 +210,7 @@
           }
         });
         this.tags = temp;
-        return window.stream.loadItems();
+        return Router.handleRequest("search");
       },
 
       setCoords : function(northEast, southWest) {
@@ -211,7 +218,19 @@
 
       setSearch : function(searchterm) {
         this.search = searchterm;
-        return window.stream.loadItems();
+        return Router.handleRequest("search");
+      },
+      setTag:function(tag){
+        if(this.tags.indexOf(tag) == -1){
+          this.tags.push(tag);
+          if(this.tags.length == 1)
+            this.fetch.push("tags");
+        }else{
+          this.tags.pop(tag);
+          if(this.tags.length == 0)
+            this.fetch.pop("tags");
+        }
+        return Router.handleRequest("search");
       }
 
     };
