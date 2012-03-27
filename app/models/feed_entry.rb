@@ -217,6 +217,7 @@ class FeedEntry < ActiveRecord::Base
   end
 
   def tags
+    return nil if self.get_tags.blank?
     twitags = self.get_tags.tags.map{|tag| '#' + tag.titleize.gsub(' ', '')}
     twitags.uniq.join(' ')
   end
