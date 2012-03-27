@@ -303,6 +303,15 @@ describe FeedEntry do
       end
     end
   end
+
+  describe "#tags" do
+
+    it "should return the collection of tags twitter style and separated by spaces" do
+      entry = FactoryGirl.create(:feed_entry)
+      entry.entities << FactoryGirl.build(:entity, :type => 'tag', :tags => ["San Marino", "Colima", "san francisco", "Madrid", "Obama", "The Next Generation", "The NextGeneration"])
+      entry.tags.should == '#SanMarino #Colima #SanFrancisco #Madrid #Obama #TheNextGeneration'
+    end
+  end
   # -------- State machine tests --------
   describe "change state" do
     before do
@@ -344,6 +353,18 @@ describe FeedEntry do
         @entry.update_attribute(:state, 'fetched')
         @entry.localize
         EntryTagger.should have_queued(@entry.id).in(:entries)
+      end
+    end
+
+    describe 'after tagging' do
+      before do
+        ResqueSpec.reset!
+      end
+
+      it 'should enque the entry to be fetched' do
+        @entry.update_attribute(:state, 'localized')
+        @entry.tag
+        EntryIndexer.should have_queued(@entry.id).in(:entries)
       end
     end
   end

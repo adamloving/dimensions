@@ -80,11 +80,11 @@ class NewsFeed < ActiveRecord::Base
 
   def build_location
     location = self.entities.find_by_type('location')
-
     if location
-      location.update_attributes(location_values.merge(:type => 'location'))
+      location.serialized_data  = location_values[:serialized_data]
+      location.name             = location_values[:name]
     else
-      self.entities << Entity.find_or_create_by_name(location_values.merge(:type => 'location')) unless location_values.except(:serialized_data).blank?
+      self.entities = [Entity.create(location_values.merge(:type => 'location'))]
     end
   end
 

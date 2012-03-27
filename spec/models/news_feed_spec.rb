@@ -41,12 +41,15 @@ describe NewsFeed do
         news_feed.location_longitude  = "2.9"
 
         news_feed.save.should be_true
-        news_feed.location.type.should                          == 'location'
-        news_feed.location.name.should                          == 'Jilguero #75 Residencial Santa Barbara, Colima, Colima, Mexico'
-        news_feed.location.serialized_data['latitude'].should   == "3.4"
-        news_feed.location.serialized_data['longitude'].should  == "2.9"
+        
+        feed = NewsFeed.find(news_feed.id)
+        feed.location.type.should                          == 'location'
+        feed.location.name.should                          == 'Jilguero #75 Residencial Santa Barbara, Colima, Colima, Mexico'
+        feed.location.serialized_data['latitude'].should   == "3.4"
+        feed.location.serialized_data['longitude'].should  == "2.9"
       end
     end
+
     context "the news feed already has a location and parameters for the location are sent" do
       it "should update the location entity for the news feed with that data" do
         news_feed = FactoryGirl.build(:news_feed)
@@ -60,6 +63,7 @@ describe NewsFeed do
         news_feed.location_longitude  = "2.9"
 
         news_feed.save.should be_true
+        news_feed.entities.location.count.should                == 1
         news_feed.location.type.should                          == 'location'
         news_feed.location.name.should                          == 'Jilguero #75 Residencial Santa Barbara, Colima, Colima, Mexico'
         news_feed.location.serialized_data['latitude'].should   == "3.4"

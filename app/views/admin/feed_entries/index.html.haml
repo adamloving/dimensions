@@ -24,7 +24,9 @@
       %th Name
       %th Published At
       %th
+      %th Indexed
       %th
+
 
   %tbody
     - @feed_entries.each do|entry|
@@ -37,7 +39,8 @@
         %td
           %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
             = entry.state
-          
+        %td
+          = "*" if entry.indexed?
         %td
           = link_to "View",
 admin_news_feed_feed_entry_path(entry.feed,

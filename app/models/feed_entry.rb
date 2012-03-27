@@ -48,6 +48,7 @@ class FeedEntry < ActiveRecord::Base
     after_transition :on => :fetch, :do => :fetch_content!
     after_transition :on => :download, :do => :enqueue_to_fetch
     after_transition :on => :localize, :do => :enqueue_to_tag
+    after_transition :on => :tag, :do => :index_this_entry
   end
 
   def self.update_from_feed(feed_url)
@@ -112,6 +113,10 @@ class FeedEntry < ActiveRecord::Base
     Resque.enqueue(EntryTagger, self.id)
   end
 
+  def index_this_entry
+    Resque.enqueue(EntryIndexer, self.id)
+  end
+
   def fetch_content!
     if self.content.present?
       Resque.enqueue(EntryLocalizer, self.id)
@@ -146,8 +151,13 @@ class FeedEntry < ActiveRecord::Base
                         1 => location["longitude"],
                         2 => self.published_at.to_i }
 
-      fields = {:url => self.url, :timestamp => self.published_at.to_i , :text => self.name, :all => '1'}
+      fields = {:url => self.url, 
+                :timestamp => self.published_at.to_i,
+                :text => self.name,
+                :tags => self.tags,
+                :all => '1'}
       index.document(self.id).add(fields, :variables => doc_variables)
+      self.update_attributes(:indexed => true)
       true
     else
       false
@@ -196,6 +206,11 @@ class FeedEntry < ActiveRecord::Base
         return true
       end
     end
+  end
+
+  def tags
+    twitags = self.get_tags.tags.map{|tag| '#' + tag.titleize.gsub(' ', '')}
+    twitags.uniq.join(' ')
   end
 
   def self.tags(id)
