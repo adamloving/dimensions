@@ -30,6 +30,7 @@
       this.tags       = [];
       this.groups     = [];
       this.coords     = null;
+      this.fetch      = ["text","url","timestamp"];
     }
 
     Filter.prototype = {
@@ -76,8 +77,11 @@
           query.q = "all:1";
         }
         if (this.tags.length > 0) {
-          //query.tag = this.tags.join(',');
           query.q = "tags:"+this.tags.join(',');
+        }
+       
+        if (this.fetch.length > 0) {
+         query.fetch =  this.fetch.join(',');
         }
         if (this.groups.length > 0) {
           query.owner = this.groups.join(',');
@@ -191,7 +195,7 @@
       },
       addTag : function(t) {
         if (this.tags.indexOf(t) == -1){
-          this.tags.push(t);
+          this.tags.push(t);       
         }else{
           this.tags.pop(t);
         }
@@ -219,7 +223,13 @@
       setTag:function(tag){
         if(this.tags.indexOf(tag) == -1){
           this.tags.push(tag);
-        }else{this.tags.pop(tag)}
+          if(this.fetch.indexOf("tags") == -1)
+            this.fetch.push("tags");
+        }else{
+          this.tags.pop(tag);
+          if(this.fetch.indexOf("tags") >= 0)
+            this.fetch.pop("tags");
+        }
         return Router.handleRequest("search");
       }
 

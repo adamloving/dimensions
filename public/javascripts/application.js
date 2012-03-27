@@ -68,7 +68,6 @@ $(function(){
     $(this).find("a").bind("click",function(){
        tag = $(this).attr("href").replace(/#/i,"");
        window.filter.setTag(tag);
-       console.log(window.filter.tags);
       return false;
     });
   });

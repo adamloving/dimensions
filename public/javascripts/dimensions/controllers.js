@@ -25,7 +25,6 @@ function SearchController(){
     window.dimensions.bind("loadItems",function(){
     $(this.element).empty().append("<p>Loading...</p>")
       query = window.filter.getQuery();
-      query.fetch = 'text,url,timestamp';
       console.log($.param(query));
       window.searchify.search(query);
     });
