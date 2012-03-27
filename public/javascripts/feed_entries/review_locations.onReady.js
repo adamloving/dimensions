@@ -1,6 +1,8 @@
 $(document).ready(function(){
   $("a.location").click(function(e) {
-    var ajax_loader_small = $($($(this)[0]).parents('tr').find('.ajax_image')[0]).find(':first-child')[0];
+    //gets the row
+    row = $($(this)[0]).parents('tr');
+    var ajax_loader_small = $($($(row)[0]).find('.ajax_image')[0]).find(':first-child')[0];
     $(ajax_loader_small).show();
     url = $(this).attr('href');
     var self = $(this);
@@ -19,6 +21,7 @@ $(document).ready(function(){
       },
       complete: function(){
         $(ajax_loader_small).hide();
+        $(row).fadeOut(1000);
       }
     });
     return false;
