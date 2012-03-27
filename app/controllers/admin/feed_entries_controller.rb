@@ -12,8 +12,10 @@ class Admin::FeedEntriesController < Admin::BaseController
   def review_locations
     @feed_entries = if params[:news_feed_id]
       NewsFeed.find(params[:news_feed_id]).entries.for_location_review.page(params[:page]).per(20)
+    elsif params[:reviewed] == 'true'
+      @feed_entries = FeedEntry.reviewed.for_location_review.page(params[:page]).per(20)
     else
-      FeedEntry.not_reviewed.for_location_review.page(params[:page]).per(20)
+      @feed_entries = FeedEntry.not_reviewed.for_location_review.page(params[:page]).per(20)
     end
   end
 
