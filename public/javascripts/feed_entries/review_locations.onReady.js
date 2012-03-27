@@ -1,6 +1,5 @@
 $(document).ready(function(){
   $("a.location").click(function(e) {
-    e.preventDefault();
     var ajax_loader_small = $($($(this)[0]).parents('tr').find('.ajax_image')[0]).find(':first-child')[0];
     $(ajax_loader_small).show();
     url = $(this).attr('href');
