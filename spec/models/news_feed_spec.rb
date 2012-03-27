@@ -7,12 +7,6 @@ describe NewsFeed do
       @news_feed = FactoryGirl.create(:news_feed)
     end
 
-    context "when the news feed has no entities" do
-      it 'should return nil' do
-        @news_feed.location.should be_nil
-      end
-    end
-
     context "when the news feed has entities but none of type location" do
       it 'should return nil' do
         person = FactoryGirl.build(:entity, :name => "Inaki", :type => 'person')
@@ -68,6 +62,24 @@ describe NewsFeed do
         news_feed.location.name.should                          == 'Jilguero #75 Residencial Santa Barbara, Colima, Colima, Mexico'
         news_feed.location.serialized_data['latitude'].should   == "3.4"
         news_feed.location.serialized_data['longitude'].should  == "2.9"
+      end
+    end
+
+    context "the news feed already has a location and parameters for the location aren't sent" do
+      it "should leave the existing location" do
+        news_feed = FactoryGirl.build(:news_feed)
+        
+        location = FactoryGirl.build(:entity, :name => "GDL", :serialized_data => {'latitude' => '1', 'longitude' => '2'}, :type => 'location')
+        news_feed.entities << location
+        news_feed.save
+
+
+        news_feed.save.should be_true
+        news_feed.entities.location.count.should                == 1
+        news_feed.location.type.should                          == 'location'
+        news_feed.location.name.should                          == 'GDL'
+        news_feed.location.serialized_data['latitude'].should   == "1"
+        news_feed.location.serialized_data['longitude'].should  == "2"
       end
     end
   end
