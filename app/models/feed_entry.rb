@@ -137,7 +137,7 @@ class FeedEntry < ActiveRecord::Base
       self.save
       Resque.enqueue(EntryLocalizer, self.id)
     rescue Exception => e
-      self.fetch_errors = {:error => e.to_s.safe_encoding)}
+      self.fetch_errors = {:error => e.to_s.safe_encoding}
       self.failed = true
       self.save
       return nil
