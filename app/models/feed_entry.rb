@@ -133,11 +133,11 @@ class FeedEntry < ActiveRecord::Base
         result :content
       end
       uri = URI.parse(self.url)
-      self.content = scraper.scrape(uri).join(" ") 
+      self.content = safe_to_s(scraper.scrape(uri).join(" ") )
       self.save
       Resque.enqueue(EntryLocalizer, self.id)
     rescue Exception => e
-      self.fetch_errors = {:error => e.to_s}
+      self.fetch_errors = {:error => safe_to_s(e.to_s)}
       self.failed = true
       self.save
       return nil
@@ -145,6 +145,9 @@ class FeedEntry < ActiveRecord::Base
     self.content
   end
 
+  def safe_to_s(str)
+    Iconv.new('UTF-8//IGNORE', 'UTF-8').iconv(str + ' ')[0..-2]
+  end
 
   def index_in_searchify(index)
     location = self.primary_location.serialized_data
