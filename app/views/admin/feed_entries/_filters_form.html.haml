@@ -2,9 +2,9 @@
   .filter_form_field.filter_string
     = label :q, :news_feed_id_equals, "News Feed"
     - if params[:q]
-      = select :q, :news_feed_id_equals, options_from_collection_for_select(news_feeds, 'id', 'name', params[:q][:news_feed_id_equals])
+      = select :q, :news_feed_id_equals, options_from_collection_for_select(news_feeds, 'id', 'name', params[:q][:news_feed_id_equals]), {:include_blank=>'All'}
     - else
-      = select :q, :news_feed_id_equals, options_from_collection_for_select(news_feeds, 'id', 'name')
+      = select :q, :news_feed_id_equals, options_from_collection_for_select(news_feeds, 'id', 'name'), {:include_blank=>'All'}
   .filter_form_field.filter_string
     = label :q, :name_contains, "Search name:"
     - if params[:q]
