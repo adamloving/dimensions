@@ -235,7 +235,7 @@ class FeedEntry < ActiveRecord::Base
   private 
   def self.add_entries(entries)
     entries = []
-    feed.entries.each do|entry|
+    entries.each do|entry|
       unless exists? guid: entry.id
         entries << create!(name: entry.title,
                summary: entry.summary,
