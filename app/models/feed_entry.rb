@@ -133,11 +133,11 @@ class FeedEntry < ActiveRecord::Base
         result :content
       end
       uri = URI.parse(self.url)
-      self.content = safe_to_s(scraper.scrape(uri).join(" ") )
+      self.content = scraper.scrape(uri).join(" ").safe_encoding
       self.save
       Resque.enqueue(EntryLocalizer, self.id)
     rescue Exception => e
-      self.fetch_errors = {:error => safe_to_s(e.to_s)}
+      self.fetch_errors = {:error => e.to_s.safe_encoding)}
       self.failed = true
       self.save
       return nil
