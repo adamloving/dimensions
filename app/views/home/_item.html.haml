@@ -1,6 +1,15 @@
 = javascript_include_tag 'dimensions/timefield'
 %script#item-template{:type=>"text/x-jquery-tmpl"}
-  {{each(i,item) items}}
+  {{if items.pags}}
+  .pagination
+    {{each(i,item) items.pags}}
+    %ul
+      %li{:class=>"${(((items.start ==0 )?1:(items.len/items.start)+1) == (i))?'active':''}"}
+        %a{:href=>"${item}"}${i}
+    {{/each}}
+  {{/if}}
+  {{each(i,item) items.results}}
+  .br{:style=>"clear:both;"}
   .item
     .post-it
       {{if img}}

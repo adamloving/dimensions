@@ -5,7 +5,20 @@ $(function(){
       if($(this.element).length){
         $(this.element).empty();
         if(this.data.results.length > 0){
-          $.tmpl(this.template,{items:this.data.results}).appendTo(this.element);
+          var matches = {};
+          var i=1;
+          for(i; i< (this.data.matches/window.filter.len); i++){
+            matches[i] = (window.filter.len*i);
+          }
+
+          if((this.data.matches%window.filter.len)>0){
+            matches[(i)] = (matches[(i-1)]+(this.data.matches%window.filter.len));
+          }
+          this.data.pags = matches;
+          this.data.start   = window.filter.start;
+          this.data.len     = window.filter.len;
+
+          $.tmpl(this.template,{items:this.data}).appendTo(this.element);
           $.each(this.data.results, function(i, r) {
             var breakingNews, displayMarker, latitude, longitude, _ref, _ref2;
             if(r.variable_0 && r.variable_1){

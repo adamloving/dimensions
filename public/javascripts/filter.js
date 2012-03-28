@@ -34,7 +34,7 @@
       this.neCoords   = null;
       this.fetch      = ["text","url","timestamp"];
       this.start      = 0;
-      this.len        = 15;
+      this.len        = 10;
     }
 
     Filter.prototype = {
