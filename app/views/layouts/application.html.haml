@@ -39,3 +39,9 @@
   = render :partial => 'layouts/top_nav'
   .container
     = yield
+
+- if Rails.env.production? || Rails.env.staging?
+  <!-- begin Omniture -->
+  <script language="javascript" src="http://www.king5.com/templates/king5_third-party_omniture.js"></script>
+  <!-- end Omniture -->
+
