@@ -4,7 +4,6 @@ source 'http://gems.github.com'
 
 gem 'pg'
 gem 'rails', '3.2.2'
-gem 'activeadmin'
 gem 'calais'
 gem 'scrapi'
 gem 'state_machine'
