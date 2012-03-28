@@ -55,14 +55,27 @@ class FeedEntry < ActiveRecord::Base
 
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
+    news_feed = NewsFeed.find_by_url(feed_url)
+    feedzirra_response = FeedzirraResponse.new(:serialized_field => feed, :news_feed_id => news_feed.id)
+    feedzirra_response.save
     raise "The feed is invalid" if feed.nil?
     entries = add_entries(feed.entries)
   end
 
   def self.update_from_feed_continuosly(feed_url)
-    feed =  Feedzirra::Feed.fetch_and_parse(feed_url)
-    feed = Feedzirra::Feed.update(feed)
-    add_entries(feed.new_entries) if feed.updated?
+    news_feed = NewsFeed.where(:url => feed_url).first
+    current_feedzirra_response = news_feed.feedzirra_response if news_feed.feedzirra_response
+    unless current_feedzirra_response
+      feed = Feedzirra::Feed.fetch_and_parse(feed_url)
+      feedzirra_response = FeedzirraResponse.new(:serialized_response => {news_feed.id => feed}, :news_feed_id => news_feed.id)
+      feedzirra_response.save
+    else
+      feed = Feedzirra::Feed.update(current_feedzirra_response.serialized_response[news_feed.id])
+      if feed.updated?
+        add_entries(feed.new_entries)
+        FeedzirraResponse.find_by_news_feed_id(news_feed.id).update_attributes(:serialized_response => {news_feed.id => feed})
+      end
+    end
   end
 
   def self.localize(entry)

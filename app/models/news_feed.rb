@@ -5,6 +5,7 @@ class NewsFeed < ActiveRecord::Base
 
   has_and_belongs_to_many :entities
   has_many  :entries, :class_name =>  FeedEntry, :dependent => :restrict
+  has_one :feedzirra_response
 
 
   attr_accessor :location_values
