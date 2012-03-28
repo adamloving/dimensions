@@ -18,6 +18,8 @@ gem 'sass-rails'
 #========================================
 gem 'feedzirra'
 
+gem 'kaminari'
+
 # background jobs
 #========================================
 gem 'resque', :require => "resque/server"
