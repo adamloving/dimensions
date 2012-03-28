@@ -35,13 +35,18 @@ class NewsFeed < ActiveRecord::Base
 
   def load_entries
     entries = FeedEntry.update_from_feed(self.url)
-    self.entries += entries
-    self.save
+    set_downloaded(entries)
+  end
+
+  def set_downloaded(entries)
     entries.each do|entry|
-      entry.feed = self
-      self.entries << entry
       entry.download
     end
+  end
+
+  def update_entries
+    entries = FeedEntry.update_from_feed_continuosly(self.url)
+    set_downloaded(entries)
   end
   
   def location
