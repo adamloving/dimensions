@@ -30,7 +30,11 @@
       this.tags       = [];
       this.groups     = [];
       this.coords     = null;
+      this.swCoords   = null;
+      this.neCoords   = null;
       this.fetch      = ["text","url","timestamp"];
+      this.start      = 0;
+      this.len        = 15;
     }
 
     Filter.prototype = {
@@ -75,13 +79,13 @@
           query.q = this.search;
         }else{
           query.q = "all:1";
-          if(typeof(map.center) != 'undefined'){
-            //Sets marker by first time the page is loaded
-            entries = $.data($('#map')[0],'entries');
-            $(entries).each(function(){
-              addMarker(this.variable_0,this.variable_1);
-            });
-          }
+          //if(typeof(map.center) != 'undefined'){
+            ////Sets marker by first time the page is loaded
+            //entries = $.data($('#map')[0],'entries');
+            //$(entries).each(function(){
+              //addMarker(this.variable_0,this.variable_1);
+            //});
+          //}
         }
         if (this.tags.length > 0) {
           query.q = "tags:"+this.tags.join(',');
@@ -94,12 +98,14 @@
           query.owner = this.groups.join(',');
         }
         if (this.neCoords && this.swCoords) {
-          query.filter_docvar0 = this.swCoords.Ua + ':' + this.neCoords.Ua
-          query.filter_docvar1 = this.swCoords.Va + ':' + this.neCoords.Va
+          query.filter_docvar0 = this.swCoords.Ta + ':' + this.neCoords.Ta
+          query.filter_docvar1 = this.swCoords.Ua + ':' + this.neCoords.Ua
         }
-        query.start_date = this.startDate;
-        query.filter_docvar2  = this.startDate+':'+this.endDate;
-        query.fetch_variables = true;
+        query.start_date       = this.startDate;
+        query.filter_docvar2   = this.startDate+':'+this.endDate;
+        query.fetch_variables  = true;
+        query.len              = this.len;
+        query .start           = this.start;
         return query;
       },
 
@@ -226,6 +232,8 @@
 
       setSearch : function(searchterm) {
         this.search = searchterm;
+        this.neCoords = null;
+        this.swCoords = null;
         return Router.handleRequest("search");
       },
       setTag:function(tag){
