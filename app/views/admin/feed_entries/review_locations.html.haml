@@ -1,4 +1,10 @@
-= select_tag('entity_state', options_for_select({'Not Reviewed' => '1', 'Reviewed' => '2'}),  :class => 'left')
+= content_for :sidebar do
+  %h3
+    Review Locations for Entries
+  #panel_contents
+    = select_tag('entity_state', options_for_select({'Not Reviewed' => '1', 'Reviewed' => '2'}),  :class => 'left')
+
+
 .pagination
   = paginate @feed_entries
 %table.feed_entries.table-striped.table

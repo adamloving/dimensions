@@ -156,6 +156,7 @@ class FeedEntry < ActiveRecord::Base
       fields = {:url => self.url, 
                 :timestamp => self.published_at.to_i,
                 :text => self.name,
+                :location => self.primary_location.name,
                 :tags => self.tags,
                 :all => '1'}
       index.document(self.id).add(fields, :variables => doc_variables)
