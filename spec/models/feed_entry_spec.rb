@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe FeedEntry do
   #******************** SCOPES********************
   describe ".failed" do
@@ -21,17 +22,9 @@ describe FeedEntry do
   end
 
   #******************** CLASS METHODS********************
-  describe ".update_from_feed" do
-    it 'should raise an exception when the feed is not valid' do
-      Feedzirra::Feed.stub(:fetch_and_parse){nil}
-      lambda {
-        FeedEntry.update_from_feed('invalid url')
-      }.should raise_error('The feed is invalid')
-    end
 
-    it 'should create entries whenever the feed --> feeds :p' do
-      url = 'good url'
-
+  describe "self.add_entries" do
+    it 'converts feedzirra entries to feed_entry objects' do
       mock_entries = [mock( title: "The first post",
              summary: 'I was so lazy to write my first post',
              url: '/some-url-x',
@@ -46,14 +39,53 @@ describe FeedEntry do
              id: '/my-other-unique-id',
              author: 'Inaki',
              content: 'blah, blah, blah')]
-      Feedzirra::Feed.stub(:fetch_and_parse).with(url){mock_entries}
-      entries = nil
+      news_feed = FactoryGirl.create(:news_feed)
+
+
+      results = nil
       lambda{
-         entries = FeedEntry.update_from_feed(url)
+        results = FeedEntry.add_entries(mock_entries, news_feed.id)
       }.should change(FeedEntry, :count).by(2)
 
-      entries.first.should be_an_instance_of(FeedEntry)
-      entries.last.should be_an_instance_of(FeedEntry)
+      news_feed.entries.count.should == 2
+      results.count.should == 2
+      results.map(&:name) =~ ['The first post', 'The second post']
+      results.map(&:author).should =~ ['Inaki', 'Inaki']
+    end
+  end
+
+  describe 'self.save_feedzirra_response' do
+    it "creates a new feedzirra response" do
+      news_feed_id = 1
+      feed = mock
+      response = mock
+      response.should_receive(:save){true}
+      FeedzirraResponse.should_receive(:new).with(:serialized_response => {news_feed_id => feed}, :news_feed_id => news_feed_id){response}
+      FeedEntry.save_feedzirra_response(news_feed_id, feed)
+    end
+  end
+
+  describe ".update_from_feed" do
+    it 'should raise an exception when the feed is not valid' do
+      Feedzirra::Feed.stub(:fetch_and_parse){nil}
+      lambda {
+        FeedEntry.update_from_feed('invalid url')
+      }.should raise_error('The feed is invalid')
+    end
+
+    it 'should create entries whenever the feed --> feeds :p' do
+      url = 'good url'
+      feed = mock(:entries => ['Hola'])
+      Feedzirra::Feed.stub(:fetch_and_parse){feed}
+      news_feed = mock(:id => 1)
+      NewsFeed.stub(:find_by_url).with(url){news_feed}
+      FeedEntry.should_receive(:save_feedzirra_response).with(news_feed.id, feed)
+      FeedEntry.should_receive(:add_entries).with(feed.entries, news_feed.id){['Hola', 'Mundo']}
+      
+      entries = FeedEntry.update_from_feed(url)
+      
+
+      entries.should =~ ['Hola', 'Mundo']
     end
   end
 
