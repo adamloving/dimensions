@@ -74,18 +74,69 @@ describe FeedEntry do
     end
 
     it 'should create entries whenever the feed --> feeds :p' do
-      url = 'good url'
-      feed = mock(:entries => ['Hola'])
+      now = Time.zone.now
+
+      feed = mock(:entries => ['Hola'], :etag => 'xyz', :last_modified => now)
       Feedzirra::Feed.stub(:fetch_and_parse){feed}
-      news_feed = mock(:id => 1)
-      NewsFeed.stub(:find_by_url).with(url){news_feed}
-      FeedEntry.should_receive(:save_feedzirra_response).with(news_feed.id, feed)
+
+      news_feed = FactoryGirl.create(:news_feed, :url => 'http://king5.com')
+
       FeedEntry.should_receive(:add_entries).with(feed.entries, news_feed.id){['Hola', 'Mundo']}
       
-      entries = FeedEntry.update_from_feed(url)
+      entries = FeedEntry.update_from_feed(news_feed.url)
       
+      news = NewsFeed.find(news_feed.id)
+      news.etag.should  == 'xyz'
+      #news.last_modified.should == now.to_s
 
       entries.should =~ ['Hola', 'Mundo']
+    end
+  end
+
+  describe ".update_from_feed_continously" do
+    context 'the url does not belong to any existing news feed' do
+      it 'should raise an error' do
+        news_feed = FactoryGirl.create(:news_feed, :url => 'http://king5.com')
+        lambda{
+          FeedEntry.update_from_feed_continuously('non-existing-url')
+        }.should raise_error 'Couldn\'t find news feed with the given url'
+      end
+    end
+
+    context 'the url belongs to a news feed' do
+      before do
+        @now = Time.now
+        @news_feed  = FactoryGirl.create(:news_feed, :url => 'http://king5.com', :etag => 'xyz', :last_modified => @now)
+        @feed_entry = FactoryGirl.create(:feed_entry, :feed => @news_feed)
+      end
+
+      context 'the feedzirra feed is not updated' do
+        it 'should return without updating the news feed etag and last modified' do
+          updated_feed = mock(:updated? => false)
+          Feedzirra::Feed.stub(:update){updated_feed}
+
+          FeedEntry.update_from_feed_continuously('http://king5.com')
+          
+          @news_feed.reload.etag.should == 'xyz'
+          #@news_feed.reload.last_modified.should == @now
+        end
+      end
+
+      context 'the feedzirra feed is updated' do
+        before do
+          @some_new_date = 2.days.since(Time.now)
+          @updated_feed = mock(:updated? => true, :new_entries => ['an entry'], :etag => 'abc', :last_modified => @some_new_date)
+          Feedzirra::Feed.stub(:update){@updated_feed}
+          FeedEntry.should_receive(:add_entries).with(['an entry'])
+        end
+
+        it 'should update the news feed etag and last modified' do
+          FeedEntry.update_from_feed_continuously('http://king5.com')
+
+          @news_feed.reload.etag.should == 'abc'
+          #@news_feed.reload.last_modified.should == @some_new_date
+        end
+      end
     end
   end
 

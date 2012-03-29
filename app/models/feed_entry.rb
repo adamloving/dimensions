@@ -13,6 +13,8 @@ class FeedEntry < ActiveRecord::Base
 
   serialize :fetch_errors
 
+  default_scope order('id DESC')
+
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
   scope :for_location_review, where(:state => ['localized', 'tagged'])
   scope :not_reviewed, where(:reviewed => false)
@@ -56,23 +58,34 @@ class FeedEntry < ActiveRecord::Base
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
     raise "The feed is invalid" if feed.blank?
+
     news_feed = NewsFeed.find_by_url(feed_url)
-    save_feedzirra_response(news_feed.id, feed)
+    news_feed.update_attributes(:etag => feed.etag, :last_modified => feed.last_modified)
+
     entries = add_entries(feed.entries, news_feed.id)
   end
 
-  def self.update_from_feed_continuosly(feed_url)
-    news_feed = NewsFeed.where(:url => feed_url).first
-    current_feedzirra_response = news_feed.feedzirra_response unless news_feed.feedzirra_response.blank?
-    unless current_feedzirra_response
-      feed = Feedzirra::Feed.fetch_and_parse(feed_url)
-      save_feedzirra_response(news_feed.id, feed)
-    else
-      feed = Feedzirra::Feed.update(current_feedzirra_response.serialized_response[news_feed.id])
-      if feed.updated?
-        FeedzirraResponse.find_by_news_feed_id(news_feed.id).update_attributes(:serialized_response => {news_feed.id => feed})
-        entries = add_entries(feed.new_entries)
-      end
+  def self.update_from_feed_continuously(feed_url)
+    internal_feed = NewsFeed.find_by_url(feed_url)
+    raise 'Couldn\'t find news feed with the given url' if internal_feed.blank?
+
+    feed_to_update                = Feedzirra::Parser::Atom.new.tap do|feed|
+      feed.feed_url       = internal_feed.url
+      feed.etag           = internal_feed.etag
+      feed.last_modified  = internal_feed.last_modified
+    end
+
+    last_entry      = Feedzirra::Parser::AtomEntry.new
+    last_entry.url  = internal_feed.entries.last
+
+    feed_to_update.entries = [last_entry]
+
+    updated_feed = Feedzirra::Feed.update(feed_to_update)
+
+
+    if updated_feed.updated?
+      add_entries updated_feed.new_entries, internal_feed.id 
+      internal_feed.update_attributes!(:etag => updated_feed.etag, :last_modified => updated_feed.last_modified)
     end
   end
 
@@ -146,10 +159,6 @@ class FeedEntry < ActiveRecord::Base
       return nil
     end
     self.content
-  end
-
-  def safe_to_s(str)
-    Iconv.new('UTF-8//IGNORE', 'UTF-8').iconv(str + ' ')[0..-2]
   end
 
   def index_in_searchify(index)
