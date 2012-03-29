@@ -13,6 +13,8 @@ class FeedEntry < ActiveRecord::Base
 
   serialize :fetch_errors
 
+  default_scope order('id DESC')
+
   scope :failed, lambda{|is_fail| where(:failed => is_fail) }
   scope :for_location_review, where(:state => ['localized', 'tagged'])
   scope :not_reviewed, where(:reviewed => false)
@@ -67,10 +69,11 @@ class FeedEntry < ActiveRecord::Base
     internal_feed = NewsFeed.find_by_url(feed_url)
     raise 'Couldn\'t find news feed with the given url' if internal_feed.blank?
 
-    feed_to_update                = Feedzirra::Parser::Atom.new
-    feed_to_update.feed_url       = internal_feed.url
-    feed_to_update.etag           = internal_feed.etag
-    feed_to_update.last_modified  = internal_feed.last_modified
+    feed_to_update                = Feedzirra::Parser::Atom.new.tap do|feed|
+      feed.feed_url       = internal_feed.url
+      feed.etag           = internal_feed.etag
+      feed.last_modified  = internal_feed.last_modified
+    end
 
     last_entry      = Feedzirra::Parser::AtomEntry.new
     last_entry.url  = internal_feed.entries.last
@@ -79,8 +82,9 @@ class FeedEntry < ActiveRecord::Base
 
     updated_feed = Feedzirra::Feed.update(feed_to_update)
 
+
     if updated_feed.updated?
-      add_entries updated_feed.new_entries 
+      add_entries updated_feed.new_entries, internal_feed.id 
       internal_feed.update_attributes!(:etag => updated_feed.etag, :last_modified => updated_feed.last_modified)
     end
   end

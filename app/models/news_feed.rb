@@ -39,9 +39,7 @@ class NewsFeed < ActiveRecord::Base
   end
 
   def set_downloaded(entries)
-    entries.each do|entry|
-      entry.download
-    end
+    entries.map(&:download)
   end
 
   def update_entries

@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(:version => 20120329190358) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.string   "etag"
-    t.string   "last_modified"
+    t.datetime "last_modified"
   end
 
   add_index "news_feeds", ["name"], :name => "index_news_feeds_on_name", :unique => true
