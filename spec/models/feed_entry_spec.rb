@@ -127,7 +127,7 @@ describe FeedEntry do
           @some_new_date = 2.days.since(Time.now)
           @updated_feed = mock(:updated? => true, :new_entries => ['an entry'], :etag => 'abc', :last_modified => @some_new_date)
           Feedzirra::Feed.stub(:update){@updated_feed}
-          FeedEntry.should_receive(:add_entries).with(['an entry'])
+          FeedEntry.should_receive(:add_entries).with(['an entry'], @news_feed.id)
         end
 
         it 'should update the news feed etag and last modified' do

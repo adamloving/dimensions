@@ -117,10 +117,6 @@ describe NewsFeed do
       entry.should_receive(:download)
 
       @news_feed.load_entries
-
-      entry.feed.should == @news_feed
-
-      @news_feed.entries.should include(entry)
     end
   end
 end
