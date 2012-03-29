@@ -56,23 +56,32 @@ class FeedEntry < ActiveRecord::Base
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
     raise "The feed is invalid" if feed.blank?
+
     news_feed = NewsFeed.find_by_url(feed_url)
-    save_feedzirra_response(news_feed.id, feed)
+    news_feed.update_attributes(:etag => feed.etag, :last_modified => feed.last_modified)
+
     entries = add_entries(feed.entries, news_feed.id)
   end
 
-  def self.update_from_feed_continuosly(feed_url)
-    news_feed = NewsFeed.where(:url => feed_url).first
-    current_feedzirra_response = news_feed.feedzirra_response unless news_feed.feedzirra_response.blank?
-    unless current_feedzirra_response
-      feed = Feedzirra::Feed.fetch_and_parse(feed_url)
-      save_feedzirra_response(news_feed.id, feed)
-    else
-      feed = Feedzirra::Feed.update(current_feedzirra_response.serialized_response[news_feed.id])
-      if feed.updated?
-        FeedzirraResponse.find_by_news_feed_id(news_feed.id).update_attributes(:serialized_response => {news_feed.id => feed})
-        entries = add_entries(feed.new_entries)
-      end
+  def self.update_from_feed_continuously(feed_url)
+    internal_feed = NewsFeed.find_by_url(feed_url)
+    raise 'Couldn\'t find news feed with the given url' if internal_feed.blank?
+
+    feed_to_update                = Feedzirra::Parser::Atom.new
+    feed_to_update.feed_url       = internal_feed.url
+    feed_to_update.etag           = internal_feed.etag
+    feed_to_update.last_modified  = internal_feed.last_modified
+
+    last_entry      = Feedzirra::Parser::AtomEntry.new
+    last_entry.url  = internal_feed.entries.last
+
+    feed_to_update.entries = [last_entry]
+
+    updated_feed = Feedzirra::Feed.update(feed_to_update)
+
+    if updated_feed.updated?
+      add_entries updated_feed.new_entries 
+      internal_feed.update_attributes!(:etag => updated_feed.etag, :last_modified => updated_feed.last_modified)
     end
   end
 
