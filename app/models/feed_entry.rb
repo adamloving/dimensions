@@ -148,10 +148,6 @@ class FeedEntry < ActiveRecord::Base
     self.content
   end
 
-  def safe_to_s(str)
-    Iconv.new('UTF-8//IGNORE', 'UTF-8').iconv(str + ' ')[0..-2]
-  end
-
   def index_in_searchify(index)
     location = self.primary_location.serialized_data
     if location["latitude"].present? && location["longitude"].present?
