@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe FeedEntry do
   #******************** SCOPES********************
   describe ".failed" do
@@ -32,6 +33,7 @@ describe FeedEntry do
     it 'should create entries whenever the feed --> feeds :p' do
       url = 'good url'
 
+
       mock_entries = [mock( title: "The first post",
              summary: 'I was so lazy to write my first post',
              url: '/some-url-x',
@@ -46,7 +48,15 @@ describe FeedEntry do
              id: '/my-other-unique-id',
              author: 'Inaki',
              content: 'blah, blah, blah')]
-      Feedzirra::Feed.stub(:fetch_and_parse).with(url){mock_entries}
+      feed = mock_entries[0]
+      feed.stub(:entries){mock_entries}
+      Feedzirra::Feed.stub(:fetch_and_parse).with(url){feed}
+      news_feed = mock(
+        id: 1,
+        url: url,
+        name: 'news feed name')
+      NewsFeed.stub(:find_by_url).with(url){news_feed}
+      FeedEntry.stub(:save_feedzirra_response).with(news_feed.id, feed){true}
       entries = nil
       lambda{
          entries = FeedEntry.update_from_feed(url)

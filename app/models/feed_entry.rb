@@ -55,9 +55,9 @@ class FeedEntry < ActiveRecord::Base
 
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
+    raise "The feed is invalid" if feed.blank?
     news_feed = NewsFeed.find_by_url(feed_url)
     save_feedzirra_response(news_feed.id, feed)
-    raise "The feed is invalid" if feed.nil?
     entries = add_entries(feed.entries, news_feed.id)
   end
 
