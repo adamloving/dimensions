@@ -56,24 +56,22 @@ class FeedEntry < ActiveRecord::Base
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
     news_feed = NewsFeed.find_by_url(feed_url)
-    feedzirra_response = FeedzirraResponse.new(:serialized_field => feed, :news_feed_id => news_feed.id)
-    feedzirra_response.save
+    save_feedzirra_response(news_feed.id, feed)
     raise "The feed is invalid" if feed.nil?
-    entries = add_entries(feed.entries)
+    entries = add_entries(feed.entries, news_feed.id)
   end
 
   def self.update_from_feed_continuosly(feed_url)
     news_feed = NewsFeed.where(:url => feed_url).first
-    current_feedzirra_response = news_feed.feedzirra_response if news_feed.feedzirra_response
+    current_feedzirra_response = news_feed.feedzirra_response unless news_feed.feedzirra_response.blank?
     unless current_feedzirra_response
       feed = Feedzirra::Feed.fetch_and_parse(feed_url)
-      feedzirra_response = FeedzirraResponse.new(:serialized_response => {news_feed.id => feed}, :news_feed_id => news_feed.id)
-      feedzirra_response.save
+      save_feedzirra_response(news_feed.id, feed)
     else
       feed = Feedzirra::Feed.update(current_feedzirra_response.serialized_response[news_feed.id])
       if feed.updated?
-        add_entries(feed.new_entries)
         FeedzirraResponse.find_by_news_feed_id(news_feed.id).update_attributes(:serialized_response => {news_feed.id => feed})
+        entries = add_entries(feed.new_entries)
       end
     end
   end
@@ -246,20 +244,27 @@ class FeedEntry < ActiveRecord::Base
   end
 
   private 
-  def self.add_entries(entries)
+  def self.add_entries(feed_entries=[], news_feed_id)
     entries = []
-    entries.each do|entry|
-      unless exists? guid: entry.id
-        entries << create!(name: entry.title,
-               summary: entry.summary,
-               url: entry.url,
-               published_at: entry.published,
-               guid: entry.id,
-               author: entry.author,
-               content: entry.content)
-
+    feed_entries.each do|entry|
+      if entry.id.class == String
+        unless exists? guid: entry.id
+          entries << create!(name: entry.title,
+                 summary: entry.summary,
+                 url: entry.url,
+                 published_at: entry.published,
+                 guid: entry.id,
+                 author: entry.author,
+                 news_feed_id: news_feed_id,
+                 content: entry.content)
+        end
       end
     end
     entries
+  end
+
+  def self.save_feedzirra_response(news_feed_id, feed)
+    feedzirra_response = FeedzirraResponse.new(:serialized_response => {news_feed_id => feed}, :news_feed_id => news_feed_id)
+    feedzirra_response.save
   end
 end
