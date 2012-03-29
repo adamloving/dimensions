@@ -8,7 +8,6 @@
       this.onLoadItemsComplete = __bind(this.onLoadItemsComplete, this);
       this.loadItems = __bind(this.loadItems, this);      this.template = $("#item-template").template("streamItem");
       this.loadItems();
-      console.log('stream constructor');
     }
     Stream.prototype.loadItems = function() {
       var searchify;

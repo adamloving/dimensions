@@ -35,6 +35,7 @@
       this.fetch      = ["text","url","timestamp"];
       this.start      = 0;
       this.len        = 10;
+      this.current    = 1;
     }
 
     Filter.prototype = {
@@ -85,7 +86,7 @@
             //$(entries).each(function(){
               //addMarker(this.variable_0,this.variable_1);
             //});
-          //}
+            //}
         }
         if (this.tags.length > 0) {
           query.q = "tags:"+this.tags.join(',');
@@ -246,6 +247,13 @@
           if(this.tags.length == 0)
             this.fetch.pop("tags");
         }
+        return Router.handleRequest("search");
+      },
+      setPage:function(link){
+        link = link.replace(/#\/search#page#/,'');
+        start = (this.matches[link] - this.len)+1;
+        this.start = start+1;
+        this.current = link;
         return Router.handleRequest("search");
       }
 

@@ -6,17 +6,25 @@ $(function(){
         $(this.element).empty();
         if(this.data.results.length > 0){
           var matches = {};
-          var i=1;
-          for(i; i< (this.data.matches/window.filter.len); i++){
-            matches[i] = (window.filter.len*i);
-          }
+          if(this.data.matches > window.filter.len){
+            var i=1;
+            for(i; i< (this.data.matches/window.filter.len); i++){
+              var elements = (window.filter.len*i)
+              if(!isNaN(elements)){
+                matches[i] = (window.filter.len*i);
+              }
+            }
 
-          if((this.data.matches%window.filter.len)>0){
-            matches[(i)] = (matches[(i-1)]+(this.data.matches%window.filter.len));
-          }
+            if((this.data.matches%window.filter.len)>0){
+              matches[(i)] = (matches[(i-1)]+(this.data.matches%window.filter.len));
+            }
+          } 
+          
           this.data.pags = matches;
+          this.data.current = window.filter.current;
           this.data.start   = window.filter.start;
           this.data.len     = window.filter.len;
+          window.filter.matches = this.data.pags;
 
           $.tmpl(this.template,{items:this.data}).appendTo(this.element);
           $.each(this.data.results, function(i, r) {
@@ -43,6 +51,7 @@ $(function(){
 
         FB.XFBML.parse();//reload facebook events 
         $.timeField.init();//to render the dates
+        this.paginate();
         }else{
           $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
                               //$.each(this.data.results,function(i,r){
@@ -63,6 +72,16 @@ $(function(){
     },
     unbind:function(name){
       Dimensions.Renderer.method(name,null);
+    },
+    paginate:function(){
+      if($(".pagination").length){
+         $(".pagination ul a").each(function(){
+           $(this).bind("click",function(e){
+             link = $(this);
+             return window.filter.setPage(link.attr("href"));
+           });
+         });
+      }
     }
   }
 });
