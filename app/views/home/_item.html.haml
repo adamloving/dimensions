@@ -1,6 +1,8 @@
 = javascript_include_tag 'dimensions/timefield'
 %script#item-template{:type=>"text/x-jquery-tmpl"}
   {{if Object.keys(items.pags).length > 0 }}
+  %span.currentpage
+    -#${"Showing from "+((items.pags[parseInt(items.current)] > items.len )?(items.pags[parseInt(items.current)]-items.len+1):((items.pags[(parseInt(items.current)-1)]+1)))+" to "+items.pags[parseInt(items.current)]+" of "+ items.matches}
   .pagination
     %ul
       {{each(i,item) items.pags}}
