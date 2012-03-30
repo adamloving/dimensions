@@ -171,10 +171,11 @@ class FeedEntry < ActiveRecord::Base
       fields = {:url        => self.url, 
                 :timestamp  => self.published_at.to_i,
                 :text       => self.name,
-                :summary    => self.summary,
                 :location   => self.primary_location.name,
                 :tags       => self.tags,
                 :all        => '1'}
+
+      fields.merge(:summary => self.summary) unless self.summary.nil?
 
       index.document(self.id).add(fields, :variables => doc_variables)
       self.update_attributes(:indexed => true)
