@@ -6,7 +6,6 @@ $(window).load(function(event){
    entry = DimensionsFragmenter.parseFragment(window.location.href,"entry");
    if(entry){
      window.filter.setEntry(entry.id,entry.name);
-     console.log("aa");
    }
 
 });
@@ -21,7 +20,6 @@ function SearchController(){
     window.dimensions.bind("loadItems",function(){
     $(this.element).empty().append("<p>Loading...</p>")
       query = window.filter.getQuery();
-      $.param(query);
       window.searchify.search(query);
     });
     window.dimensions.loadItems();

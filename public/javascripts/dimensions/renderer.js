@@ -88,6 +88,9 @@ $(function(){
            });
          });
       }
+     window.location.hash="";
+     window.filter.search = null;
+     window.filter.docid = null;
     },
 
     parseTwitterButtons: function(){
@@ -110,10 +113,12 @@ var DimensionsFragmenter = (function(){
   }
  
   var parseFragment = function (url, field){
-    var fragment = $.deparam.fragment(url)[field]
-    var fragmentArray = fragment.split('-');
-
-    return { id:fragmentArray[0], name: fragmentArray[1]};
+    var fragment = $.deparam.fragment(url)[field];
+    if(typeof fragment == "string"){
+     var fragmentArray = fragment.split('-');
+      return   { id:fragmentArray[0], name: fragmentArray[1]};
+    }
+    return null;
   }
  
 	return {

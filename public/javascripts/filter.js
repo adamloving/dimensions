@@ -232,7 +232,7 @@
       setCoords : function(northEast, southWest) {
         this.neCoords = northEast;
         this.swCoords = southWest;
-        if(this.docid !=null){
+        if(!this.docid){
           return Router.handleRequest("search");
         }
       },
