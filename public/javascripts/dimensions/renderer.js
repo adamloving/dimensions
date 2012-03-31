@@ -1,5 +1,6 @@
 $(function(){
   $namespace("Dimensions").Renderer = function(){};
+
   $namespace("Dimensions").Renderer.prototype ={
     render: function(){
       if($(this.element).length){
@@ -49,9 +50,14 @@ $(function(){
             }
           });
 
-        FB.XFBML.parse();//reload facebook events 
+        FB.XFBML.parse();//reload facebook events
+
         $.timeField.init();//to render the dates
+
+        this.parseTwitterButtons(); 
+
         this.paginate();
+
         }else{
           $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
                               //$.each(this.data.results,function(i,r){
@@ -82,6 +88,38 @@ $(function(){
            });
          });
       }
+    },
+
+    parseTwitterButtons: function(){
+      var twitterWidgets = document.createElement('script'); 
+      twitterWidgets.type = 'text/javascript'; 
+      twitterWidgets.async = true; 
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js'; 
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     }
   }
 });
+
+var DimensionsFragmenter = (function(){
+ 
+  var buildFragment = function(url, paramName, paramValue){
+    var fragment = {};
+    fragment[paramName] = paramValue + "-" +  url;
+
+    return $.param.fragment($.address.baseURL(), fragment);
+  }
+ 
+  var parseFragment = function (url, field){
+    var fragment = $.deparam.fragment(url)[field]
+    var fragmentArray = fragment.split('-');
+
+    return { id:fragmentArray[0], name: fragmentArray[1]};
+  }
+ 
+	return {
+		buildFragment: buildFragment,
+    parseFragment: parseFragment
+	};
+ 
+})();
+

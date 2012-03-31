@@ -36,6 +36,7 @@
       this.start      = 0;
       this.len        = 10;
       this.current    = 1;
+      this.docid      = null;
     }
 
     Filter.prototype = {
@@ -101,6 +102,9 @@
         if (this.neCoords && this.swCoords) {
           query.filter_docvar0 = this.swCoords.Ta + ':' + this.neCoords.Ta
           query.filter_docvar1 = this.swCoords.Ua + ':' + this.neCoords.Ua
+        }
+        if(this.docid){
+          query.docid = this.docid;
         }
         query.start_date       = this.startDate;
         query.filter_docvar2   = this.startDate+':'+this.endDate;
@@ -228,7 +232,9 @@
       setCoords : function(northEast, southWest) {
         this.neCoords = northEast;
         this.swCoords = southWest;
-        return Router.handleRequest("search");
+        if(this.docid !=null){
+          return Router.handleRequest("search");
+        }
       },
 
       setSearch : function(searchterm) {
@@ -254,6 +260,12 @@
         start = (this.matches[link] - this.len)+1;
         this.start = start+1;
         this.current = link;
+        return Router.handleRequest("search");
+      },
+      setEntry:function(id,search){
+        this.search = "url:"+search,
+        this.docid = id
+        this.neCoords,this.swCoords = null;
         return Router.handleRequest("search");
       }
 
