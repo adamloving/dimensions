@@ -1,5 +1,5 @@
 class Dimensions::Tagger
-  def self.open_calais_tag(categories, entities, name)
+  def self.open_calais_tag(categories, entities)
     tags = [categories.first.name]
 
     entities.each do |entity|
@@ -8,9 +8,6 @@ class Dimensions::Tagger
       end
     end
 
-    entity = Entity.find_or_initialize_by_name(:name => name).tap do|e|
-      e.tags = tags
-      e.type = "tag"
-    end
+    tags
   end
 end

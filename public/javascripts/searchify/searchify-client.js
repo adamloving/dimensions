@@ -20,7 +20,7 @@
       var result = undefined;
 
       $.ajax({
-        url: apiURL + "/v1/indexes/" + railsEnv + "/search",
+        url: apiURL + "/v1/indexes/" + "staging" + "/search",
         dataType: "jsonp",
         data: settings,
         success: function(data){

@@ -7,10 +7,10 @@ class Admin::TagsController < Admin::BaseController
   end
 
   def delete
-    feed_entry = FeedEntry.find(params[:feed_entry_id])
-    tag = feed_entry.get_tags
-    tag.clear_tag(params[:tag])
-    tag.save
+    feed_entry = FeedEntry.find(params[:feed_entry_id]).tap do|fe|
+      fe.tag_list = fe.tag_list - [params[:tag]]
+      fe.save
+    end
     respond_to do |format|
       format.js { render :json=> {:tag=>params[:tag]}}
     end
