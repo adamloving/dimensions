@@ -55,7 +55,10 @@ function filterByBoundary(map)
     boundary = "Visible map viewport has changed.\n\n";
     boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
     boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
-    window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
+    if(window.location.hash == ""){
+     window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
+    }
+    
 }
 
 function filterByClick(map)

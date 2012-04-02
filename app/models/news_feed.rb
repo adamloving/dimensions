@@ -39,11 +39,11 @@ class NewsFeed < ActiveRecord::Base
   end
 
   def set_downloaded(entries)
-    entries.map(&:download)
+    self.entries.each {|e| e.download}
   end
 
   def update_entries
-    entries = FeedEntry.update_from_feed_continuosly(self.url)
+    entries = FeedEntry.update_from_feed_continuously(self.url)
     set_downloaded(entries)
   end
   

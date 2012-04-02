@@ -3,6 +3,10 @@ $(window).load(function(event){
    $('#search').change(function(e){
       Router.handleRequest("search");
    });
+   entry = DimensionsFragmenter.parseFragment(window.location.href,"entry");
+   if(entry){
+     window.filter.setEntry(entry.id,entry.name);
+   }
 
 });
 
@@ -20,5 +24,6 @@ function SearchController(){
     });
     window.dimensions.loadItems();
   }
+
 
 }
