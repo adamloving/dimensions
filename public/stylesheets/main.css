@@ -76,17 +76,6 @@ h3.headline {
   border-left-width: 0; 
 }
 
-
-/* line 105, sass/main.scss */
-a.news {
-  color: #333333;
-}
-
-/* line 108, sass/main.scss */
-a.news:hover {
-  color: #08c;
-}
-
 /* line 105, sass/main.scss */
 a.news {
   color: #333333;
