@@ -5,9 +5,7 @@
   .item
     .post-it
       {{if img}}
-      %img{:src=>"img",:style=>"width:98%"}
-      {{else}}
-      %img{:src=>"/images/news.png",:style=>"width:98%"}
+      %img{:src=>"${img}",:style=>"width:98%"}
       {{/if}}
     .body
       %h3.headline.unread
