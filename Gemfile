@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 source 'http://gems.github.com'
 
-
+gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'pg'
 gem 'rails', '3.2.2'
 gem 'calais'

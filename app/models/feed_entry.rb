@@ -20,6 +20,8 @@ class FeedEntry < ActiveRecord::Base
   scope :not_reviewed, where(:reviewed => false)
   scope :reviewed, where(:reviewed => true)
 
+  acts_as_taggable
+
   state_machine :initial => :new do
 
     event :download do
