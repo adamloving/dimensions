@@ -263,7 +263,7 @@
         return Router.handleRequest("search");
       },
       setEntry:function(id,search){
-        this.search = "url:"+search,
+        this.search = "text:" + search,
         this.docid = id
         this.neCoords,this.swCoords = null;
         return Router.handleRequest("search");

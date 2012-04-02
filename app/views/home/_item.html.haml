@@ -11,7 +11,7 @@
       {{/if}}
     .body
       %h3.headline.unread
-        %a{:class => 'rememberme', :id =>"${docid}", :href => "${DimensionsFragmenter.buildFragment(url, 'entry', docid)}"} ${text}
+        ${text}
       .article-details
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
@@ -25,8 +25,8 @@
         %br
         .tags
           ${tags}
-        .fb-like{"data-href"=>"${DimensionsFragmenter.buildFragment(url, 'entry', docid)}", "data-send"=>"true", "data-width"=>"450", "data-show-faces"=>"true"}
-        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check news @ dimensions" data-url="${DimensionsFragmenter.buildFragment(url, 'entry', docid)}">Tweet</a>
+        .fb-like{"data-href"=>"${DimensionsFragmenter.buildFragment(text, 'entry', docid)}", "data-send"=>"true", "data-width"=>"450"}
+        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check news @ dimensions" data-url="${DimensionsFragmenter.buildFragment(text, 'entry', docid)}">Tweet</a>
           
   {{/each}}
   {{if Object.keys(items.pags).length > 0 }}
