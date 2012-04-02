@@ -174,7 +174,7 @@ class FeedEntry < ActiveRecord::Base
                 :timestamp  => self.published_at.to_i,
                 :text       => self.name,
                 :location   => self.primary_location.name,
-                :tags       => self.tags,
+                :tags       => self.tag_list.join(','),
                 :all        => '1'}
 
       fields.merge(:summary => self.summary) unless self.summary.nil?
@@ -226,10 +226,11 @@ class FeedEntry < ActiveRecord::Base
 
   def self.tag(entry)
     if entry.localized?
-      doc = Calais.process_document(:content => entry.content, :content_type => :raw, :license_id => APP_CONFIG['open_calais_api_key'])
-      unless doc.categories.empty?
-        entity = Dimensions::Tagger.open_calais_tag(doc.categories, doc.entities, entry.name)
-        entry.entities << entity
+      doc = Calais.process_document content: entry.content,
+                                    content_type: :raw,
+                                    license_id: APP_CONFIG['open_calais_api_key']
+      if doc.categories.present?
+        entry.tag_list = Dimensions::Tagger.open_calais_tag(doc.categories, doc.entities)
         entry.tag
         entry.save
         return true
@@ -237,19 +238,19 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  def tags
-    return nil if self.get_tags.blank?
-    twitags = self.get_tags.tags.map{|tag| '#' + tag.titleize.gsub(' ', '')}
-    twitags.uniq.join(' ')
-  end
+  #def tags
+    #return nil if self.get_tags.blank?
+    #twitags = self.get_tags.tags.map{|tag| '#' + tag.titleize.gsub(' ', '')}
+    #twitags.uniq.join(' ')
+  #end
 
-  def self.tags(id)
-    self.find(id).entities.tag.first
-  end
+  #def self.tags(id)
+    #self.find(id).entities.tag.first
+  #end
 
-  def get_tags
-    self.entities.tag.first
-  end
+  #def get_tags
+    #self.entities.tag.first
+  #end
 
   def set_reviewed
     update_attribute :reviewed, true

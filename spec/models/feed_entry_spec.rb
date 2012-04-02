@@ -229,6 +229,24 @@ describe FeedEntry do
     end
   end
 
+  describe "self.tag" do
+    before do
+      @entry = FactoryGirl.create(:feed_entry, content: 'mock content')
+      @entry.stub(:localized?){true}
+
+      calais_proxy = mock(categories: [mock(name: 'space')], entities: [mock(attributes: {'name' => 'NASA'}), mock(attributes: {'name' =>  'twitter'}), mock(attributes: {'name'  =>'von Braun'})])
+      Calais.stub(:process_document).with(content: @entry.content, content_type: :raw, license_id: APP_CONFIG['open_calais_api_key'] ){calais_proxy}
+    end
+
+    it "should be assigned all tags found by open calais" do 
+      FeedEntry.tag(@entry)
+      entry = FeedEntry.find(@entry.id)
+      entry.tags.count.should == 4
+
+      entry.tags.map(&:name).should =~ ['space', 'NASA', 'twitter', 'von Braun']
+    end
+  end
+
   describe "#fetch content" do
     before do
       @entry = FactoryGirl.build(:feed_entry)
@@ -387,14 +405,6 @@ describe FeedEntry do
     end
   end
 
-  describe "#tags" do
-
-    it "should return the collection of tags twitter style and separated by spaces" do
-      entry = FactoryGirl.create(:feed_entry)
-      entry.entities << FactoryGirl.build(:entity, :type => 'tag', :tags => ["San Marino", "Colima", "san francisco", "Madrid", "Obama", "The Next Generation", "The NextGeneration"])
-      entry.tags.should == '#SanMarino #Colima #SanFrancisco #Madrid #Obama #TheNextGeneration'
-    end
-  end
   # -------- State machine tests --------
   describe "change state" do
     before do

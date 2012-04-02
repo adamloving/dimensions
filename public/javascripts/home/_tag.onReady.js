@@ -10,7 +10,7 @@ function BindTagList(){
 }
 
 $(function(){
-  $.getJSON('/tags',  function(data){
+  $.getJSON('/api/tags',  function(data){
     var directive = {
       'li':{
       'tag<-tags':{'span.label a':'tag', 'span.label a@href': 'tag'}

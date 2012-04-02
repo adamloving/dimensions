@@ -100,7 +100,7 @@
         %td
           Tags
         %td
-          - @feed_entry.get_tags.tags.each do|tag|
+          - @feed_entry.tag_list.each do|tag|
             %span.label.label-info.tag
               = link_to "x", delete_admin_feed_entry_tags_path(@feed_entry,:tag=>tag),:class =>'close', :style=>"color:#000;font-size:small; cursor:pointer;",:data_dismiss=>"alert"
               %em

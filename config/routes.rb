@@ -45,8 +45,10 @@ RailsBootstrap::Application.routes.draw do
     root :to => "news_feeds#index"
   end
 
+  namespace :api do
+    resources :tags, :only => :index
+  end
 
-  resources :tags, :only => :index
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -19,6 +19,9 @@ class NewsFeed < ActiveRecord::Base
   before_save   :url_connection_valid? unless Rails.env.test?
   before_save   :build_location
 
+  def self.set_downloaded(entries)
+    entries.each {|e| e.download}
+  end
 
   def address
     return "" if self.location.nil?
@@ -35,16 +38,13 @@ class NewsFeed < ActiveRecord::Base
 
   def load_entries
     entries = FeedEntry.update_from_feed(self.url)
-    set_downloaded(entries)
+    NewsFeed.set_downloaded(entries)
   end
 
-  def set_downloaded(entries)
-    self.entries.each {|e| e.download}
-  end
 
   def update_entries
     entries = FeedEntry.update_from_feed_continuously(self.url)
-    set_downloaded(entries)
+    NewsFeed.set_downloaded(entries)
   end
   
   def location

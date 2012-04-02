@@ -36,7 +36,7 @@ describe "feed entries" do
     end
 
     it 'offers the user the ability to remove tags from the entry' do
-      @feed_entry.entities << FactoryGirl.create(:entity, :type => 'tag', :tags => ['Hello', 'World'])
+      @feed_entry.tag_list = ['Hello', 'World']
       @feed_entry.update_attribute(:state, 'tagged')
       @feed_entry.save
       
