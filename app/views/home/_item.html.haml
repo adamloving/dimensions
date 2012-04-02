@@ -3,8 +3,8 @@
   {{each(i,item) items.results}}
   .br{:style=>"clear:both;"}
   .item
+    {{if img}}
     .post-it
-      {{if img}}
       %img{:src=>"${img}",:style=>"width:98%"}
       {{/if}}
     .body
