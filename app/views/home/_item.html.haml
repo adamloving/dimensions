@@ -9,12 +9,11 @@
       {{/if}}
     .body
       %h3.headline.unread
-        ${text}
+        %a.news{:href=>"${item.url}",:target=>"_blank"}${text}
       .article-details
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
         {{/if}}
-        %a{:href=>'${item.url}',:target=>"_blank"} ${item.url}
         {{if variable_2}}
         .date 
           Published 
