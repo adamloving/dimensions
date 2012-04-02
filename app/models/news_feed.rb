@@ -43,8 +43,8 @@ class NewsFeed < ActiveRecord::Base
 
 
   def update_entries
-    entries = FeedEntry.update_from_feed_continuously(self.url)
-    NewsFeed.set_downloaded(entries)
+    new_entries = FeedEntry.update_from_feed_continuously(self.url)
+    NewsFeed.set_downloaded(entries) unless new_entries.blank?
   end
   
   def location

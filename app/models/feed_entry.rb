@@ -84,11 +84,13 @@ class FeedEntry < ActiveRecord::Base
 
     updated_feed = Feedzirra::Feed.update(feed_to_update)
 
-
+    new_entries = []
+    
     if updated_feed.updated?
-      add_entries updated_feed.new_entries, internal_feed.id 
+      new_entries = add_entries(updated_feed.new_entries, internal_feed.id) 
       internal_feed.update_attributes!(:etag => updated_feed.etag, :last_modified => updated_feed.last_modified)
     end
+    new_entries
   end
 
   def self.localize(entry)
