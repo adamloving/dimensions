@@ -32,7 +32,7 @@
       this.coords     = null;
       this.swCoords   = null;
       this.neCoords   = null;
-      this.fetch      = ["text","url","timestamp"];
+      this.fetch      = ["text","url","timestamp", "summary"];
       this.start      = 0;
       this.len        = 10;
       this.current    = 1;
@@ -43,6 +43,13 @@
       bind : function() {
         var self = this;
         $('#date-filter').change(self.onDateChange);
+        this.field_search =  function(){
+          this.search = $('#search').val();
+          if(this.search.length > 0){
+            this.start = 0;
+          }
+          return this.search
+        };
         return $('#search').change(self.onSearchChange);
       },
 
@@ -77,7 +84,7 @@
       getQuery : function() {
         var query;
         query = {};
-        if (this.search && this.search.trim()) {
+        if (this.field_search() && this.search.trim()) {
           query.q = this.search;
         }else{
           query.q = "all:1";
@@ -106,11 +113,13 @@
         if(this.docid){
           query.docid = this.docid;
         }
+        if(this.start > 0){
+        query .start           = this.start;
+        }
         query.start_date       = this.startDate;
         query.filter_docvar2   = this.startDate+':'+this.endDate;
         query.fetch_variables  = true;
         query.len              = this.len;
-        query .start           = this.start;
         return query;
       },
 
