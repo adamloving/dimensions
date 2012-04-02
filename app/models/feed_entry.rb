@@ -177,7 +177,7 @@ class FeedEntry < ActiveRecord::Base
                 :tags       => self.tag_list.join(','),
                 :all        => '1'}
 
-      fields.merge(:summary => self.summary) unless self.summary.nil?
+      fields[:summary] = self.summary unless self.summary.nil?
 
       index.document(self.id).add(fields, :variables => doc_variables)
       self.update_attributes(:indexed => true)

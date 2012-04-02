@@ -3,20 +3,21 @@
   {{each(i,item) items.results}}
   .br{:style=>"clear:both;"}
   .item
+    {{if img}}
     .post-it
-      {{if img}}
-      %img{:src=>"img",:style=>"width:98%"}
-      {{else}}
-      %img{:src=>"/images/news.png",:style=>"width:98%"}
+      %img{:src=>"${img}",:style=>"width:98%"}
       {{/if}}
     .body
       %h3.headline.unread
-        ${text}
+        %a.news{:href=>"${item.url}",:target=>"_blank"}${text}
       .article-details
+        {{if summary}}
+        %p.summary
+          ${summary}
+        {{/if}}
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
         {{/if}}
-        %a{:href=>'${item.url}',:target=>"_blank"} ${item.url}
         {{if variable_2}}
         .date 
           Published 
