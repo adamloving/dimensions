@@ -1,11 +1,9 @@
 function BindTagList(){
-  $("#tag-list li").each(function(e){
-    $(this).find("a").bind("click",function(){
+  $("#tag-list li a").click(function(){
        tag = $(this).attr("href").replace(/#/i,"");
        window.filter.setTag(tag);
        $(this).parent().toggleClass('label-inverse');
       return false;
-    });
   });
 }
 
