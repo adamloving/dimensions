@@ -32,7 +32,7 @@
       this.coords     = null;
       this.swCoords   = null;
       this.neCoords   = null;
-      this.fetch      = ["text","url","timestamp"];
+      this.fetch      = ["text","url","timestamp", "summary"];
       this.start      = 0;
       this.len        = 10;
       this.current    = 1;

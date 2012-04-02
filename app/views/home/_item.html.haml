@@ -11,6 +11,10 @@
       %h3.headline.unread
         %a.news{:href=>"${item.url}",:target=>"_blank"}${text}
       .article-details
+        {{if summary}}
+        %p.summary
+          ${summary}
+        {{/if}}
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
         {{/if}}
