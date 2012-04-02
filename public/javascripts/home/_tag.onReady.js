@@ -3,7 +3,7 @@ function BindTagList(){
     $(this).find("a").bind("click",function(){
        tag = $(this).attr("href").replace(/#/i,"");
        window.filter.setTag(tag);
-       $(this).parent().toggleClass('label-success');
+       $(this).parent().toggleClass('label-inverse');
       return false;
     });
   });
@@ -13,7 +13,7 @@ $(function(){
   $.getJSON('/api/tags',  function(data){
     var directive = {
       'li':{
-      'tag<-tags':{'span.label a':'tag', 'span.label a@href': 'tag'}
+      'tag<-tags':{'span.label a':'tag.name', 'span.label a@href': 'tag.name'}
       }
     };
 

@@ -53,6 +53,16 @@ body {
     }  
   }
 
+  #tag-list .label {
+    a {
+      color: #FFF;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
   #tag-list,#group-list {
     margin-left: 0px;
     width: 170px;
