@@ -102,6 +102,7 @@ RailsBootstrap::Application.routes.draw do
   match 'home' => "home#index"
   match 'product' => "product#show"
   match 'mobile' => "home#mobile"
+  match 'news/:id' => 'news#show', :as => :news
   match 'search' => "search#index"
   match 'article/:ids' => "search#article"
   
