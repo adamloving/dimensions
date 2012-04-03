@@ -8,9 +8,9 @@
     %p= raw @feed_entry.summary
     %p.small
       = @feed_entry.published_at.to_s :human if @feed_entry.published_at.present?
-  .well
-    %h1 Dimensions
-    %p a place to search news by tags, locations and tags.
-    %p
-      %a.btn.btn-primary.btn-large{:href=>home_path}
-        Search more...
+  %p dimensions a place to search more news.
+%p
+  %a.btn.btn-primary.btn-large{:href=>home_path}
+    More news...
+
+
