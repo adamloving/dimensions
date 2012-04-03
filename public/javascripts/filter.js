@@ -32,7 +32,7 @@
       this.coords     = null;
       this.swCoords   = null;
       this.neCoords   = null;
-      this.fetch      = ["text","url","timestamp", "summary"];
+      this.fetch      = ["text", "url", "timestamp", "summary"];
       this.start      = 0;
       this.len        = 10;
       this.current    = 1;
@@ -107,8 +107,8 @@
           query.owner = this.groups.join(',');
         }
         if (this.neCoords && this.swCoords) {
-          query.filter_docvar0 = this.swCoords.Ta + ':' + this.neCoords.Ta
-          query.filter_docvar1 = this.swCoords.Ua + ':' + this.neCoords.Ua
+          query.filter_docvar0 = this.swCoords.Xa + ':' + this.neCoords.Xa
+          query.filter_docvar1 = this.swCoords.Ya + ':' + this.neCoords.Ya
         }
         if(this.docid){
           query.docid = this.docid;
