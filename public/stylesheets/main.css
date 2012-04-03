@@ -73,7 +73,8 @@ h3.headline {
   line-height: 21px;
   text-decoration: none;
   border: 1px solid #DDD;
-  border-left-width: 0; }
+  border-left-width: 0; 
+}
 
 /* line 105, sass/main.scss */
 a.news {
