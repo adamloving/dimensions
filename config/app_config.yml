@@ -8,6 +8,7 @@ development:
   <<: *open_calais
   <<: *searchify
   searchify_index: 'development'
+  host: http://localhost:3000
 
 test:
   <<: *open_calais
@@ -17,6 +18,7 @@ staging:
   <<: *open_calais
   <<: *searchify
   searchify_index: 'staging'
+  host: http://k5-dimensions-staging.heroku.com/
 
 production:
   <<: *open_calais

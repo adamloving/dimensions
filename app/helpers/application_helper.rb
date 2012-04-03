@@ -31,4 +31,18 @@ module ApplicationHelper
   def entries_states_for_select
     [" "] + FeedEntry.state_machine.states.map{|state| state.name.to_s}
   end
+
+  def feed_entry_opengraph_metas(feed_entry)
+    res = build_opengraph_meta "og:title", feed_entry.name 
+    res +=build_opengraph_meta "og:type","website" 
+    res +=build_opengraph_meta "og:image","http://blog-assets.bigfishgames.com/News/King5.jpg" 
+    res +=build_opengraph_meta "og:url", news_path(feed_entry)
+    res +=build_opengraph_meta "og:site_name","King5 Dimensions"
+    res +=build_opengraph_meta "fb:admins","10150448829644003"
+    res
+  end
+
+  def build_opengraph_meta(property, value)
+    content_tag :meta, nil, :property => "#{property}", :content => value
+  end
 end

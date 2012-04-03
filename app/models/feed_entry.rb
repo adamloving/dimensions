@@ -240,24 +240,13 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
-  #def tags
-    #return nil if self.get_tags.blank?
-    #twitags = self.get_tags.tags.map{|tag| '#' + tag.titleize.gsub(' ', '')}
-    #twitags.uniq.join(' ')
-  #end
-
-  #def self.tags(id)
-    #self.find(id).entities.tag.first
-  #end
-
-  #def get_tags
-    #self.entities.tag.first
-  #end
-
   def set_reviewed
     update_attribute :reviewed, true
   end
 
+  def to_param
+    "#{self.id}-#{self.name}"
+  end
   private 
   def self.add_entries(feed_entries=[], news_feed_id)
     entries = []

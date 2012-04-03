@@ -26,8 +26,8 @@
         %br
         .tags
           ${tags}
-        .fb-like{"data-href"=>"${DimensionsFragmenter.buildFragment(text, 'entry', docid)}", "data-send"=>"true", "data-width"=>"450"}
-        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check news @ dimensions" data-url="${DimensionsFragmenter.buildFragment(text, 'entry', docid)}">Tweet</a>
+        .fb-like{"data-href"=>"${$('#rails_to_js_config').data('root-path')}/news/${docid}-${text}", "data-send"=>"true", "data-width"=>"450"}
+        %a{:href=>"https://twitter.com/share", :class=> "twitter-share-button", 'data-text' => "Check news @ dimensions", 'data-url' => "${$('#rails_to_js_config').data('root-path')}/news/${docid}-${text}"}Tweet
           
   {{/each}}
   {{if Object.keys(items.pags).length > 0 }}

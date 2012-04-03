@@ -36,9 +36,10 @@
     = javascript_include_tag 'jquery.ba-bbq.min'
     = javascript_include_tag 'jquery.ba-urlinternal.min'
 
+    = yield :opengraph
 
   %body
-    #rails_to_js_config{'data-rails-env' => Rails.env}
+    #rails_to_js_config{'data-rails-env' => Rails.env, 'data-root-path' => APP_CONFIG['host']}
     = render :partial => 'layouts/facebook_sdk'
     = render :partial => 'layouts/top_nav'
     .container
