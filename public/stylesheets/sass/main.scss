@@ -112,9 +112,16 @@ h3.headline {
   border: 1px solid #DDD;
   border-left-width: 0;
 }
+.new{
+  margin:10px 10px 40px 10px;
+
+}
 a.news{
 color:#333
 }
 a.news:hover{
   color:#08c;
+}
+p.small{
+  float:right;
 }
