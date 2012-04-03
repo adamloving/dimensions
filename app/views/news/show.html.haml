@@ -7,7 +7,7 @@
       %h1=@feed_entry.name
     %p= raw @feed_entry.summary
     %p.small
-      = @feed_entry.published_at.to_s :human
+      = @feed_entry.published_at.to_s :human if @feed_entry.published_at.present?
   .well
     %h1 Dimensions
     %p a place to search news by tags, locations and tags.
