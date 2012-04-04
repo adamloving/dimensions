@@ -107,8 +107,9 @@
           query.owner = this.groups.join(',');
         }
         if (this.neCoords && this.swCoords) {
-          query.filter_docvar0 = this.swCoords.Xa + ':' + this.neCoords.Xa
-          query.filter_docvar1 = this.swCoords.Ya + ':' + this.neCoords.Ya
+          keys = Object.keys(this.swCoords);
+          query.filter_docvar0 = this.swCoords[keys[0]] + ':' + this.neCoords[keys[0]]
+          query.filter_docvar1 = this.swCoords[keys[1]] + ':' + this.neCoords[keys[1]]
         }
         if(this.docid){
           query.docid = this.docid;

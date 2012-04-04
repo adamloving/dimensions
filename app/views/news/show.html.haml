@@ -1,6 +1,16 @@
 - content_for :opengraph do
   = raw feed_entry_opengraph_metas(@feed_entry)
 
-%h1= @feed_entry.name
-= raw @feed_entry.summary
-= @feed_entry.published_at
+.well
+  .new
+    %a.news{:href=>@feed_entry.url,:target=>"_blank"}
+      %h2=@feed_entry.name
+    %p= raw @feed_entry.summary
+    %p.small
+      = @feed_entry.published_at.to_s :human if @feed_entry.published_at.present?
+  %p dimensions a place to search more news.
+%p
+  %a.btn.btn-primary.btn-large{:href=>home_path}
+    More news...
+
+
