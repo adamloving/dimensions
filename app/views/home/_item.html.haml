@@ -13,7 +13,7 @@
       .article-details
         {{if summary}}
         %p.summary
-          ${summary}
+          {{html summary}}
         {{/if}}
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
