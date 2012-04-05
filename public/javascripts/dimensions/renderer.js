@@ -59,10 +59,7 @@ $(function(){
         this.paginate();
 
         }else{
-          $("#stream").append('<div class="no-results"><h1>Sorry, I find nothing :-(</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
-                              //$.each(this.data.results,function(i,r){
-                              //console.log("latitude for each topic");
-                              //});
+          $("#stream").append('<div class="no-results"><h1>Sorry, I couldn\'t find any document</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
         }
       }else{
         //console.log(this.element+"  does not exist!");
