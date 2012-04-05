@@ -57,6 +57,8 @@ $(function(){
         this.parseTwitterButtons(); 
 
         this.paginate();
+        
+        $("a[href^='http://']").attr( "target", "_blank");
 
         }else{
           $("#stream").append('<div class="no-results"><h1>Sorry, I couldn\'t find any document</h1>' + '<p>Searched for: ' + window.filter.getQueryAsHtml() + '</p></div>');
