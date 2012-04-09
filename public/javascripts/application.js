@@ -3,6 +3,13 @@ Function.prototype.method = function(name, fn) {
   this.prototype[name] = fn; return this;
 };
 
+Array.prototype.uniq = function() {
+    var o = {}, i, l = this.length, r = [];
+    for(i=0; i<l;i+=1) o[this[i]] = this[i];
+    for(i in o) r.push(o[i]);
+    return r;
+};
+
 //* (c) 2010-2011 Rotorz Limited. All rights reserved.
  //* License:	BSD, GNU/GPLv2, GNU/GPLv3
  //* Author:	Lea Hayes
@@ -62,4 +69,4 @@ $(document).ajaxComplete(function(){
 function flashMessage(type, message){
   var flashesContainer = $(".flashes");
   flashesContainer.html("<div class='flash flash_" + type + "'>" + message + "</div>");
-}
+};

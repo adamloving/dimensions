@@ -5,14 +5,16 @@ $(function(){
     render: function(){
       if($(this.element).length){
         $(this.element).empty();
+
         if(this.data.results.length > 0){
           var matches = {};
+
           if(this.data.matches > window.filter.len){
             var i=1;
-            for(i; i< (this.data.matches/window.filter.len); i++){
-              var elements = (window.filter.len*i)
+            for(i; i <(this.data.matches/window.filter.len); i++){
+              var elements = (window.filter.len * i)
               if(!isNaN(elements)){
-                matches[i] = (window.filter.len*i);
+                matches[i] = (window.filter.len * i);
               }
             }
 
@@ -21,13 +23,24 @@ $(function(){
             }
           } 
           
-          this.data.pags = matches;
           this.data.current = window.filter.current;
           this.data.start   = window.filter.start;
           this.data.len     = window.filter.len;
+
+          if (_.size(matches) > 10){
+            var lowerWindow   = this.getLeftWindowAndCurrent(matches);
+            var upperWindow   = this.getRightWindow(matches);
+            this.data.last    = upperWindow[upperWindow.length - 1];
+            this.data.pags    = (lowerWindow.concat(upperWindow)).uniq();
+          }else{
+            this.data.pags    = _.keys(matches);
+          }
+          
           window.filter.matches = this.data.pags;
 
-          $.tmpl(this.template,{items:this.data}).appendTo(this.element);
+
+          $.tmpl(this.template, {items: this.data}).appendTo(this.element);
+
           $.each(this.data.results, function(i, r) {
             var breakingNews, displayMarker, latitude, longitude, _ref, _ref2;
             if(r.variable_0 && r.variable_1){
@@ -68,28 +81,91 @@ $(function(){
       }
       this.unbind("loadItems");
     },
+
     onLoadComplete: function(response){
       this.data = response;
       this.render(this.element);
     },
+
     bind: function(name, fn){
       Dimensions.Renderer.method(name, fn);
     },
+
     unbind:function(name){
       Dimensions.Renderer.method(name,null);
     },
-    paginate:function(){
+
+    paginate: function(){
+
+      var self = this;
+
       if($(".pagination").length){
          $(".pagination ul a").each(function(){
            $(this).bind("click",function(e){
-             link = $(this);
-             return window.filter.setPage(link.attr("href"));
+             return window.filter.setPage($(this).attr("href"));
            });
          });
       }
-     window.location.hash="";
-     window.filter.search = null;
-     window.filter.docid = null;
+
+      window.location.hash  = "";
+      window.filter.search  = null;
+      window.filter.docid   = null;
+    },
+
+    getLeftWindowAndCurrent: function(matches){
+      var self = this;
+      var current = parseInt(self.data.current);
+
+      var paginationWindow = []
+
+      if(current <= 3){
+        var previous = current - 1;
+        for(var i = 1; i <= previous; i++){
+          paginationWindow.push(i);
+        }
+      }else{
+        var previous = current - 3;
+        for(var i = previous; i < current; i++){
+          paginationWindow.push(i);
+        }
+      }
+
+      var pages = _.map(getKeys(matches), function(str_num){ return parseInt(str_num)});
+      var last = pages[pages.length - 1]
+
+      var diff  = last - current;
+      var more = 3 < diff ? 3 : diff;
+
+      for(var i = current; i <= current + more; i++){
+        paginationWindow.push(i);
+      }
+
+      return paginationWindow;
+    },
+
+    getRightWindow: function(matches){
+      var self = this;
+      var pages = _.map(getKeys(matches), function(str_num){ return parseInt(str_num)});
+      
+      var current = parseInt(self.data.current);
+      var last = pages[pages.length - 1]
+
+      var paginationWindow = []
+
+      if((last - current) <= 3){
+        var start = last - 3;
+        var paginationWindow = []
+        for(var i = start + 1; i<=last; i++){
+          paginationWindow.push(i);
+        }
+      }else{
+        var start = last - 3;
+        var paginationWindow = []
+        for(var i = start; i<= last; i++){
+          paginationWindow.push(i);
+        }
+      }
+      return paginationWindow;
     },
 
     parseTwitterButtons: function(){

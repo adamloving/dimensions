@@ -28,15 +28,21 @@
         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check news @ dimensions" data-url="${url}">Tweet</a>
           
   {{/each}}
+  
   {{if Object.keys(items.pags).length > 0 }}
   %span.currentpage
-    -#${"Showing from "+((items.pags[parseInt(items.current)] > items.len )?(items.pags[parseInt(items.current)]-items.len+1):((items.pags[(parseInt(items.current)-1)]+1)))+" to "+items.pags[parseInt(items.current)]+" of "+ items.matches}
   .pagination
     %ul
+      %li
+        %a{:href=>"\#/search#page\#1"} First
       {{each(i,item) items.pags}}
-      %li{:class=>"${(items.current == (i))?'active':''}"}
-        %a{:href=>"\#/search#page\#${i}"}${i}
+      %li{:class=>"${(items.current == (item))? 'active' : ''}"}
+        %a{:href=>"\#/search#page\#${item}"}${item}
       {{/each}}
+      {{if items.last}}
+      %li
+        %a{:href=>"\#/search#page\#${items.last}"} Last
+      {{/if}}
   {{/if}}
 
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
