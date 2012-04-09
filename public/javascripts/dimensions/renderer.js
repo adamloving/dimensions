@@ -36,7 +36,7 @@ $(function(){
             this.data.pags    = _.keys(matches);
           }
           
-          window.filter.matches = this.data.pags;
+          window.filter.matches = matches;
 
 
           $.tmpl(this.template, {items: this.data}).appendTo(this.element);
