@@ -26,16 +26,9 @@ $(function(){
           this.data.current = window.filter.current;
           this.data.start   = window.filter.start;
           this.data.len     = window.filter.len;
-
-          if (_.size(matches) > 10){
-            var lowerWindow   = this.getLeftWindowAndCurrent(matches);
-            var upperWindow   = this.getRightWindow(matches);
-            this.data.last    = upperWindow[upperWindow.length - 1];
-            this.data.pags    = (lowerWindow.concat(upperWindow)).uniq();
-          }else{
-            this.data.pags    = _.keys(matches);
-          }
+          this.data.pags   = this.getWindowAndCurrent(matches);
           
+          // IMPORTANT! values of the matches hash are pretty important for the search, without them , search doesn't work
           window.filter.matches = matches;
 
 
@@ -112,59 +105,25 @@ $(function(){
       window.filter.docid   = null;
     },
 
-    getLeftWindowAndCurrent: function(matches){
+    getWindowAndCurrent: function(matches){
+      var current = parseInt(this.data.current);
+
+      if(_.size(matches) <= 10){
+        return _.keys(matches);
+      }else if(current < 6){
+        var keys = _.keys(matches)
+        return keys.slice(0, 10);
+      }
+      
       var self = this;
-      var current = parseInt(self.data.current);
 
       var paginationWindow = []
+      var previous = current - 1;
 
-      if(current <= 3){
-        var previous = current - 1;
-        for(var i = 1; i <= previous; i++){
-          paginationWindow.push(i);
-        }
-      }else{
-        var previous = current - 3;
-        for(var i = previous; i < current; i++){
-          paginationWindow.push(i);
-        }
-      }
-
-      var pages = _.map(getKeys(matches), function(str_num){ return parseInt(str_num)});
-      var last = pages[pages.length - 1]
-
-      var diff  = last - current;
-      var more = 3 < diff ? 3 : diff;
-
-      for(var i = current; i <= current + more; i++){
+      for(var i = (current -5) ; i <= (current + 5); i++){
         paginationWindow.push(i);
       }
 
-      return paginationWindow;
-    },
-
-    getRightWindow: function(matches){
-      var self = this;
-      var pages = _.map(getKeys(matches), function(str_num){ return parseInt(str_num)});
-      
-      var current = parseInt(self.data.current);
-      var last = pages[pages.length - 1]
-
-      var paginationWindow = []
-
-      if((last - current) <= 3){
-        var start = last - 3;
-        var paginationWindow = []
-        for(var i = start + 1; i<=last; i++){
-          paginationWindow.push(i);
-        }
-      }else{
-        var start = last - 3;
-        var paginationWindow = []
-        for(var i = start; i<= last; i++){
-          paginationWindow.push(i);
-        }
-      }
       return paginationWindow;
     },
 
