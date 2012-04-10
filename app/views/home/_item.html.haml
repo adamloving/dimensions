@@ -33,15 +33,17 @@
   %span.currentpage
   .pagination
     %ul
+      {{if items.previous}}
       %li
-        %a{:href=>"\#/search#page\#1"} First
+        %a{:href=>"\#/search#page\#${items.previous}"} Previous
+      {{/if}}
       {{each(i,item) items.pags}}
       %li{:class=>"${(items.current == (item))? 'active' : ''}"}
         %a{:href=>"\#/search#page\#${item}"}${item}
       {{/each}}
-      {{if items.last}}
+      {{if items.next }}
       %li
-        %a{:href=>"\#/search#page\#${items.last}"} Last
+        %a{:href=>"\#/search#page\#${items.next}"} Next
       {{/if}}
   {{/if}}
 

@@ -23,11 +23,13 @@ $(function(){
             }
           } 
           
-          this.data.current = window.filter.current;
-          this.data.start   = window.filter.start;
-          this.data.len     = window.filter.len;
-          this.data.pags   = this.getWindowAndCurrent(matches);
-          
+          this.data.current   = window.filter.current;
+          this.data.start     = window.filter.start;
+          this.data.len       = window.filter.len;
+          var current         = parseInt(this.data.current);
+          this.data.pags      = Paginator.window(current, matches); 
+          this.data.next      = Paginator.next(current, matches); 
+          this.data.previous  = Paginator.previous(current, matches); 
           // IMPORTANT! values of the matches hash are pretty important for the search, without them , search doesn't work
           window.filter.matches = matches;
 
@@ -103,28 +105,6 @@ $(function(){
       window.location.hash  = "";
       window.filter.search  = null;
       window.filter.docid   = null;
-    },
-
-    getWindowAndCurrent: function(matches){
-      var current = parseInt(this.data.current);
-
-      if(_.size(matches) <= 10){
-        return _.keys(matches);
-      }else if(current < 6){
-        var keys = _.keys(matches)
-        return keys.slice(0, 10);
-      }
-      
-      var self = this;
-
-      var paginationWindow = []
-      var previous = current - 1;
-
-      for(var i = (current -5) ; i <= (current + 5); i++){
-        paginationWindow.push(i);
-      }
-
-      return paginationWindow;
     },
 
     parseTwitterButtons: function(){

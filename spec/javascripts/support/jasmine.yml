@@ -12,8 +12,10 @@
 #
 src_files:
   - public/javascripts/jquery.1.6.2.min.js
+  - public/javascripts/underscore-min.js
   - public/javascripts/application.js # enables jQuery namespacing
   - public/javascripts/extensions.js
+  - public/javascripts/dimensions/paginator.js
   - public/javascripts/flash_messages.js
   - public/javascripts/searchify/*.js
 
