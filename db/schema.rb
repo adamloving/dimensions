@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402175906) do
+ActiveRecord::Schema.define(:version => 20120410214545) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -120,7 +120,8 @@ ActiveRecord::Schema.define(:version => 20120402175906) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.boolean "blacklisted", :default => false
   end
 
   create_table "users", :force => true do |t|

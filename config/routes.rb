@@ -41,6 +41,10 @@ RailsBootstrap::Application.routes.draw do
       end
     end
 
+    resources :trends, only: :index do
+      post "blacklist", on: :member, as: :blacklist
+    end
+
 
     root :to => "news_feeds#index"
   end
