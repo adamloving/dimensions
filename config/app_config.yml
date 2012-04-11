@@ -1,3 +1,6 @@
+facebook: &facebook
+  fb_app_id: 383499205015325
+
 searchify: &searchify
   searchify_api_url: http://:rT47ovaCmkY3X4@8sk9q.api.searchify.com
 
@@ -5,21 +8,25 @@ open_calais: &open_calais
   open_calais_api_key: du295ff4zrg3rd4bwdk86xhy
   
 development:
+  <<: *facebook
   <<: *open_calais
   <<: *searchify
   searchify_index: 'development'
   host: http://localhost:3000
 
 test:
+  <<: *facebook
   <<: *open_calais
   <<: *searchify
 
 staging:
+  <<: *facebook
   <<: *open_calais
   <<: *searchify
   searchify_index: 'staging'
   host: http://k5-dimensions-staging.heroku.com/
 
 production:
+  <<: *facebook
   <<: *open_calais
   <<: *searchify
