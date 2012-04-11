@@ -24,7 +24,7 @@
           %span.date{:class=>"timefield t:${variable_2*1000}"}
         {{/if}}
         %br
-        .fb-like{"data-href"=>"${$('#rails_to_js_config').data('root-path')}news/${docid}-${URLify(text)}", "data-send"=>"true", "data-width"=>"450"}
+        .fb-like{"data-href"=>"${$('#rails_to_js_config').data('root-path')}news/${docid}-${URLify(text)}", "data-send"=>"false", "data-width"=>"450"}
         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check news @ dimensions" data-url="${url}">Tweet</a>
           
   {{/each}}
