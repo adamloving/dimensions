@@ -245,8 +245,9 @@ class FeedEntry < ActiveRecord::Base
   end
 
   def to_param
-    "#{self.id}-#{self.name}"
+    "#{self.id}-#{self.name.parameterize}"
   end
+
   private 
   def self.add_entries(feed_entries=[], news_feed_id)
     entries = []
