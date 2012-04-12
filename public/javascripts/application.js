@@ -71,9 +71,3 @@ function flashMessage(type, message){
   flashesContainer.html("<div class='flash flash_" + type + "'>" + message + "</div>");
 };
 
-$(document).ready(function(){
-  $(window).scroll(function(){
-    $('.socialised').css('display','block');
-    Socialite.load();
-  });
-});
