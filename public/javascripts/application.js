@@ -70,3 +70,10 @@ function flashMessage(type, message){
   var flashesContainer = $(".flashes");
   flashesContainer.html("<div class='flash flash_" + type + "'>" + message + "</div>");
 };
+
+$(document).ready(function(){
+  $(window).scroll(function(){
+    $('.socialised').css('display','block');
+    Socialite.load();
+  });
+});
