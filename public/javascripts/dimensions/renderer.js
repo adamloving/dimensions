@@ -58,7 +58,10 @@ $(function(){
             }
           });
 
-        FB.XFBML.parse();//reload facebook events
+        setTimeout(function(){
+          $('.socialised').css('display','block');
+          Socialite.load();
+        }, 200);
 
         $.timeField.init();//to render the dates
 
