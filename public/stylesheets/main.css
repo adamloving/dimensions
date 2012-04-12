@@ -1,91 +1,164 @@
+/* line 2, sass/main.scss */
 body {
   padding-top: 40px;
-  margin-left: 50px; }
-  body #filters {
-    margin: 20px; }
-  body #stream {
-    margin-top: 20px; }
-    body #stream .item .post-it {
-      display: inline-block;
-      height: 50px;
-      width: 60px;
-      margin: 10px;
-      margin-top: 0px;
-      padding: 4px;
-      padding-top: 10px;
-      background-color: #ffe454;
-      border: solid 1px #ffe9e9;
-      border-radius: 5px;
-      text-align: center;
-      -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
-      box-shadow: rgba(100, 100, 100, 0.2) -1px 2px 2px; }
-    body #stream .item img {
-      /* display: none; */
-      margin-right: 15px; }
-    body #stream .item .show {
-      display: inline-block; }
-    body #stream .item .body {
-      width: 590px;
-      display: inline-block;
-      vertical-align: top;
-      padding-bottom: 10px;
-      border-bottom: solid 1px #eee;
-      margin-bottom: 20px; }
-      body #stream .item .body h2 {
-        vertical-align: top; }
-  body #tag-list .label a {
-    color: #FFF; }
-    body #tag-list .label a:hover {
-      text-decoration: none; }
-  body #tag-list, body #group-list {
-    margin-left: 0px;
-    width: 170px; }
-    body #tag-list li, body #group-list li {
-      list-style: none;
-      display: inline-block;
-      margin-right: 2px;
-      border-radius: 4px;
-      -moz-border-radius: 4px;
-      padding: 2px 4px 2px 4px; }
-      body #tag-list li a, body #group-list li a {
-        color: #111; }
-      body #tag-list li.selected, body #group-list li.selected {
-        background-color: #57A957; }
+  margin-left: 50px;
+}
+/* line 6, sass/main.scss */
+body #filters {
+  margin: 20px;
+}
+/* line 10, sass/main.scss */
+body #stream {
+  margin-top: 20px;
+}
+/* line 15, sass/main.scss */
+body #stream .item .post-it {
+  display: inline-block;
+  height: 50px;
+  width: 60px;
+  margin: 10px;
+  margin-top: 0px;
+  padding: 4px;
+  padding-top: 10px;
+  background-color: #ffe454;
+  border: solid 1px #ffe9e9;
+  border-radius: 5px;
+  text-align: center;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
+  box-shadow: rgba(100, 100, 100, 0.2) -1px 2px 2px;
+}
+/* line 31, sass/main.scss */
+body #stream .item img {
+  /* display: none; */
+  margin-right: 15px;
+}
+/* line 35, sass/main.scss */
+body #stream .item .show {
+  display: inline-block;
+}
+/* line 39, sass/main.scss */
+body #stream .item .body {
+  width: 590px;
+  display: inline-block;
+  vertical-align: top;
+  padding-bottom: 10px;
+  border-bottom: solid 1px #eee;
+  margin-bottom: 20px;
+}
+/* line 45, sass/main.scss */
+body #stream .item .body h2 {
+  vertical-align: top;
+}
+/* line 57, sass/main.scss */
+body #tag-list .label a {
+  color: #FFF;
+}
+/* line 60, sass/main.scss */
+body #tag-list .label a:hover {
+  text-decoration: none;
+}
+/* line 66, sass/main.scss */
+body #tag-list, body #group-list {
+  margin-left: 0px;
+  width: 170px;
+}
+/* line 70, sass/main.scss */
+body #tag-list li, body #group-list li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 2px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 2px 4px 2px 4px;
+}
+/* line 78, sass/main.scss */
+body #tag-list li a, body #group-list li a {
+  color: #111;
+}
+/* line 82, sass/main.scss */
+body #tag-list li.selected, body #group-list li.selected {
+  background-color: #57A957;
+}
 
+/* line 89, sass/main.scss */
 .ui-slider {
-  margin: 0 0 30px 10px; }
+  margin: 0 0 30px 10px;
+}
 
+/* line 93, sass/main.scss */
 .feedflare {
-  display: none; }
+  display: none;
+}
 
+/* line 97, sass/main.scss */
 hr {
-  margin: 15px 0 0 0; }
+  margin: 15px 0 0 0;
+}
 
+/* line 101, sass/main.scss */
 h3.headline {
-  line-height: 20px; }
+  line-height: 20px;
+}
 
+/* line 104, sass/main.scss */
 .pagination ul {
-  float: right; }
+  float: right;
+}
 
+/* line 107, sass/main.scss */
 .pagination a {
   float: left;
   padding: 0 9px;
   line-height: 21px;
   text-decoration: none;
   border: 1px solid #DDD;
-  border-left-width: 0; }
+  border-left-width: 0;
+}
 
+/* line 115, sass/main.scss */
 .new {
-  margin: 10px 10px 40px 10px; }
+  margin: 10px 10px 40px 10px;
+}
 
+/* line 119, sass/main.scss */
 a.news {
-  color: #333333; }
+  color: #333333;
+}
 
+/* line 122, sass/main.scss */
 a.news:hover {
-  color: #08c; }
+  color: #08c;
+}
 
+/* line 125, sass/main.scss */
 p.small {
-  float: right; }
+  float: right;
+}
 
+/* line 128, sass/main.scss */
 .pagination .active a {
-  color: #000; }
+  color: #000;
+}
+
+/* line 132, sass/main.scss */
+.social-buttons {
+  height: 30px;
+}
+/* line 134, sass/main.scss */
+.social-buttons .socialised {
+  float: left;
+  display: none;
+}
+/* line 138, sass/main.scss */
+.social-buttons .twitter {
+  width: 120px;
+}
+/* line 141, sass/main.scss */
+.social-buttons .facebook {
+  width: 400px;
+}
+/* line 143, sass/main.scss */
+.social-buttons .facebook iframe {
+  width: 100%;
+  height: 25px;
+}
