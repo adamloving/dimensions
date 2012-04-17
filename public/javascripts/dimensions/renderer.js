@@ -2,7 +2,9 @@ $(function(){
   $namespace("Dimensions").Renderer = function(){};
 
   $namespace("Dimensions").Renderer.prototype ={
+    
     render: function(){
+
       if($(this.element).length){
         $(this.element).empty();
 
@@ -58,17 +60,22 @@ $(function(){
             }
           });
 
-        setTimeout(function(){
-          $('.socialised').css('display','block');
-          Socialite.load();
-        }, 200);
+        var i = $('body');
 
-        $.timeField.init();//to render the dates
-
-        this.parseTwitterButtons(); 
+        i.queue(function(){
+          setTimeout(function(){
+            Socialite.load(i);
+            $('.socialised').show();
+            i.dequeue();
+          }, 200);
+        });
+          
 
         this.paginate();
         
+
+        $.timeField.init();//to render the dates
+       
         $("a[href^='http://']").attr( "target", "_blank");
 
         }else{

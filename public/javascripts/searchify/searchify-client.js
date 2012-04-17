@@ -2,10 +2,6 @@
 
   var apiURL = "http://8sk9q.api.searchify.com"
 
-
-  //if(railsEnv == undefined)
-    //railsEnv = 'development';
-
   $namespace('Searchify').Client = function(){};
   
   $namespace('Searchify').Client.prototype = {
