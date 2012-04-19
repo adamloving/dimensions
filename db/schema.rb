@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120410214545) do
+ActiveRecord::Schema.define(:version => 20120417204054) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -105,6 +105,13 @@ ActiveRecord::Schema.define(:version => 20120410214545) do
 
   add_index "news_feeds", ["name"], :name => "index_news_feeds_on_name", :unique => true
   add_index "news_feeds", ["url"], :name => "index_news_feeds_on_url", :unique => true
+
+  create_table "social_network_configurations", :force => true do |t|
+    t.string   "name"
+    t.text     "message"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

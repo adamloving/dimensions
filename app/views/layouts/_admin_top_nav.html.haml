@@ -10,7 +10,9 @@
     %li.news_feeds{:class => set_nav_active(admin_trends_path)}
       = link_to "Trends", admin_trends_path
     %li.news_feeds
-      = link_to "Resque", "/admin/resque", :target => "blank"
+      = link_to "Social", "/admin/social"
+    %li.news_feeds
+      = link_to "Resque", "/admin/resque", :target => "_blank"
   %p.header-item#utility_nav
     %span.current_user= current_admin_user.email
     %a{:href=>"/admin/logout", "data-method" => "get"} Logout

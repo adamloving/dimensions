@@ -45,6 +45,8 @@ RailsBootstrap::Application.routes.draw do
       post "blacklist", on: :member, as: :blacklist
     end
 
+    get 'social' => 'social_network_configurations#index'
+    resources :social_network_configurations, only: :update
 
     root :to => "news_feeds#index"
   end

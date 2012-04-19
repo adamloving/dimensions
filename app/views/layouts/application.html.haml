@@ -45,7 +45,7 @@
     = yield :opengraph
 
   %body
-    #rails_to_js_config{'data-rails-env' => Rails.env, 'data-root-path' => APP_CONFIG['host']}
+    #rails_to_js_config{'data-rails-env' => Rails.env, 'data-root-path' => APP_CONFIG['host'], 'data-twitter-msg' => @twitter_message}
     = render :partial => 'layouts/facebook_sdk'
     = render :partial => 'layouts/top_nav'
     .container
