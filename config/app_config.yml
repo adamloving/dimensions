@@ -1,5 +1,5 @@
 facebook: &facebook
-  fb_app_id: 383499205015325
+  fb_app_id: 361505903895246 
 
 searchify: &searchify
   searchify_api_url: http://:rT47ovaCmkY3X4@8sk9q.api.searchify.com
