@@ -15,6 +15,10 @@ Authors
 * Mohammad Almalkawi https://github.com/almalkawi
 * Adam Loving https://github.com/adamloving
 * Lewis Lin http://www.linkedin.com/in/lewislin
+* Ignacio de la Madrid https://github.com/inakidelamadrid
+* Alejandro Espinoza https://github.com/AlejandroEspinoza
+* Antonio Chávez https://github.com/TheNaoX
+* Federico Ramallo https://github.com/framallo
 
 Prerequisites
 =============
