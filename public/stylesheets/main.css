@@ -142,22 +142,29 @@ p.small {
 
 /* line 132, sass/main.scss */
 .social-buttons {
+  background: url("../images/social_troll.png") no-repeat 0 0;
   height: 30px;
 }
-/* line 134, sass/main.scss */
+/* line 135, sass/main.scss */
 .social-buttons .socialised {
   float: left;
   display: none;
 }
 /* line 138, sass/main.scss */
+.social-buttons .socialised.socialite-loaded {
+  display: block;
+}
+/* line 142, sass/main.scss */
 .social-buttons .twitter {
   width: 120px;
+  float: right;
+  margin-right: 70px;
 }
-/* line 141, sass/main.scss */
+/* line 147, sass/main.scss */
 .social-buttons .facebook {
   width: 400px;
 }
-/* line 143, sass/main.scss */
+/* line 149, sass/main.scss */
 .social-buttons .facebook iframe {
   width: 100%;
   height: 25px;
