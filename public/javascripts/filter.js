@@ -145,7 +145,7 @@
           s += ' ne: (' + q.ne_lat + ', ' + q.ne_long + ')</li>';
         }
         if (this.tags.length > 0) {
-          query.q = "tags:"+this.tags.join(',');
+          s += "<li>Trends:"+this.tags.join(',')+"</li>";
         }
         return s += '</ul>';
         
