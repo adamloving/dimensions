@@ -34,7 +34,7 @@
       this.neCoords   = null;
       this.fetch      = ["text", "url", "timestamp", "summary"];
       this.start      = 0;
-      this.len        = 10;
+      this.len        = 20;
       this.current    = 1;
       this.docid      = null;
     }
@@ -144,7 +144,11 @@
           s += '<li>Geo: sw: (' + q.sw_lat + ', ' + q.sw_long + ') ';
           s += ' ne: (' + q.ne_lat + ', ' + q.ne_long + ')</li>';
         }
+        if (this.tags.length > 0) {
+          query.q = "tags:"+this.tags.join(',');
+        }
         return s += '</ul>';
+        
       },
 
       durationToMinutes : function(s) {
