@@ -2,9 +2,7 @@ $(function(){
   $namespace("Dimensions").Renderer = function(){};
 
   $namespace("Dimensions").Renderer.prototype ={
-    
     render: function(){
-
       if($(this.element).length){
         $(this.element).empty();
 
@@ -60,22 +58,16 @@ $(function(){
             }
           });
 
-        var i = $('body');
+        setTimeout(function(){
+          Socialite.load();
+        }, 100);
 
-        i.queue(function(){
-          setTimeout(function(){
-            Socialite.load(i);
-            $('.socialised').show();
-            i.dequeue();
-          }, 200);
-        });
-          
+        $.timeField.init();//to render the dates
+
+        this.parseTwitterButtons(); 
 
         this.paginate();
         
-
-        $.timeField.init();//to render the dates
-       
         $("a[href^='http://']").attr( "target", "_blank");
 
         }else{
