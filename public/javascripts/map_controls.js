@@ -34,18 +34,39 @@ function getNorthEastCoordinates(map)
 
 function centerMapToCurrentLocation()
 {
-    if($.browser.mozilla == true){
-      renderMapCentered(new google.maps.LatLng('47.614496', '-122.332077'));
-    }
 
     $('#map').gmap({ 'zoom': 9 });
     //Firefox sucks! When selecting 'not now' from the geolocation permissions im firefox, it does not get  in the error callback
-    navigator.geolocation.getCurrentPosition(function(position) {
-      renderMapCentered(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-    },
-    function(error){
-      renderMapCentered(new google.maps.LatLng('47.614496', '-122.332077'));
+
+    function getPosition(cb){
+      var rendered = null;
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        renderMapCentered(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        rendered = true;
+        return cb(true);
+      },
+      function(error){
+        renderMapCentered(new google.maps.LatLng('47.614496', '-122.332077'));
+        rendered = true;
+        return cb(true);
+      });
+
+      setTimeout(function(){
+        if(rendered == null)
+          return cb(false);
+        else
+          return cb(true);
+      }, 5000);
+
+    }
+
+    getPosition(function(rendered){
+      if(!rendered)
+        renderMapCentered(new google.maps.LatLng('47.614496', '-122.332077'))
     });
+
+
 }
 
 function renderMapCentered(position){
