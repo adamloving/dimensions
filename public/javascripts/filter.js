@@ -131,8 +131,8 @@
         if (q.start_date) {
           s += '<li>Start date: ' + new Date(q.start_date*1000) + '</li>';
         }
-        if (q.q) {
-          s += '<li>Keyword: ' + q.q + '</li>';
+        if (this.search) {
+          s += '<li>Keyword: ' + this.search + '</li>';
         }
         if (q.tag) {
           s += '<li>Tags: ' + q.tag + '</li>';
@@ -144,9 +144,9 @@
           s += '<li>Geo: sw: (' + q.sw_lat + ', ' + q.sw_long + ') ';
           s += ' ne: (' + q.ne_lat + ', ' + q.ne_long + ')</li>';
         }
-        if (this.tags.length > 0) {
-          s += "<li>Trends:"+this.tags.join(',')+"</li>";
-        }
+        if(this.tags.length > 0){
+          s += '<li>Tags: ' + this.tags.join(",") + '</li>';
+        };
         return s += '</ul>';
         
       },
