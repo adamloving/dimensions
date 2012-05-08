@@ -1,2 +1,1 @@
-rvm --create 1.9.2-head@dimensions
-
+rvm use --create 1.9.2-head@dimensions
