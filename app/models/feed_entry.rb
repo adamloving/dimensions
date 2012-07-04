@@ -170,7 +170,8 @@ class FeedEntry < ActiveRecord::Base
     if location["latitude"].present? && location["longitude"].present?
       doc_variables = { 0 => location["latitude"],
                         1 => location["longitude"],
-                        2 => self.published_at.to_i }
+                        2 => self.published_at.to_i,
+                        3 => self.ranking}
 
       fields = {:url        => self.url, 
                 :timestamp  => self.published_at.to_i,
