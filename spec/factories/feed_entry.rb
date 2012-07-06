@@ -16,3 +16,4 @@ FactoryGirl.define do
     #association :feed, :factory => :news_feed
   end
 end
+

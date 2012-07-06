@@ -264,6 +264,15 @@ class FeedEntry < ActiveRecord::Base
     end
   end
 
+  def update_facebook_stats
+    # ejecutar query a FB
+    # update fb_count
+    client = Koala::Facebook::API.new
+    #client.fql_query("SELECT url, normalized_url, like_count FROM link_stat WHERE url=#{self.url.to_s}")
+    results = client.fql_query("SELECT url, normalized_url, like_count FROM link_stat WHERE url='#{self.url.to_s}'")
+    self.update_attributes(:facebook_count => results.first["like_count"])
+  end
+
   private 
   def self.add_entries(feed_entries=[], news_feed_id)
     entries = []
