@@ -249,6 +249,21 @@ class FeedEntry < ActiveRecord::Base
     "#{self.id}-#{self.name.parameterize}"
   end
 
+  def update_tweet_count
+    self.update_attributes(:tweet_count => (self.tweet_count += 1))
+  end
+
+  def self.add_tweet(tweet_urls = [])
+    # tweet_urls = Array
+    # tweet_urls => 0 o N urls
+    unless tweet_urls.empty?
+      tweet_urls.each do |url|
+        entry = FeedEntry.where(:url => url["expanded_url"]).first
+        entry.update_tweet_count if entry
+      end
+    end
+  end
+
   private 
   def self.add_entries(feed_entries=[], news_feed_id)
     entries = []
@@ -273,4 +288,5 @@ class FeedEntry < ActiveRecord::Base
     feedzirra_response = FeedzirraResponse.new(:serialized_response => {news_feed_id => feed}, :news_feed_id => news_feed_id)
     feedzirra_response.save
   end
+
 end

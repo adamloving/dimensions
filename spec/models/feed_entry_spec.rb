@@ -54,6 +54,22 @@ describe FeedEntry do
     end
   end
 
+  describe 'self.add_tweet(urls)' do
+    entry = FactoryGirl.create(:feed_entry, :url => "http://slog.thestranger.com/slog/archives/2012/07/03/why-are-american-kids-so-spoiled")
+    tweet_urls = [{:indices=>[43, 63],
+                    :url=>"http://t.co/I2ndodld",
+                    :expanded_url=>
+                   "http://slog.thestranger.com/slog/archives/2012/07/03/why-are-american-kids-so-spoiled",
+                   :display_url=>"slog.thestranger.com/slog/archives/?"}]
+
+    #entry = FeedEntry.where(:url => "http://slog.thestranger.com/slog/archives/2012/07/03/why-are-american-kids-so-spoiled")
+    #FeedEntry.add_tweet(tweet_urls)
+    #expect{FeedEntry.add_tweet(tweet_urls)}.to change{entry.tweet_count}.by(1)
+    entry.tweet_count.should == 0
+    FeedEntry.add_tweet(tweet_urls)
+    entry.tweet_count.should == 1
+  end
+
   describe 'self.save_feedzirra_response' do
     it "creates a new feedzirra response" do
       news_feed_id = 1
