@@ -1,5 +1,10 @@
-CalculateRanking:
-  cron: "* * * * *"
-  class: RankingCalculator
-  args: *
-  description: "This function calculates the ranking of each feed entry"
+#CalculateRanking:
+  #cron: "* * * * *"
+  #class: RankingCalculator
+  #args: *
+  #description: "This function calculates the ranking of each feed entry"
+
+CountFacebookLikes:
+  cron: "*/5 * * * *"
+  class: FacebookCounter
+  description: "Updates the facebook likes count"
