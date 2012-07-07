@@ -273,6 +273,14 @@ class FeedEntry < ActiveRecord::Base
     self.update_attributes(:facebook_count => results.first["like_count"])
   end
 
+  def calculate_social_rank
+    # rank = (tw + likes) - 1 / (time_since_post_date + 2) ** 1.8
+    upvotes = (self.tweet_count + self.facebook_count) - 1
+    entry_age = ((Time.now - self.created_at) / 3600 ) + 2
+    social_ranking = upvotes / (entry_age ** 1.8 )
+    self.update_attributes(:social_ranking => social_ranking)
+  end
+
   private 
   def self.add_entries(feed_entries=[], news_feed_id)
     entries = []
