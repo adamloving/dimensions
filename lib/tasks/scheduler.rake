@@ -16,3 +16,4 @@
    end
    task :scheduler_setup => :environment
  end
+ task "jobs:work" => "resque:scheduler"
