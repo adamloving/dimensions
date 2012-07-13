@@ -9,9 +9,6 @@
      require 'resque'
      require 'resque_scheduler'
      require 'resque/scheduler'
-     
-     Resque.redis = 'localhost:6379'
-
    end
    task :scheduler_setup => :environment
  end
