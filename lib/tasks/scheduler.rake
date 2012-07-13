@@ -10,9 +10,8 @@
      require 'resque_scheduler'
      require 'resque/scheduler'
      
-     Resque.redis = 'localhost:6379' unless Rails.env == "production"
+     Resque.redis = 'localhost:6379'
 
    end
    task :scheduler_setup => :environment
  end
- task "jobs:work" => "resque:scheduler"
