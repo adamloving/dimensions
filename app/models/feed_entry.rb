@@ -171,7 +171,7 @@ class FeedEntry < ActiveRecord::Base
       doc_variables = { 0 => location["latitude"],
                         1 => location["longitude"],
                         2 => self.published_at.to_i,
-                        3 => self.ranking}
+                        3 => self.social_ranking}
 
       fields = {:url        => self.url, 
                 :timestamp  => self.published_at.to_i,
