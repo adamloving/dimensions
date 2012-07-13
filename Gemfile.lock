@@ -146,6 +146,7 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.4.7)
     orm_adapter (0.0.6)
+    pg (0.14.0)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -301,6 +302,7 @@ DEPENDENCIES
   koala
   meta_search
   mysql2
+  pg
   pry
   rails (= 3.2.2)
   rake
