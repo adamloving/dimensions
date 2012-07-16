@@ -4,6 +4,7 @@ class FacebookCounter
     FeedEntry.find_each do |entry|
       entry.update_facebook_stats
       entry.calculate_social_rank
+      entry.re_index
     end
   end
 end
