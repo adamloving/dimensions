@@ -7,5 +7,6 @@ task :cron => :environment do
       Resque.enqueue(FeedUpdater, feed.id)
       puts "done."
     end
+    Resque.enqueue(FacebookCounter)
   end
 end
