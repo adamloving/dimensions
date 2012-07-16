@@ -173,8 +173,7 @@ class FeedEntry < ActiveRecord::Base
     if location["latitude"].present? && location["longitude"].present?
       doc_variables = { 0 => location["latitude"],
                         1 => location["longitude"],
-                        2 => self.published_at.to_i,
-                        3 => self.social_ranking}
+                        2 => self.published_at.to_i}
 
       fields = {:url        => self.url, 
                 :timestamp  => self.published_at.to_i,
@@ -185,7 +184,7 @@ class FeedEntry < ActiveRecord::Base
 
       fields[:summary] = self.summary unless self.summary.nil?
 
-      index.document(self.id).add(fields, :variables => doc_variables)
+      index.document(self.id).add(fields, :relevance => self.social_ranking, :variables => doc_variables)
       self.update_attributes(:indexed => true)
       true
     else
