@@ -31,4 +31,9 @@ This project uses
 * Adam Loving's Rails Bootstrap https://github.com/adamloving/rails-bootstrap
 * Twitter's Bootstrap http://twitter.github.com/bootstrap
 
+Tweet streaming
+===============
 
+To run the tweet streaming process run on your dev environment
+
+`rake tweetstream:start_streaming`
