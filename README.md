@@ -37,3 +37,6 @@ Tweet streaming
 To run the tweet streaming process run on your dev environment
 
 `rake tweetstream:start_streaming`
+
+For heroku
+`heroku run:detached rake tweetstream:start_streaming`
