@@ -167,11 +167,14 @@ class FeedEntry < ActiveRecord::Base
 
   def index_in_searchify(index)
     location = self.primary_location.serialized_data
+
+    self.social_ranking = 0.0 if self.social_ranking.nil?
+
     if location["latitude"].present? && location["longitude"].present?
       doc_variables = { 0 => location["latitude"],
                         1 => location["longitude"],
                         2 => self.published_at.to_i,
-                        3 => self.social_ranking.nil? 0.0 : self.social_ranking}
+                        3 => self.social_ranking}
 
       fields = {:url        => self.url, 
                 :timestamp  => self.published_at.to_i,
