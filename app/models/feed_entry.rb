@@ -275,17 +275,35 @@ class FeedEntry < ActiveRecord::Base
     # ejecutar query a FB
     # update fb_count
     client = Koala::Facebook::API.new
-    #client.fql_query("SELECT url, normalized_url, like_count FROM link_stat WHERE url=#{self.url.to_s}")
-    results = client.fql_query("SELECT url, normalized_url, like_count FROM link_stat WHERE url='#{self.url.to_s}'")
-    self.update_attributes(:facebook_count => results.first["like_count"])
+    results = client.fql_query("SELECT url, normalized_url, like_count, share_count, comment_count FROM link_stat WHERE url='#{self.url.to_s}'").first
+
+    self.update_attributes(
+      :facebook_likes => results["like_count"],
+      :facebook_shares => results["share_count"],
+      :facebook_comments => results["comment_count"]
+    )
+    # self.update_attributes(:facebook_count => results.first["like_count"])
   end
 
   def calculate_social_rank
-    # rank = (tw + likes) - 1 / (time_since_post_date + 2) ** 1.8
-    upvotes = (self.tweet_count + self.facebook_count) - 1
+    # Explainging the calculation
+    # tweets, facebook likes and facebook shares = 1 upvote
+    # facebook comments = 1/3 upvote
+
+    # calculate upvotes and add 1 to avoid divide a zero by anything
+    upvotes = ( tweet_count + facebook_likes + facebook_shares ) + ( facebook_comments / 3 ) + 1
+
+    # calculate entry_age in hours and add 2 to avoid dividing by zero
     entry_age = ((Time.now - self.created_at) / 3600 ) + 2
-    social_ranking = upvotes / (entry_age ** 1.8 )
+
+    # calculate social_ranking using the entry rank coefficient (defaults to 1.8)
+    # can be assigned per entry
+    social_ranking = upvotes / ( entry_age ** self.rank_coefficient )
     self.update_attributes(:social_ranking => social_ranking)
+
+    # rank = (tw + likes) - 1 / (time_since_post_date + 2) ** 1.8
+    # upvotes = (self.tweet_count + self.facebook_count) - 1
+    # social_ranking = upvotes / (entry_age ** 1.8 )
   end
 
   private 
