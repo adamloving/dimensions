@@ -13,7 +13,10 @@
     #coefficient.coefficient
       %p
         %strong Rank Coefficient:
-        %span= @feed_entry.rank_coefficient
+        %span
+          = form_for @feed_entry, :method => :post do |f|
+            = f.text_field :rank_coefficient
+            = f.submit "Update"
     %p
     - if @feed_entry.fetched?
       = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"

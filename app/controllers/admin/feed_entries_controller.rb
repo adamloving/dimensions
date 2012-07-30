@@ -49,6 +49,11 @@ class Admin::FeedEntriesController < Admin::BaseController
     end
   end
 
+  def update_coefficient
+    entry = @news_feed.entries.find(params[:id])
+    entry.update_attribute(:rank_coefficient, params[:rank_coefficient])
+  end
+
   def show
     @feed_entry = @news_feed.entries.find(params[:id])
   end

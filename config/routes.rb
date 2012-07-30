@@ -22,6 +22,7 @@ RailsBootstrap::Application.routes.draw do
           post  :fetch_content
           post  :process_entry
           get   :re_index
+          put   :update_coefficient
         end
 
         get :review_locations, :on => :collection
