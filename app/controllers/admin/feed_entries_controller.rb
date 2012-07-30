@@ -51,7 +51,9 @@ class Admin::FeedEntriesController < Admin::BaseController
 
   def update_coefficient
     entry = @news_feed.entries.find(params[:id])
-    entry.update_attribute(:rank_coefficient, params[:rank_coefficient])
+    entry.update_attributes(:rank_coefficient => params[:rank_coefficient])
+    redirect_to admin_news_feed_feed_entry_path(@news_feed, entry),
+      :notice => 'Rank coefficient succesfully updated.'
   end
 
   def show
