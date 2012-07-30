@@ -10,6 +10,10 @@
       Visibility
     %p
       %span.label.label-inverse= @feed_entry.visible? ? "Showing" : "Hidden"
+    #coefficient.coefficient
+      %p
+        %strong Rank Coefficient:
+        %span= @feed_entry.rank_coefficient
     %p
     - if @feed_entry.fetched?
       = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"
