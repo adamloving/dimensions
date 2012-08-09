@@ -54,3 +54,6 @@ group :test do
   gem 'simplecov'
 end
 
+group :deployment do
+  gem 'unicorn'
+end
