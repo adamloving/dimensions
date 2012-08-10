@@ -44,3 +44,4 @@ For heroku
 For deployment 
 `git remote add staging dimensions@66.175.219.248:/home/dimensions/application`
 `git push staging staging`
+
