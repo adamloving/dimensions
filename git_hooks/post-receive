@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/usr/bin/env bash
 
 echo "* Starting deployment of $APP_USER"
 
@@ -6,6 +6,11 @@ GIT_DIR=$(pwd)
 cd ..
 
 export RAILS_ENV=`git branch | grep '*' | awk '{print $2}' `
+
+source /usr/local/rvm/scripts/rvm
+
+echo "rvm current"
+rvm current
 
 echo "* Deploying on $RAILS_ENV"
 
