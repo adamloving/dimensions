@@ -45,3 +45,4 @@ For deployment
 `git remote add staging dimensions@66.175.219.248:/home/dimensions/application`
 `git push staging staging`
 
+The application deployment will be restarted by itself with the push to staging repo
