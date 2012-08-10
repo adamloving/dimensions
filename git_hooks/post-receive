@@ -1,8 +1,4 @@
-# !/usr/bin/env bash
-
-source /home/dimensions/.bashrc
-
-export APP_USER=`whoami`
+# !/bin/bash
 
 echo "* Starting deployment of $APP_USER"
 
