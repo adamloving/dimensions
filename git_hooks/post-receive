@@ -1,6 +1,6 @@
 # !/usr/bin/env bash
 
-whoami
+source /home/dimensions/.bashrc
 
 GIT_DIR=$(pwd)
 cd ..
