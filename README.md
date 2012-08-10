@@ -40,3 +40,7 @@ To run the tweet streaming process run on your dev environment
 
 For heroku
 `heroku run:detached rake tweetstream:start_streaming`
+
+For deployment 
+`git remote add staging dimensions@66.175.219.248:/home/dimensions/application`
+`git push staging staging`
