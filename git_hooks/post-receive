@@ -1,5 +1,7 @@
 # !/usr/bin/env bash
 
+whoami
+
 GIT_DIR=$(pwd)
 cd ..
 
