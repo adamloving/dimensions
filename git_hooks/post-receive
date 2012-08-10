@@ -2,6 +2,10 @@
 
 source /home/dimensions/.bashrc
 
+export APP_USER=`whoami`
+
+echo "* Starting deployment of $APP_USER"
+
 GIT_DIR=$(pwd)
 cd ..
 
