@@ -1,6 +1,6 @@
 (function($){
 
-  var apiURL = "http://8sk9q.api.searchify.com"
+  var apiURL = " http://282nj.api.searchify.com"
 
   $namespace('Searchify').Client = function(){};
   
