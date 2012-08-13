@@ -30,3 +30,4 @@ echo 'rake daemon:tweetstream:start'
 rake daemon:tweetstream:start
 
 echo '* redeploying'
+./script/unicorn start
