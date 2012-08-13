@@ -23,7 +23,10 @@ bundle install --without=development --deployment
 echo '* rake db:migrate'
 rake db:migrate
 
-echo 'rake resque:jobs QUEUE=*'
+echo 'rake resque:work QUEUE=*'
 rake resque:work QUEUE=*
+
+echo 'rake daemon:tweetstream:start'
+rake daemon:tweetstream:start
 
 echo '* redeploying'
