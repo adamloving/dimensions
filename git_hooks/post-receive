@@ -21,13 +21,13 @@ echo '* deploy gems'
 bundle install --without=development --deployment
 
 echo '* rake db:migrate'
-rake db:migrate
+bundle exec rake db:migrate
 
 echo 'rake resque:work QUEUE=*'
-rake resque:work QUEUE=*
+bundle exec rake resque:work QUEUE=*
 
 echo 'rake daemon:tweetstream:start'
-rake daemon:tweetstream:start
+bundle exec rake daemon:tweetstream:start
 
 echo '* redeploying'
 ./script/unicorn start

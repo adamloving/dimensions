@@ -15,7 +15,7 @@ TIMEOUT=${TIMEOUT-60}
 APP_ROOT=/home/dimensions/application/
 PID=$APP_ROOT/tmp/pids/unicorn.pid
 RAILS_ENV=`git branch | grep '*' | awk '{print $2}' `
-CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E $RAILS_ENV"
+CMD="cd $APP_ROOT; bundle exec unicorn_rails -D -c $APP_ROOT/config/unicorn.rb -E $RAILS_ENV -p 5000"
 AS_USER=dimensions
 set -u
 
