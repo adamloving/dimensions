@@ -36,6 +36,8 @@ gem 'devise_rpx_connectable'
 gem 'tire'
 gem 'crack'
 gem 'exception_notification', :require => 'exception_notifier'
+gem 'daemons'
+gem 'daemons-rails'
 
 gem 'jasmine', :group => [:development, :test]
 

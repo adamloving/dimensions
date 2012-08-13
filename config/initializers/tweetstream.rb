@@ -11,6 +11,3 @@ TweetStream.configure do |config|
   config.oauth_token_secret = credentials["twitter"]["oauth_token_secret"]
   config.auth_method        = :oauth
 end
-
-# pending --> define how to execute on app boot
-#exec "cd #{Rails.root} ; rake tweetstream:start_streaming"

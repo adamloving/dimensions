@@ -59,6 +59,10 @@ GEM
     crack (0.3.1)
     curb (0.7.18)
     daemons (1.1.8)
+    daemons-rails (1.0.0)
+      daemons
+      multi_json (~> 1.0)
+      rails (~> 3.0)
     database_cleaner (0.7.1)
     devise (2.0.4)
       bcrypt-ruby (~> 3.0)
@@ -294,6 +298,8 @@ DEPENDENCIES
   compass (>= 0.10.4)
   configatron
   crack
+  daemons
+  daemons-rails
   database_cleaner
   devise
   devise_rpx_connectable

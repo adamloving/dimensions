@@ -2,7 +2,7 @@ facebook: &facebook
   fb_app_id: 361505903895246 
 
 searchify: &searchify
-  searchify_api_url: http://:rT47ovaCmkY3X4@8sk9q.api.searchify.com
+  searchify_api_url: http://:Tf9MTWQrYG8Hwz@282nj.api.searchify.com
 
 twitter:
   consumer_key: KTUsgbQa6JvXHzsdAoBfw
@@ -31,7 +31,7 @@ staging:
   <<: *open_calais
   <<: *searchify
   searchify_index: 'staging'
-  host: http://k5-dimensions-staging.heroku.com/
+  host: http://66.175.219.248/ 
 
 production:
   <<: *facebook

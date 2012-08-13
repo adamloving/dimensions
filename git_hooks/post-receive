@@ -24,8 +24,6 @@ echo '* rake db:migrate'
 rake db:migrate
 
 echo 'rake resque:jobs QUEUE=*'
-rake resque:jobs QUEUE=*
+rake resque:work QUEUE=*
 
 echo '* redeploying'
-
-

@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(:version => 20120727011015) do
     t.boolean  "indexed",           :default => false
     t.boolean  "reviewed",          :default => false
     t.integer  "tweet_count",       :default => 0
-    t.float    "social_ranking",    :default => 0.0
+    t.float    "social_ranking"
     t.integer  "facebook_likes",    :default => 0
     t.integer  "facebook_shares",   :default => 0
     t.integer  "facebook_comments", :default => 0
