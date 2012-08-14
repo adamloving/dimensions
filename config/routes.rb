@@ -115,7 +115,7 @@ RailsBootstrap::Application.routes.draw do
   
   match 'api/paypal', :to => 'api/paypal#create', :via => %w(post)
   
-  root :to => "home#launch"
+  root :to => "home#index"
 
   # See how all your routes lay out with "rake routes"
 
