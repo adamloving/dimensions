@@ -24,7 +24,7 @@ echo '* rake db:migrate'
 bundle exec rake db:migrate
 
 echo 'rake resque:work QUEUE=*'
-bundle exec rake resque:work QUEUE=* BACKGROUND=yes
+bundle exec rake resque:work QUEUE=*
 
 echo 'rake resque:scheduler'
 bundle exec rake resque:scheduler
