@@ -38,6 +38,7 @@ gem 'crack'
 gem 'exception_notification', :require => 'exception_notifier'
 gem 'daemons'
 gem 'daemons-rails'
+gem 'thin'
 
 gem 'jasmine', :group => [:development, :test]
 
@@ -54,8 +55,4 @@ group :test do
   gem 'factory_girl_rails'
   gem 'resque_spec'
   gem 'simplecov'
-end
-
-group :deployment do
-  gem 'unicorn'
 end
