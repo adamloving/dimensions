@@ -24,10 +24,10 @@ echo '* rake db:migrate'
 bundle exec rake db:migrate
 
 echo 'rake resque:work QUEUE=*'
-nohup bundle exec rake resque:work QUEUE=*
+bundle exec rake resque:work QUEUE=* BACKGROUND=yes
 
 echo 'rake resque:scheduler'
-nohup bundle exec rake resque:scheduler
+bundle exec rake resque:scheduler
 
 echo 'rake daemon:tweetstream:start'
 bundle exec rake daemon:tweetstream:start
