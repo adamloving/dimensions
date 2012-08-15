@@ -118,7 +118,6 @@
         query .start           = this.start;
         }
         query.start_date       = this.startDate;
-        query.filter_docvar2   = this.startDate+':'+this.endDate;
         query.fetch_variables  = true;
         query.len              = this.len;
         return query;
