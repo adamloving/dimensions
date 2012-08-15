@@ -18,10 +18,10 @@
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
         {{/if}}
-        {{if variable_2}}
+        {{if timestamp}}
         .date 
           Published 
-          %span.date{:class=>"timefield t:${variable_2*1000}"}
+          %span.date{:class=>"timefield t:${timestamp*1000}"}
         {{/if}}
         %br
         .social-buttons
