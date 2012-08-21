@@ -2,26 +2,31 @@ require 'spec_helper'
 
 describe Dimensions::Locator do
   describe "self.open_calais_tag" do
-    before do
-      category = mock
-      category.stub(:name){"technology"}
-      @categories = [category]
-      entity1 = mock
-      entity1.stub(:attributes){
-        {"name" => "twitter"}
-      }
-      entity2 = mock
-      entity2.stub(:attributes){
-        {"name" => "facebook"}
-      }
-      @entities = [entity1, entity2]
-    end
+    let(:categories) { [double(:category, name: 'technology')] }
 
-    context "this is the first time the entry has been tagged and the tags are valid" do
-      it "should return an array with all the tags" do
-        tags = Dimensions::Tagger.open_calais_tag(@categories, @entities)
-        tags.should =~ ['technology', 'twitter', 'facebook']
-      end
+    it 'should return the first category name plus valid tags' do
+      entities = [
+        double(:tag1, attributes: { 'name' => 'twitter'}),
+        double(:tag1, attributes: { 'name' => 'facebook'})
+      ]
+      tags = Dimensions::Tagger.open_calais_tag(categories, entities)
+      tags.should =~ ['technology', 'twitter', 'facebook']
+    end
+    it 'should not accept tags with more thatn 30 chars' do
+      entities = [
+        double(:tag1, attributes: { 'name' => 't'*31}),
+        double(:tag1, attributes: { 'name' => 'facebook'})
+      ]
+      tags = Dimensions::Tagger.open_calais_tag(categories, entities)
+      tags.should =~ ['technology', 'facebook']
+    end
+    it 'should not accept tags with no name' do
+      entities = [
+        double(:tag1, attributes: {}),
+        double(:tag1, attributes: { 'name' => 'facebook'})
+      ]
+      tags = Dimensions::Tagger.open_calais_tag(categories, entities)
+      tags.should =~ ['technology', 'facebook']
     end
   end
 end
