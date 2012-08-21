@@ -78,9 +78,13 @@ class FeedEntry < ActiveRecord::Base
 
     updated_feed = Feedzirra::Feed.update(feed_to_update)
 
-    return [] unless updated_feed.updated?
-
+    return [] if invalid_feed?(updated_feed) || !updated_feed.updated?
     internal_feed.update_feed(updated_feed)
+  end
+
+  def self.invalid_feed? feed
+    # Either the url is unreachable, it has a malformed url or it is not a feed
+    feed == 0 || feed == []
   end
 
   def self.localize(entry)
