@@ -1,6 +1,40 @@
 require 'spec_helper'
 
+describe FeedEntry, '.update_facebook_stats' do
+  let!(:feed_entry) do
+    FactoryGirl.create(
+      :feed_entry,
+      facebook_likes: 0,
+      facebook_shares: 0,
+      facebook_comments: 0
+    )
+  end
 
+  let!(:facebook_response) do
+    {
+      'like_count' => 1,
+      'share_count' => 1,
+      'comment_count' => 1
+    }
+  end
+
+  it 'updates facebook counts from Koala' do
+    Koala::Facebook::API.any_instance.stub_chain(:fql_query, :first).and_return facebook_response
+    feed_entry.update_facebook_stats
+    feed_entry.facebook_likes.should == 1
+    feed_entry.facebook_shares.should == 1
+    feed_entry.facebook_comments.should == 1
+  end
+
+  it 'does not update on a network error' do
+    Koala::Facebook::API.any_instance.stub(:fql_query).and_raise(Koala::Facebook::APIError)
+    feed_entry.update_facebook_stats
+    feed_entry.facebook_likes.should == 0
+    feed_entry.facebook_shares.should == 0
+    feed_entry.facebook_comments.should == 0
+    feed_entry.failed.should == true
+  end
+end
 describe FeedEntry do
   #******************** SCOPES********************
   describe ".failed" do

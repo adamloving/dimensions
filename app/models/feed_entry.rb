@@ -268,17 +268,23 @@ class FeedEntry < ActiveRecord::Base
   def update_facebook_stats
     # ejecutar query a FB
     # update fb_count
-    client = Koala::Facebook::API.new
-    results = client.fql_query("
-      SELECT url, normalized_url, like_count, share_count, comment_count
-      FROM link_stat WHERE url='#{url.to_s}'").first
+    begin
+      client = Koala::Facebook::API.new
+      results = client.fql_query("
+        SELECT url, normalized_url, like_count, share_count, comment_count
+        FROM link_stat WHERE url='#{url.to_s}'").first
 
-    self.update_attributes(
-      :facebook_likes => results["like_count"],
-      :facebook_shares => results["share_count"],
-      :facebook_comments => results["comment_count"]
-    )
-    # self.update_attributes(:facebook_count => results.first["like_count"])
+      self.update_attributes(
+        :facebook_likes => results["like_count"],
+        :facebook_shares => results["share_count"],
+        :facebook_comments => results["comment_count"]
+      )
+      # self.update_attributes(:facebook_count => results.first["like_count"])
+    rescue
+      self.failed = true
+      self.save
+      false
+    end
   end
 
   def calculate_social_rank
