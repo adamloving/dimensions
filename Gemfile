@@ -42,6 +42,9 @@ gem 'thin'
 gem 'foreman'
 
 gem 'jasmine', :group => [:development, :test]
+gem 'guard'
+gem 'guard-rspec'
+gem 'guard-spork'
 
 group :development do
   gem 'mysql2'
@@ -56,4 +59,5 @@ group :test do
   gem 'factory_girl_rails'
   gem 'resque_spec'
   gem 'simplecov'
+  gem 'spork-rails'
 end
