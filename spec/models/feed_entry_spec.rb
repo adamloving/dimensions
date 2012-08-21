@@ -25,14 +25,15 @@ describe FeedEntry do
 
   describe "self.add_entries" do
     it 'converts feedzirra entries to feed_entry objects' do
-      mock_entries = [mock( title: "The first post",
+      mock_entries = [
+        mock( title: "The first post",
              summary: 'I was so lazy to write my first post',
              url: '/some-url-x',
              published: Time.now,
              id: '/my-unique-id',
              author: 'Inaki',
              content: 'blah blah'),
-      mock( title: "The second post",
+        mock( title: "The second post",
              summary: 'I was so lazy but now I\'m not',
              url: '/some-other-url',
              published: Time.now,
@@ -41,10 +42,9 @@ describe FeedEntry do
              content: 'blah, blah, blah')]
       news_feed = FactoryGirl.create(:news_feed)
 
-
       results = nil
       lambda{
-        results = FeedEntry.add_entries(mock_entries, news_feed.id)
+        results = news_feed.add_entries(mock_entries)
       }.should change(FeedEntry, :count).by(2)
 
       news_feed.entries.count.should == 2
@@ -97,10 +97,11 @@ describe FeedEntry do
 
       news_feed = FactoryGirl.create(:news_feed, :url => 'http://king5.com')
 
-      FeedEntry.should_receive(:add_entries).with(feed.entries, news_feed.id){['Hola', 'Mundo']}
-      
+      NewsFeed.stub(:find_by_url).with(news_feed.url){ news_feed }
+      news_feed.should_receive(:add_entries).with(feed.entries){['Hola', 'Mundo']}
+
       entries = FeedEntry.update_from_feed(news_feed.url)
-      
+
       news = NewsFeed.find(news_feed.id)
       news.etag.should  == 'xyz'
       #news.last_modified.should == now.to_s
@@ -141,16 +142,22 @@ describe FeedEntry do
       context 'the feedzirra feed is updated' do
         before do
           @some_new_date = 2.days.since(Time.now)
-          @updated_feed = mock(:updated? => true, :new_entries => ['an entry'], :etag => 'abc', :last_modified => @some_new_date)
+          @updated_feed = mock(
+            :updated? => true,
+            :new_entries => ['an entry'],
+            :etag => 'abc',
+            :last_modified => @some_new_date
+          )
           Feedzirra::Feed.stub(:update){@updated_feed}
-          FeedEntry.should_receive(:add_entries).with(['an entry'], @news_feed.id)
+          @news_feed.should_receive(:add_entries).with(['an entry'])
+          NewsFeed.stub(:find_by_url).with(@news_feed.url){ @news_feed }
         end
 
         it 'should update the news feed etag and last modified' do
           FeedEntry.update_from_feed_continuously('http://king5.com')
 
           @news_feed.reload.etag.should == 'abc'
-          #@news_feed.reload.last_modified.should == @some_new_date
+          @news_feed.reload.last_modified.should be_within(1).of(@some_new_date)
         end
       end
     end

@@ -64,33 +64,23 @@ class FeedEntry < ActiveRecord::Base
     news_feed = NewsFeed.find_by_url(feed_url)
     news_feed.update_attributes(:etag => feed.etag, :last_modified => feed.last_modified)
 
-    entries = add_entries(feed.entries, news_feed.id)
+    entries = news_feed.add_entries(feed.entries)
   end
 
   def self.update_from_feed_continuously(feed_url)
     internal_feed = NewsFeed.find_by_url(feed_url)
     raise 'Couldn\'t find news feed with the given url' if internal_feed.blank?
 
-    feed_to_update                = Feedzirra::Parser::Atom.new.tap do|feed|
-      feed.feed_url       = internal_feed.url
-      feed.etag           = internal_feed.etag
-      feed.last_modified  = internal_feed.last_modified
-    end
+    feed_to_update = internal_feed.atom_feed_object
+    last_atom_entry = internal_feed.last_atom_feed_entry_object
 
-    last_entry      = Feedzirra::Parser::AtomEntry.new
-    last_entry.url  = internal_feed.entries.last
-
-    feed_to_update.entries = [last_entry]
+    feed_to_update.entries = [last_atom_entry]
 
     updated_feed = Feedzirra::Feed.update(feed_to_update)
 
-    new_entries = []
-    
-    if updated_feed.updated?
-      new_entries = add_entries(updated_feed.new_entries, internal_feed.id) 
-      internal_feed.update_attributes!(:etag => updated_feed.etag, :last_modified => updated_feed.last_modified)
-    end
-    new_entries
+    return [] unless updated_feed.updated?
+
+    internal_feed.update_feed(updated_feed)
   end
 
   def self.localize(entry)
@@ -308,25 +298,7 @@ class FeedEntry < ActiveRecord::Base
     # social_ranking = upvotes / (entry_age ** 1.8 )
   end
 
-  private 
-  def self.add_entries(feed_entries=[], news_feed_id)
-    entries = []
-    feed_entries.each do|entry|
-      if entry.id.class == String
-        unless exists? guid: entry.id
-          entries << create!(name: entry.title,
-                 summary: entry.summary,
-                 url: entry.url,
-                 published_at: entry.published,
-                 guid: entry.id,
-                 author: entry.author,
-                 news_feed_id: news_feed_id,
-                 content: entry.content)
-        end
-      end
-    end
-    entries
-  end
+  private
 
   def self.save_feedzirra_response(news_feed_id, feed)
     feedzirra_response = FeedzirraResponse.new(:serialized_response => {news_feed_id => feed}, :news_feed_id => news_feed_id)
