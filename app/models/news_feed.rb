@@ -41,12 +41,50 @@ class NewsFeed < ActiveRecord::Base
     NewsFeed.set_downloaded(entries)
   end
 
-
   def update_entries
     new_entries = FeedEntry.update_from_feed_continuously(self.url)
     NewsFeed.set_downloaded(entries) unless new_entries.blank?
   end
-  
+
+  def atom_feed_object
+    news_feed = self
+    Feedzirra::Parser::Atom.new.tap do |atom_feed|
+      atom_feed.feed_url       = news_feed.url
+      atom_feed.etag           = news_feed.etag
+      atom_feed.last_modified  = news_feed.last_modified
+    end
+  end
+
+  def last_atom_feed_entry_object
+    last_atom_entry = Feedzirra::Parser::AtomEntry.new.tap do |atom_feed_entry|
+      atom_feed_entry.url = entries.last.url
+    end
+  end
+
+  def update_feed(updated_feed)
+    update_attributes!(
+      etag: updated_feed.etag,
+      last_modified: updated_feed.last_modified
+    )
+    add_entries(updated_feed.new_entries)
+  end
+
+  def add_entries(feed_entries=[])
+    entries = []
+    feed_entries.each do |entry|
+      next unless entry.id.class == String && !FeedEntry.exists?(guid: entry.id)
+      entries << FeedEntry.create!(name: entry.title,
+             summary: entry.summary,
+             url: entry.url,
+             published_at: entry.published,
+             guid: entry.id,
+             author: entry.author,
+             news_feed_id: self.id,
+             content: entry.content)
+    end
+    entries
+  end
+
   def location
     return nil if self.entities.blank?
     self.entities.location.first

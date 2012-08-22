@@ -3,9 +3,9 @@ class Dimensions::Tagger
     tags = [categories.first.name]
 
     entities.each do |entity|
-      unless entity.attributes["name"].length > 30
-        tags << entity.attributes["name"]
-      end
+      new_tag = entity.attributes["name"]
+      next unless new_tag
+      tags << new_tag if new_tag.length <= 30
     end
 
     tags

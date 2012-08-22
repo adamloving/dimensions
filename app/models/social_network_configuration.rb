@@ -1,6 +1,9 @@
-# this model was born due to a requirement of having a way to manage the twitter message in the admin.
-#
-# Use this whenever you want to implement defaults for other social network configurations on the fly
-#
+# Site configuration model
 class SocialNetworkConfiguration < ActiveRecord::Base
+  TWITTER = 'twitter'
+  TWITTER_DEFAULT_MESSAGE = 'King 5 News'
+
+  def self.twitter_message
+    where(name: TWITTER).first_or_initialize.message || TWITTER_DEFAULT_MESSAGE
+  end
 end
