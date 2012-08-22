@@ -42,13 +42,13 @@ gem 'thin'
 gem 'foreman'
 
 gem 'jasmine', :group => [:development, :test]
-gem 'guard'
-gem 'guard-rspec'
-gem 'guard-spork'
 
 group :development do
   gem 'mysql2'
   gem 'pry'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-spork'
 end
 
 group :test do

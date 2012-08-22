@@ -180,14 +180,14 @@ class FeedEntry < ActiveRecord::Base
 
       begin
         index.document(self.id).add(fields, :variables => doc_variables)
-        self.update_attributes(:failed => false, indexed: true)
+        self.update_attributes(failed: false, indexed: true)
         true
-      rescue IndexTank::UnexpectedHTTPException
-        self.update_attributes(:failed => true, indexed: false)
+      rescue
+        self.update_attributes(failed: true, indexed: false)
         false
       end
     else
-      self.update_attributes(:failed => true)
+      self.update_attributes(failed: true)
       false
     end
   end
@@ -287,8 +287,7 @@ class FeedEntry < ActiveRecord::Base
       )
       # self.update_attributes(:facebook_count => results.first["like_count"])
     rescue
-      self.failed = true
-      self.save
+      update_attribute :failed, true
       false
     end
   end
