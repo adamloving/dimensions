@@ -25,3 +25,6 @@ bundle exec rake db:migrate
 
 echo 'rake daemon:tweetstream:start'
 bundle exec rake daemon:tweetstream:start
+
+echo '* restart thin'
+bundle exec thin -p 5000 -s 3 -e staging restart
