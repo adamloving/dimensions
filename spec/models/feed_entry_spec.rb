@@ -1,5 +1,65 @@
 require 'spec_helper'
 
+describe FeedEntry, '#index_in_searchify' do
+
+  let(:index) do
+    indexer = double(:indexer)
+    indexer.stub_chain(:document, :add){true}
+    indexer
+  end
+
+  let(:feed_entry) { FactoryGirl.create(:feed_entry, entities: [location]) }
+
+  context 'with latitude and logitude given' do
+    let!(:location) { FactoryGirl.create :entity, serialized_data: { 'latitude' => 123, 'longitude' => 123 } }
+
+    before do
+      feed_entry.primary_location = location
+    end
+
+    it 'should not fail' do
+      feed_entry.index_in_searchify(index).should be_true
+      feed_entry.failed.should be_false
+      feed_entry.indexed.should be_true
+    end
+
+    it 'should fail if there is an Index Tank error' do
+      index.stub_chain(:document, :add).and_raise IndexTank::UnexpectedHTTPException
+      feed_entry.index_in_searchify(index).should be_false
+      feed_entry.failed.should be_true
+      feed_entry.indexed.should be_false
+    end
+  end
+
+  context 'with no latitude given' do
+    let!(:location) { FactoryGirl.create :entity, serialized_data: { 'longitude' => 123 } }
+
+    before do
+      feed_entry.primary_location = location
+    end
+
+    it 'should fail' do
+      feed_entry.index_in_searchify(index).should be_false
+      feed_entry.failed.should be_true
+      feed_entry.indexed.should be_false
+    end
+  end
+
+  context 'with no longitude given' do
+    let!(:location) { FactoryGirl.create :entity, serialized_data: { 'latitude' => 123 } }
+
+    before do
+      feed_entry.primary_location = location
+    end
+
+    it 'should fail' do
+      feed_entry.index_in_searchify(index).should be_false
+      feed_entry.failed.should be_true
+      feed_entry.indexed.should be_false
+    end
+  end
+end
+
 describe FeedEntry, '.update_facebook_stats' do
   let!(:feed_entry) do
     FactoryGirl.create(

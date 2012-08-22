@@ -169,7 +169,7 @@ class FeedEntry < ActiveRecord::Base
                         1 => location["longitude"],
                         2 => self.social_ranking}
 
-      fields = {:url        => self.url, 
+      fields = {:url        => self.url,
                 :timestamp  => self.published_at.to_i,
                 :text       => self.name,
                 :location   => self.primary_location.name,
@@ -178,10 +178,16 @@ class FeedEntry < ActiveRecord::Base
 
       fields[:summary] = self.summary unless self.summary.nil?
 
-      index.document(self.id).add(fields, :variables => doc_variables)
-      self.update_attributes(:indexed => true)
-      true
+      begin
+        index.document(self.id).add(fields, :variables => doc_variables)
+        self.update_attributes(:failed => false, indexed: true)
+        true
+      rescue IndexTank::UnexpectedHTTPException
+        self.update_attributes(:failed => true, indexed: false)
+        false
+      end
     else
+      self.update_attributes(:failed => true)
       false
     end
   end
