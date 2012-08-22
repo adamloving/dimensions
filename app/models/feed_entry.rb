@@ -182,7 +182,7 @@ class FeedEntry < ActiveRecord::Base
         index.document(self.id).add(fields, :variables => doc_variables)
         self.update_attributes(failed: false, indexed: true)
         true
-      rescue IndexTank::UnexpectedHTTPException
+      rescue
         self.update_attributes(failed: true, indexed: false)
         false
       end
