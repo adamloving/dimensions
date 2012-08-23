@@ -1,5 +1,26 @@
 require 'spec_helper'
 
+describe FeedEntry, 'errors' do
+  it 'should not be cleaned if failed' do
+    feed_entry = FactoryGirl.build :feed_entry, fetch_errors: 'whatever', failed: true
+    feed_entry.save
+    feed_entry.reload
+    feed_entry.fetch_errors.should == 'whatever'
+  end
+
+  it 'should be cleaned if not failed before save' do
+    feed_entry = FactoryGirl.build :feed_entry, fetch_errors: 'whatever', failed: false, indexed: true
+    feed_entry.save
+    feed_entry.reload
+    feed_entry.fetch_errors.should be_nil
+  end
+
+  it 'should be cleaned if indexed before save' do
+    feed_entry = FactoryGirl.build :feed_entry, fetch_errors: 'whatever', failed: false, indexed: true
+    feed_entry.save
+    feed_entry.fetch_errors.should be_nil
+  end
+end
 describe FeedEntry, '#index_in_searchify' do
 
   let(:index) do
