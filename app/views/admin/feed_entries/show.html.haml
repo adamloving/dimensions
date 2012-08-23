@@ -67,7 +67,7 @@
             %p
               = @feed_entry.content
   
-    - if @feed_entry.failed? and @feed_Entry.fetch_errors[:error].nil?
+    - if @feed_entry.failed? and !@feed_Entry.fetch_errors[:error].nil?
       %tr
         %td
           %span.entry.failed
