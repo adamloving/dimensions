@@ -31,7 +31,7 @@ staging:
   <<: *open_calais
   <<: *searchify
   searchify_index: 'staging'
-  host: http://66.175.219.248/ 
+  host: http://king5.tangosource.com/ 
 
 production:
   <<: *facebook
