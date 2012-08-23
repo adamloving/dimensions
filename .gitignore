@@ -15,3 +15,4 @@ config/database.yml
 coverage
 .sass-cache
 *.swp
+dump.rdb
