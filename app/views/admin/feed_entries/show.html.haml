@@ -67,14 +67,14 @@
             %p
               = @feed_entry.content
   
-    - if @feed_entry.failed? and !@feed_Entry.fetch_errors.nil?
+    - if @feed_entry.failed?
       %tr
         %td
           %span.entry.failed
             Fetch errors
         %td
           %span.entry.failed
-            = @feed_entry.fetch_errors[:error]
+            = @feed_entry.fetch_errors.inspect
 
     - if @feed_entry.primary_location.present?
       %tr

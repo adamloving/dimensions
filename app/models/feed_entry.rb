@@ -22,6 +22,8 @@ class FeedEntry < ActiveRecord::Base
 
   acts_as_taggable
 
+  before_save :clean_errors
+
   state_machine :initial => :new do
 
     event :download do
@@ -55,6 +57,14 @@ class FeedEntry < ActiveRecord::Base
     after_transition :on => :download, :do => :enqueue_to_fetch
     after_transition :on => :localize, :do => :enqueue_to_tag
     after_transition :on => :tag, :do => :index_this_entry
+  end
+
+  def failed?
+    !!read_attribute(:failed) || !indexed?
+  end
+
+  def clean_errors
+    self.fetch_errors = nil unless  self.failed?
   end
 
   def self.update_from_feed(feed_url)
@@ -187,7 +197,7 @@ class FeedEntry < ActiveRecord::Base
         false
       end
     else
-      self.update_attributes(failed: true)
+      self.update_attributes(failed: true, indexed: false, fetch_errors: { error: 'It does not have latitude or longitude' })
       false
     end
   end
@@ -287,7 +297,7 @@ class FeedEntry < ActiveRecord::Base
       )
       # self.update_attributes(:facebook_count => results.first["like_count"])
     rescue Exception => e
-      update_attribute failed: true, fetch_errors: {error: e.to_s.safe_encoding}
+      update_attributes failed: true, fetch_errors: {error: e.to_s.safe_encoding}
       false
     end
   end
