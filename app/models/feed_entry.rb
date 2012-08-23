@@ -182,8 +182,8 @@ class FeedEntry < ActiveRecord::Base
         index.document(self.id).add(fields, :variables => doc_variables)
         self.update_attributes(failed: false, indexed: true)
         true
-      rescue
-        self.update_attributes(failed: true, indexed: false)
+      rescue Exception => e
+        self.update_attributes(failed: true, indexed: false, fetch_errors: {error: e.to_s.safe_encoding})
         false
       end
     else
@@ -286,8 +286,8 @@ class FeedEntry < ActiveRecord::Base
         :facebook_comments => results["comment_count"]
       )
       # self.update_attributes(:facebook_count => results.first["like_count"])
-    rescue
-      update_attribute :failed, true
+    rescue Exception => e
+      update_attribute failed: true, fetch_errors: {error: e.to_s.safe_encoding}
       false
     end
   end
