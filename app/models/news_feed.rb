@@ -42,8 +42,12 @@ class NewsFeed < ActiveRecord::Base
   end
 
   def update_entries
-    new_entries = FeedEntry.update_from_feed_continuously(self.url)
-    NewsFeed.set_downloaded(entries) unless new_entries.blank?
+    unless self.entries.empty?
+      new_entries = FeedEntry.update_from_feed_continuously(self.url)
+      NewsFeed.set_downloaded(entries) unless new_entries.blank?
+    else
+      self.load_entries
+    end
   end
 
   def atom_feed_object
