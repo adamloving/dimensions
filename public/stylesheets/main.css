@@ -142,7 +142,7 @@ p.small {
 
 /* line 132, sass/main.scss */
 .social-buttons {
-  background: url("../images/social_troll.png") no-repeat 0 0;
+  /*background: url("../images/social_troll.png") no-repeat 0 0;*/
   height: 30px;
 }
 /* line 135, sass/main.scss */
