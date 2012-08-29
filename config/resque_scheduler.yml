@@ -1,5 +1,5 @@
 CountFacebookLikes:
-  cron: "*/5 * * * *"
+  cron: "0 */1 * * *"
   class: FacebookCounter
   description: "Updates the facebook likes count"
 
