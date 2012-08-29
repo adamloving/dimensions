@@ -4,6 +4,6 @@ CountFacebookLikes:
   description: "Updates the facebook likes count"
 
 UpdateFeeds:
-  cron: "*/3 * * * *"
+  cron: "00 */3 * * *"
   class: FeedUpdater
   description: "Update the feeds from the sources"
