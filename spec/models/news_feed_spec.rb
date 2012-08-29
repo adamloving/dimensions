@@ -102,11 +102,8 @@ describe NewsFeed do
     end
 
     it 'should propagate the exception when the url is not valid' do
-      Feedzirra::Feed.stub(:fetch_and_parse){nil}
-
-      lambda {
-        @news_feed.load_entries
-      }.should raise_error('The feed is invalid')
+      Feedzirra::Feed.stub(:fetch_and_parse){false}
+      @news_feed.load_entries.should be_false
     end
 
     it 'associate the entries with the feed' do

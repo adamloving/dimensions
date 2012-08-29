@@ -7,7 +7,6 @@ class NewsFeed < ActiveRecord::Base
   has_many  :entries, :class_name =>  FeedEntry, :dependent => :restrict
   has_one :feedzirra_response
 
-
   attr_accessor :location_values
 
   validates :name, :url, presence: true
@@ -38,7 +37,11 @@ class NewsFeed < ActiveRecord::Base
 
   def load_entries
     entries = FeedEntry.update_from_feed(self.url)
-    NewsFeed.set_downloaded(entries)
+    if !!entries
+      NewsFeed.set_downloaded(entries)
+    else
+      false
+    end
   end
 
   def update_entries

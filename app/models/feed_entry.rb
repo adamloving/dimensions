@@ -69,12 +69,17 @@ class FeedEntry < ActiveRecord::Base
 
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
-    raise "The feed is invalid" if feed.blank?
+
+    begin
 
     news_feed = NewsFeed.find_by_url(feed_url)
     news_feed.update_attributes(:etag => feed.etag, :last_modified => feed.last_modified)
 
     entries = news_feed.add_entries(feed.entries)
+    rescue Exception => e
+      puts "Exception: #{e.to_s.safe_encoding}"
+      return false
+    end
   end
 
   def self.update_from_feed_continuously(feed_url)

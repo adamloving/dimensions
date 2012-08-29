@@ -201,7 +201,7 @@ describe FeedEntry do
       Feedzirra::Feed.stub(:fetch_and_parse){nil}
       lambda {
         FeedEntry.update_from_feed('invalid url')
-      }.should raise_error('The feed is invalid')
+      }.should be_true
     end
 
     it 'should create entries whenever the feed --> feeds :p' do
