@@ -1,5 +1,5 @@
 class EntryMonitor
-  @queue = :entries
+  @queue = :reindex_entries
 
   def self.perform
     index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
