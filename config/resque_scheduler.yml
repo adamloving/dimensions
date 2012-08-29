@@ -7,3 +7,8 @@ UpdateFeeds:
   cron: "00 */3 * * *"
   class: FeedUpdater
   description: "Update the feeds from the sources"
+
+ReindexFeeds:
+  cron: "00 */1 * * *"
+  class: EntryMonitor
+  description: "Retry to index the failed entries"

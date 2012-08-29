@@ -125,6 +125,14 @@ class NewsFeed < ActiveRecord::Base
     end
   end
 
+  def reindex_feed(index)
+    if self.valid_feed?
+      self.entries.each { |entry| entry.index_in_searchify(index) if entry.tagged? and !entry.indexed }
+    else
+      false
+    end
+  end
+
   private
 
   def build_location
