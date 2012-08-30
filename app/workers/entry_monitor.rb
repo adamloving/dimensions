@@ -2,9 +2,8 @@ class EntryMonitor
   @queue = :reindex_entries
 
   def self.perform
-    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
     NewsFeed.find_each do |feed|
-      feed.reindex_feed index
+      feed.bg_reindex_feed
     end
   end
 end

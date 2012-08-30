@@ -1,8 +1,10 @@
 class CalculateRanking
-  @queue = :rankings
+  @queue = :feed_entry
 
   def self.perform(entry_id)
-    entry = FeedEntry.find_by_id(entry_id)
-    entry.ranking_calculate
+    entry = FeedEntry.find(entry_id)
+    entry.update_facebook_stats
+    entry.calculate_social_rank
+    entry.re_index
   end
 end

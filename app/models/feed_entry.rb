@@ -274,6 +274,10 @@ class FeedEntry < ActiveRecord::Base
     self.update_attributes(:tweet_count => (self.tweet_count += 1))
   end
 
+  def bg_calculate_social_rank
+    Resque.enqueue(CalculateRanking, self.id)
+  end
+
   def self.add_tweet(tweet_urls = [])
     # tweet_urls = Array
     # tweet_urls => 0 o N urls

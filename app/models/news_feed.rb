@@ -125,7 +125,12 @@ class NewsFeed < ActiveRecord::Base
     end
   end
 
-  def reindex_feed(index)
+  def bg_reindex_feed
+    Resque.enqueue(ReindexFeed, self.id)
+  end
+
+  def reindex_feed
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
     if self.valid_feed?
       self.entries.each { |entry| entry.index_in_searchify(index) if entry.tagged? and !entry.indexed }
     else

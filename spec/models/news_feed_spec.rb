@@ -124,6 +124,19 @@ describe NewsFeed do
     end
   end
 
+  describe '#bg_reindex_feed' do
+    let(:index) do
+      indexer = double(:indexer)
+      indexer.stub_chain(:document, :add){true}
+      indexer
+    end
+
+    it 'should run the enqueue the ReindexFeed job for that feed' do
+      @news_feed = FactoryGirl.build(:news_feed)
+      @news_feed.bg_reindex_feed.should be_true
+    end
+  end
+
   describe "#reindex_feed" do
 
     let(:index) do
@@ -135,7 +148,7 @@ describe NewsFeed do
     it "should validate if the feed is valid?" do
       @news_feed = FactoryGirl.create(:news_feed, valid_feed: true)
       @news_feed.valid_feed = false
-      @news_feed.reindex_feed(index).should be_false
+      @news_feed.reindex_feed.should be_false
     end
 
   end
