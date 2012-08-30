@@ -81,6 +81,13 @@ describe FeedEntry, '#index_in_searchify' do
   end
 end
 
+describe FeedEntry, 'entry.bg_calculate_social_rank' do
+  it 'should enqueue CalculateRanking when instance method is called' do
+    @entry = FactoryGirl.build(:feed_entry)
+    @entry.bg_calculate_social_rank.should be_true
+  end
+end
+
 describe FeedEntry, '.update_facebook_stats' do
   let!(:feed_entry) do
     FactoryGirl.create(
