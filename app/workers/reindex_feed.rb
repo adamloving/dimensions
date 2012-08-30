@@ -1,8 +1,7 @@
 class ReindexFeed
   @queue = :reindex_entries
 
-  def self.perform(feed_id, index)
-    feed = NewsFeed.find(feed_id)
-    feed.reindex_feed index
+  def self.perform(feed_id)
+    NewsFeed.find(feed_id).reindex_feed
   end
 end
