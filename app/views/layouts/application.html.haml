@@ -1,8 +1,9 @@
 !!!
-%html
+%html(xmlns:fb="http://ogp.me/ns/fb#")
   %head
     %title Dimensions
     %meta{:name=>"keywords", :content=>"template language"}
+    %meta{:property => "fb:app_id", :content => "361505903895246"}
     = stylesheet_link_tag 'bootstrap.css'
     = stylesheet_link_tag 'bootstrap.min.css'
     = stylesheet_link_tag 'jquery-ui-1.8.16.custom.css'
@@ -40,7 +41,6 @@
     = javascript_include_tag 'jquery.ba-urlinternal.min'
     = javascript_include_tag 'underscore-min'
     = javascript_include_tag 'extensions'
-    = javascript_include_tag 'socialite.min'
 
     = yield :opengraph
 

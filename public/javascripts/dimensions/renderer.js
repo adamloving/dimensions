@@ -58,10 +58,6 @@ $(function(){
             }
           });
 
-        setTimeout(function(){
-          Socialite.load();
-        }, 100);
-
         $.timeField.init();//to render the dates
 
         this.parseTwitterButtons(); 
