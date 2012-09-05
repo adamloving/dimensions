@@ -142,29 +142,25 @@ p.small {
 
 /* line 132, sass/main.scss */
 .social-buttons {
-  /*background: url("../images/social_troll.png") no-repeat 0 0;*/
+  background: url("../images/social_troll.png") no-repeat 0 0;
   height: 30px;
+  overflow: hidden;
 }
-/* line 135, sass/main.scss */
+/* line 136, sass/main.scss */
 .social-buttons .socialised {
   float: left;
-  display: none;
 }
-/* line 138, sass/main.scss */
-.social-buttons .socialised.socialite-loaded {
-  display: block;
-}
-/* line 142, sass/main.scss */
+/* line 139, sass/main.scss */
 .social-buttons .twitter {
   width: 120px;
   float: right;
-  margin-right: 70px;
+  margin-right: 83px;
 }
-/* line 147, sass/main.scss */
+/* line 144, sass/main.scss */
 .social-buttons .facebook {
   width: 400px;
 }
-/* line 149, sass/main.scss */
+/* line 146, sass/main.scss */
 .social-buttons .facebook iframe {
   width: 100%;
   height: 25px;
