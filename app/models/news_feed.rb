@@ -1,4 +1,6 @@
 require 'dimensions/netutils'
+require 'net/http'
+require 'uri'
 
 class NewsFeed < ActiveRecord::Base
   include Dimensions::Netutils
@@ -85,7 +87,7 @@ class NewsFeed < ActiveRecord::Base
     begin
       @entries << FeedEntry.create!(name: entry.title,
                                    summary: entry.summary,
-                                   url: entry.url,
+                                   url: NewsFeed.fetch(entry.url),
                                    published_at: entry.published,
                                    guid: entry.id,
                                    author: entry.author,
@@ -168,5 +170,10 @@ class NewsFeed < ActiveRecord::Base
 
   def enqueue_entries_loading
     Resque.enqueue(FeedLoader, self.id)
+  end
+  
+  def self.fetch(uri_str)
+    url = Net::HTTP.get_response(URI.parse(uri_str))['location']
+    url.slice(/^.+\?/)[0..-2]
   end
 end
