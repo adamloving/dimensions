@@ -69,27 +69,40 @@ class NewsFeed < ActiveRecord::Base
   end
 
   def update_feed(updated_feed)
+    begin
     update_attributes!(
       etag: updated_feed.etag,
       last_modified: updated_feed.last_modified
     )
     add_entries(updated_feed.new_entries)
+    rescue Exception => e
+      add_entries(updated_feed.new_entries)
+      puts "Failed to update feed, details: #{e.to_s}"
+    end
+  end
+
+  def add_entry(entry)
+    begin
+      @entries << FeedEntry.create!(name: entry.title,
+                                   summary: entry.summary,
+                                   url: entry.url,
+                                   published_at: entry.published,
+                                   guid: entry.id,
+                                   author: entry.author,
+                                   news_feed_id: self.id,
+                                   content: entry.content)
+    rescue Exception => e
+      puts "Failed to create entries, details: #{e.to_s}"
+    end
   end
 
   def add_entries(feed_entries=[])
-    entries = []
+    @entries = []
     feed_entries.each do |entry|
       next unless entry.id.class == String && !FeedEntry.exists?(guid: entry.id)
-      entries << FeedEntry.create!(name: entry.title,
-             summary: entry.summary,
-             url: entry.url,
-             published_at: entry.published,
-             guid: entry.id,
-             author: entry.author,
-             news_feed_id: self.id,
-             content: entry.content)
+      add_entry entry
     end
-    entries
+    @entries
   end
 
   def location
