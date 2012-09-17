@@ -87,7 +87,7 @@ class NewsFeed < ActiveRecord::Base
     begin
       @entries << FeedEntry.create!(name: entry.title,
                                    summary: entry.summary,
-                                   url: NewsFeed.fetch(entry.url),
+                                   url: fetch(entry.url),
                                    published_at: entry.published,
                                    guid: entry.id,
                                    author: entry.author,
@@ -172,8 +172,17 @@ class NewsFeed < ActiveRecord::Base
     Resque.enqueue(FeedLoader, self.id)
   end
   
-  def self.fetch(uri_str)
-    url = Net::HTTP.get_response(URI.parse(uri_str))['location']
-    url.slice(/^.+\?/)[0..-2]
+  def fetch(uri_str)
+    begin
+      response = Net::HTTP.get_response(URI.parse(uri_str))
+      if response.class == Net::HTTPOK
+        url = uri_str
+      else
+        url = response['location']
+      end
+      url.slice(/^.+\?/)[0..-2]
+    rescue Exception => e
+      uri_str
+    end
   end
 end
