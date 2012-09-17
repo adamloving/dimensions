@@ -72,14 +72,14 @@ class NewsFeed < ActiveRecord::Base
 
   def update_feed(updated_feed)
     begin
-    update_attributes!(
-      etag: updated_feed.etag,
-      last_modified: updated_feed.last_modified
-    )
-    add_entries(updated_feed.new_entries)
-    rescue Exception => e
+      update_attributes!(
+        etag: updated_feed.etag,
+        last_modified: updated_feed.last_modified
+      )
       add_entries(updated_feed.new_entries)
+    rescue Exception => e
       puts "Failed to update feed, details: #{e.to_s}"
+      add_entries(updated_feed.new_entries)
     end
   end
 
