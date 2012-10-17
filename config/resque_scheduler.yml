@@ -12,3 +12,8 @@ ReindexFeeds:
   cron: "00 */1 * * *"
   class: EntryMonitor
   description: "Retry to index the failed entries"
+
+CleanSearchify:
+  cron: "59 23 * * *"
+  class: CleanIndexes
+  description: "Clean indexes of old news"
