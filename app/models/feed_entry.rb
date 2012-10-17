@@ -337,7 +337,7 @@ class FeedEntry < ActiveRecord::Base
     begin
       index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
       index.document(id).delete
-      find(id).update_attributes(outdated: true)
+      find(id).update_attributes(outdated: true, indexed: false)
     rescue Exception => e
       puts "FeedEntry: ID: #{id} could not be unindexed, Error: #{e.to_s}"
     end
