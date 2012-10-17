@@ -19,6 +19,7 @@ class FeedEntry < ActiveRecord::Base
   scope :for_location_review, where(:state => ['localized', 'tagged'])
   scope :not_reviewed, where(:reviewed => false)
   scope :reviewed, where(:reviewed => true)
+  scope :to_recalculate, where(indexed: true).order('created_at DESC').limit(TEARS['first'])
 
   acts_as_taggable
 
