@@ -20,6 +20,7 @@ class NewsFeed < ActiveRecord::Base
   before_save   :url_connection_valid? unless Rails.env.test?
   before_save   :build_location
 
+
   def self.set_downloaded(entries)
     entries.each {|e| e.download}
   end
@@ -147,7 +148,7 @@ class NewsFeed < ActiveRecord::Base
   def reindex_feed
     index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
     if self.valid_feed?
-      self.entries.each { |entry| entry.index_in_searchify(index) if entry.tagged? and !entry.indexed }
+      self.entries.to_reindex.map { |entry| entry.index_in_searchify(index) }
     else
       false
     end
