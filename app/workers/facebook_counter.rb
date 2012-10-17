@@ -1,8 +1,8 @@
 class FacebookCounter
   @queue = :feed_entry
   def self.perform
-    FeedEntry.find_each do |entry|
-      entry.bg_calculate_social_rank if entry.indexed?
+    FeedEntry.to_recalculate.each do |entry|
+      entry.bg_calculate_social_rank
     end
   end
 end

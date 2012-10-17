@@ -19,6 +19,8 @@ class FeedEntry < ActiveRecord::Base
   scope :for_location_review, where(:state => ['localized', 'tagged'])
   scope :not_reviewed, where(:reviewed => false)
   scope :reviewed, where(:reviewed => true)
+  scope :to_recalculate, where(indexed: true).order('created_at DESC').limit(TEARS['first'])
+  scope :to_remove, where(indexed: true).order('created_at DESC').offset(TEARS['first'])
 
   acts_as_taggable
 
@@ -329,6 +331,22 @@ class FeedEntry < ActiveRecord::Base
     # rank = (tw + likes) - 1 / (time_since_post_date + 2) ** 1.8
     # upvotes = (self.tweet_count + self.facebook_count) - 1
     # social_ranking = upvotes / (entry_age ** 1.8 )
+  end
+  
+  def self.remove_entry(id)
+    begin
+      index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
+      index.document(id).delete
+    rescue Exception => e
+      puts "FeedEntry: ID: #{id} could not be unindexed, Error: #{e.to_s}"
+    end
+  end
+
+  def self.remove_this_entries
+    entries_to_remove = FeedEntry.to_remove.map(&:id) 
+    entries_to_remove.each do |entry_id|
+      remove_entry entry_id
+    end
   end
 
   private
