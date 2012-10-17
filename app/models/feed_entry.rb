@@ -196,7 +196,7 @@ class FeedEntry < ActiveRecord::Base
 
       begin
         index.document(self.id).add(fields, :variables => doc_variables)
-        self.update_attributes(failed: false, indexed: true)
+        self.update_attributes(failed: false, indexed: true, outdated: false)
         true
       rescue Exception => e
         self.update_attributes(failed: true, indexed: false, fetch_errors: {error: e.to_s.safe_encoding})
