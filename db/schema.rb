@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(:version => 20121017160242) do
     t.integer  "facebook_shares",   :default => 0
     t.integer  "facebook_comments", :default => 0
     t.float    "rank_coefficient",  :default => 1.8
-    t.boolean  "outdated"
+    t.boolean  "outdated",          :default => false
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true

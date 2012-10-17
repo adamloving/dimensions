@@ -20,7 +20,7 @@ class FeedEntry < ActiveRecord::Base
   scope :not_reviewed, where(:reviewed => false)
   scope :reviewed, where(:reviewed => true)
   scope :to_recalculate, where(indexed: true).order('created_at DESC').limit(TEARS['first'])
-  scope :to_remove, where(indexed: true).order('created_at DESC').offset(TEARS['first'])
+  scope :to_remove, where(indexed: true, outdated: false).order('created_at DESC').offset(TEARS['first'])
 
   acts_as_taggable
 
@@ -337,6 +337,7 @@ class FeedEntry < ActiveRecord::Base
     begin
       index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
       index.document(id).delete
+      find(id).update_attributes(outdated: true)
     rescue Exception => e
       puts "FeedEntry: ID: #{id} could not be unindexed, Error: #{e.to_s}"
     end

@@ -1,6 +1,6 @@
 class AddOutdatedToFeedEntries < ActiveRecord::Migration
   def up
-    add_column :feed_entries, :outdated, :boolean
+    add_column :feed_entries, :outdated, :boolean, default: false
   end
 
   def down
