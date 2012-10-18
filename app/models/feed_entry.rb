@@ -22,7 +22,7 @@ class FeedEntry < ActiveRecord::Base
   scope :to_recalculate, where(indexed: true).order('created_at DESC').limit(TEARS['first'])
   scope :to_remove, where(indexed: true, outdated: false).order('created_at DESC').offset(TEARS['first'])
 
-  scope :to_reindex, joins(:feed).where("feed_entries.state = ? AND feed_entries.indexed = ?", 'tagged', false)
+  scope :to_reindex, joins(:feed).where("feed_entries.state = ? AND feed_entries.indexed = ?", 'tagged', false).readonly(false)
 
   acts_as_taggable
 
