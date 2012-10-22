@@ -23,8 +23,14 @@ bundle install --without=development --deployment
 echo '* rake db:migrate'
 bundle exec rake db:migrate
 
-echo 'rake daemon:tweetstream:start'
+echo '* start twetstream count'
 bundle exec rake daemon:tweetstream:start
+
+echo '* restart resque workers'
+bundle exec rake resque:restart_workers
+
+echo '* restart resque scheduler'
+bundle exec rake resque:restart_scheduler
 
 echo '* restart thin'
 bundle exec thin -p 5000 -s 3 -e staging restart
