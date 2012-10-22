@@ -39,8 +39,6 @@ gem 'exception_notification', :require => 'exception_notifier'
 gem 'daemons'
 gem 'daemons-rails'
 gem 'thin'
-gem 'foreman'
-gem 'god'
 
 gem 'jasmine', :group => [:development, :test]
 
