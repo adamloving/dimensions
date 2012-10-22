@@ -40,6 +40,7 @@ gem 'daemons'
 gem 'daemons-rails'
 gem 'thin'
 gem 'foreman'
+gem 'god'
 
 gem 'jasmine', :group => [:development, :test]
 
