@@ -198,3 +198,5 @@ div.date { background: #ececec; font-size: 10px; padding: 0 6px; margin: 0; }
 .pagination a { background-color: #0a1d4a; color: #fff; padding: 0 7px }
 .pagination .active a { color: #0a1d4a; }
 .pagination a:hover, .pagination .active a { background-color: #fac716; color: #0a1d4a; }
+
+
