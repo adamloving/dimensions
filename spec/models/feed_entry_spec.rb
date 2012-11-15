@@ -1,6 +1,128 @@
 require 'spec_helper'
 
+describe FeedEntry, 'errors' do
+  it 'should not be cleaned if failed' do
+    feed_entry = FactoryGirl.build :feed_entry, fetch_errors: 'whatever', failed: true
+    feed_entry.save
+    feed_entry.reload
+    feed_entry.fetch_errors.should == 'whatever'
+  end
 
+  it 'should be cleaned if not failed before save' do
+    feed_entry = FactoryGirl.build :feed_entry, fetch_errors: 'whatever', failed: false, indexed: true
+    feed_entry.save
+    feed_entry.reload
+    feed_entry.fetch_errors.should be_nil
+  end
+
+  it 'should be cleaned if indexed before save' do
+    feed_entry = FactoryGirl.build :feed_entry, fetch_errors: 'whatever', failed: false, indexed: true
+    feed_entry.save
+    feed_entry.fetch_errors.should be_nil
+  end
+end
+describe FeedEntry, '#index_in_searchify' do
+
+  let(:index) do
+    indexer = double(:indexer)
+    indexer.stub_chain(:document, :add){true}
+    indexer
+  end
+
+  let(:feed_entry) { FactoryGirl.create(:feed_entry, entities: [location]) }
+
+  context 'with latitude and logitude given' do
+    let!(:location) { FactoryGirl.create :entity, serialized_data: { 'latitude' => 123, 'longitude' => 123 } }
+
+    before do
+      feed_entry.primary_location = location
+    end
+
+    it 'should not fail' do
+      feed_entry.index_in_searchify(index).should be_true
+      feed_entry.failed.should be_false
+      feed_entry.indexed.should be_true
+    end
+
+    it 'should fail if there is an Index Tank error' do
+      index.stub_chain(:document, :add).and_raise IndexTank::UnexpectedHTTPException
+      feed_entry.index_in_searchify(index).should be_false
+      feed_entry.failed.should be_true
+      feed_entry.indexed.should be_false
+    end
+  end
+
+  context 'with no latitude given' do
+    let!(:location) { FactoryGirl.create :entity, serialized_data: { 'longitude' => 123 } }
+
+    before do
+      feed_entry.primary_location = location
+    end
+
+    it 'should fail' do
+      feed_entry.index_in_searchify(index).should be_false
+      feed_entry.failed.should be_true
+      feed_entry.indexed.should be_false
+    end
+  end
+
+  context 'with no longitude given' do
+    let!(:location) { FactoryGirl.create :entity, serialized_data: { 'latitude' => 123 } }
+
+    before do
+      feed_entry.primary_location = location
+    end
+
+    it 'should fail' do
+      feed_entry.index_in_searchify(index).should be_false
+      feed_entry.failed.should be_true
+      feed_entry.indexed.should be_false
+    end
+  end
+end
+
+describe FeedEntry, 'entry.bg_calculate_social_rank' do
+  it 'should enqueue CalculateRanking when instance method is called' do
+    @entry = FactoryGirl.build(:feed_entry)
+    @entry.bg_calculate_social_rank.should be_true
+  end
+end
+
+describe FeedEntry, '.update_facebook_stats' do
+  let!(:feed_entry) do
+    FactoryGirl.create(
+      :feed_entry,
+      facebook_likes: 0,
+      facebook_shares: 0,
+      facebook_comments: 0
+    )
+  end
+
+  let!(:facebook_response) do
+    {
+      'like_count' => 1,
+      'share_count' => 1,
+      'comment_count' => 1
+    }
+  end
+
+  it 'updates facebook counts from Koala' do
+    Koala::Facebook::API.any_instance.stub_chain(:fql_query, :first).and_return facebook_response
+    feed_entry.update_facebook_stats
+    feed_entry.facebook_likes.should == 1
+    feed_entry.facebook_shares.should == 1
+    feed_entry.facebook_comments.should == 1
+  end
+
+  it 'does not update on a network error' do
+    Koala::Facebook::API.any_instance.stub(:fql_query).and_raise(Koala::Facebook::APIError)
+    feed_entry.update_facebook_stats
+    feed_entry.facebook_likes.should == 0
+    feed_entry.facebook_shares.should == 0
+    feed_entry.facebook_comments.should == 0
+    feed_entry.failed.should == true
+  end
+end
 describe FeedEntry do
   #******************** SCOPES********************
   describe ".failed" do
@@ -25,14 +147,15 @@ describe FeedEntry do
 
   describe "self.add_entries" do
     it 'converts feedzirra entries to feed_entry objects' do
-      mock_entries = [mock( title: "The first post",
+      mock_entries = [
+        mock( title: "The first post",
              summary: 'I was so lazy to write my first post',
              url: '/some-url-x',
              published: Time.now,
              id: '/my-unique-id',
              author: 'Inaki',
              content: 'blah blah'),
-      mock( title: "The second post",
+        mock( title: "The second post",
              summary: 'I was so lazy but now I\'m not',
              url: '/some-other-url',
              published: Time.now,
@@ -41,10 +164,9 @@ describe FeedEntry do
              content: 'blah, blah, blah')]
       news_feed = FactoryGirl.create(:news_feed)
 
-
       results = nil
       lambda{
-        results = FeedEntry.add_entries(mock_entries, news_feed.id)
+        results = news_feed.add_entries(mock_entries)
       }.should change(FeedEntry, :count).by(2)
 
       news_feed.entries.count.should == 2
@@ -53,6 +175,22 @@ describe FeedEntry do
       results.map(&:author).should =~ ['Inaki', 'Inaki']
     end
   end
+
+  #describe 'self.add_tweet(urls)' do
+    #entry = FactoryGirl.create(:feed_entry, :url => "http://slog.thestranger.com/slog/archives/2012/07/03/why-are-american-kids-so-spoiled")
+    #tweet_urls = [{:indices=>[43, 63],
+                    #:url=>"http://t.co/I2ndodld",
+                    #:expanded_url=>
+                   #"http://slog.thestranger.com/slog/archives/2012/07/03/why-are-american-kids-so-spoiled",
+                   #:display_url=>"slog.thestranger.com/slog/archives/?"}]
+
+    ##entry = FeedEntry.where(:url => "http://slog.thestranger.com/slog/archives/2012/07/03/why-are-american-kids-so-spoiled")
+    ##FeedEntry.add_tweet(tweet_urls)
+    ##expect{FeedEntry.add_tweet(tweet_urls)}.to change{entry.tweet_count}.by(1)
+    #entry.tweet_count.should == 0
+    #FeedEntry.add_tweet(tweet_urls)
+    #entry.tweet_count.should == 1
+  #end
 
   describe 'self.save_feedzirra_response' do
     it "creates a new feedzirra response" do
@@ -70,7 +208,7 @@ describe FeedEntry do
       Feedzirra::Feed.stub(:fetch_and_parse){nil}
       lambda {
         FeedEntry.update_from_feed('invalid url')
-      }.should raise_error('The feed is invalid')
+      }.should be_true
     end
 
     it 'should create entries whenever the feed --> feeds :p' do
@@ -81,10 +219,11 @@ describe FeedEntry do
 
       news_feed = FactoryGirl.create(:news_feed, :url => 'http://king5.com')
 
-      FeedEntry.should_receive(:add_entries).with(feed.entries, news_feed.id){['Hola', 'Mundo']}
-      
+      NewsFeed.stub(:find_by_url).with(news_feed.url){ news_feed }
+      news_feed.should_receive(:add_entries).with(feed.entries){['Hola', 'Mundo']}
+
       entries = FeedEntry.update_from_feed(news_feed.url)
-      
+
       news = NewsFeed.find(news_feed.id)
       news.etag.should  == 'xyz'
       #news.last_modified.should == now.to_s
@@ -125,16 +264,22 @@ describe FeedEntry do
       context 'the feedzirra feed is updated' do
         before do
           @some_new_date = 2.days.since(Time.now)
-          @updated_feed = mock(:updated? => true, :new_entries => ['an entry'], :etag => 'abc', :last_modified => @some_new_date)
+          @updated_feed = mock(
+            :updated? => true,
+            :new_entries => ['an entry'],
+            :etag => 'abc',
+            :last_modified => @some_new_date
+          )
           Feedzirra::Feed.stub(:update){@updated_feed}
-          FeedEntry.should_receive(:add_entries).with(['an entry'], @news_feed.id)
+          @news_feed.should_receive(:add_entries).with(['an entry'])
+          NewsFeed.stub(:find_by_url).with(@news_feed.url){ @news_feed }
         end
 
         it 'should update the news feed etag and last modified' do
           FeedEntry.update_from_feed_continuously('http://king5.com')
 
           @news_feed.reload.etag.should == 'abc'
-          #@news_feed.reload.last_modified.should == @some_new_date
+          @news_feed.reload.last_modified.should be_within(1).of(@some_new_date)
         end
       end
     end

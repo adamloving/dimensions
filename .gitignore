@@ -1,6 +1,7 @@
 .bundle
 db/*.sqlite3
 log/*.log
+log/*.pid
 tmp/**/*
 config/database.yml
 config/environments/development.rb 
@@ -10,7 +11,8 @@ public/client/sencha
 data/get_social_tags.py
 nbproject
 data/calais.pyc
-.rvmrc
 config/database.yml
 coverage
 .sass-cache
+*.swp
+dump.rdb

@@ -22,6 +22,7 @@ RailsBootstrap::Application.routes.draw do
           post  :fetch_content
           post  :process_entry
           get   :re_index
+          post   :update_coefficient
         end
 
         get :review_locations, :on => :collection
@@ -114,7 +115,7 @@ RailsBootstrap::Application.routes.draw do
   
   match 'api/paypal', :to => 'api/paypal#create', :via => %w(post)
   
-  root :to => "home#launch"
+  root :to => "home#index"
 
   # See how all your routes lay out with "rake routes"
 

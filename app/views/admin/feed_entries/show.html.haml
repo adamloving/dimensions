@@ -10,6 +10,15 @@
       Visibility
     %p
       %span.label.label-inverse= @feed_entry.visible? ? "Showing" : "Hidden"
+    #coefficient.coefficient
+      %p
+        %strong Rank Coefficient:
+        %span
+          = form_tag update_coefficient_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry.id), :method => :post do
+            = text_field_tag :rank_coefficient, @feed_entry.rank_coefficient, :class => 'rank_coefficient'
+            = submit_tag "Update coefficient"
+        %span.field-description
+          Default coefficient is 1.8. If you need to increase this entry's social ranking, please decrease this value.
     %p
     - if @feed_entry.fetched?
       = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"
@@ -65,7 +74,7 @@
             Fetch errors
         %td
           %span.entry.failed
-            = @feed_entry.fetch_errors[:error]
+            = @feed_entry.fetch_errors.inspect
 
     - if @feed_entry.primary_location.present?
       %tr

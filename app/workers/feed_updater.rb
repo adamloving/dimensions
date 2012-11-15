@@ -1,8 +1,9 @@
 class FeedUpdater
   @queue = :feeds
 
-  def self.perform(news_feed_id)
-    news_feed = NewsFeed.find(news_feed_id)
-    news_feed.update_entries
+  def self.perform
+    NewsFeed.find_each do |feed|
+      feed.update_entries
+    end
   end
 end

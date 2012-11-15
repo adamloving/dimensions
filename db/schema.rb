@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417204054) do
+ActiveRecord::Schema.define(:version => 20121017160242) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -74,15 +74,22 @@ ActiveRecord::Schema.define(:version => 20120417204054) do
     t.string   "guid"
     t.string   "author"
     t.text     "content"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "news_feed_id"
-    t.boolean  "visible",      :default => true
+    t.boolean  "visible",           :default => true
     t.string   "state"
     t.text     "fetch_errors"
-    t.boolean  "failed",       :default => false
-    t.boolean  "indexed",      :default => false
-    t.boolean  "reviewed",     :default => false
+    t.boolean  "failed",            :default => false
+    t.boolean  "indexed",           :default => false
+    t.boolean  "reviewed",          :default => false
+    t.integer  "tweet_count",       :default => 0
+    t.float    "social_ranking"
+    t.integer  "facebook_likes",    :default => 0
+    t.integer  "facebook_shares",   :default => 0
+    t.integer  "facebook_comments", :default => 0
+    t.float    "rank_coefficient",  :default => 1.8
+    t.boolean  "outdated",          :default => false
   end
 
   add_index "feed_entries", ["url"], :name => "index_feed_entries_on_url", :unique => true
@@ -97,10 +104,11 @@ ActiveRecord::Schema.define(:version => 20120417204054) do
   create_table "news_feeds", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "etag"
     t.datetime "last_modified"
+    t.boolean  "valid_feed",    :default => true
   end
 
   add_index "news_feeds", ["name"], :name => "index_news_feeds_on_name", :unique => true

@@ -3,9 +3,8 @@
     .container
       %h3
         %a(href='/') Dimensions
-      -if request.path =="/home"
-        %form(onsubmit='$.address.value("search");return false;')
-          %input#search(type="search" placeholder="Search" style="margin-left: 232px")
+      %form(onsubmit='$.address.value("search");return false;')
+        %input#search(type="search" placeholder="Search" style="margin-left: 232px")
       -#%h3
         -#.name(style="right: 60px; position: absolute; margin-top: 5px; color: #eee; font-size: 0.85em")
           -#| Welcome, Leon

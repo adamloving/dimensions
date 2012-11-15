@@ -1,10 +1,12 @@
 source 'http://rubygems.org'
 source 'http://gems.github.com'
 
-gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'pg'
+gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'rails', '3.2.2'
 gem 'calais'
+gem 'tweetstream'
+gem 'koala'
 gem 'scrapi'
 gem 'state_machine'
 gem 'indextank'
@@ -23,6 +25,7 @@ gem 'kaminari'
 # background jobs
 #========================================
 gem 'resque', :require => "resque/server"
+gem 'resque-scheduler', :require => "resque_scheduler"
 
 gem 'rake'
 gem 'haml-rails'
@@ -33,13 +36,18 @@ gem 'devise_rpx_connectable'
 gem 'tire'
 gem 'crack'
 gem 'exception_notification', :require => 'exception_notifier'
+gem 'daemons'
+gem 'daemons-rails'
+gem 'thin'
 
 gem 'jasmine', :group => [:development, :test]
 
 group :development do
-  gem 'pg'
   gem 'mysql2'
   gem 'pry'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-spork'
 end
 
 group :test do
@@ -50,5 +58,5 @@ group :test do
   gem 'factory_girl_rails'
   gem 'resque_spec'
   gem 'simplecov'
+  gem 'spork-rails'
 end
-

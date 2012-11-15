@@ -4,11 +4,11 @@ var Paginator = (function(){
 	var window = function(current, matches) {
       var pagesCount = _.size(matches);
 
-      if(pagesCount <= 10){
+      if(pagesCount <= 20){
         return _.keys(matches);
       }else if(current < 6){
         var keys = _.keys(matches)
-        return keys.slice(0, 10);
+        return keys.slice(0, 20);
       }
       
       if(current > pagesCount)

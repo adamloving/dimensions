@@ -19,8 +19,14 @@ class FeedEntry < ActiveRecord::Base
   scope :for_location_review, where(:state => ['localized', 'tagged'])
   scope :not_reviewed, where(:reviewed => false)
   scope :reviewed, where(:reviewed => true)
+  scope :to_recalculate, where(indexed: true).order('created_at DESC').limit(TEARS['first'])
+  scope :to_remove, where(indexed: true, outdated: false).order('created_at DESC').offset(TEARS['first'])
+
+  scope :to_reindex, joins(:feed).where("feed_entries.state = ? AND feed_entries.indexed = ?", 'tagged', false).readonly(false)
 
   acts_as_taggable
+
+  before_save :clean_errors
 
   state_machine :initial => :new do
 
@@ -57,40 +63,46 @@ class FeedEntry < ActiveRecord::Base
     after_transition :on => :tag, :do => :index_this_entry
   end
 
+  def failed?
+    !!read_attribute(:failed) || !indexed?
+  end
+
+  def clean_errors
+    self.fetch_errors = nil unless  self.failed?
+  end
+
   def self.update_from_feed(feed_url)
     feed = Feedzirra::Feed.fetch_and_parse(feed_url)
-    raise "The feed is invalid" if feed.blank?
-
     news_feed = NewsFeed.find_by_url(feed_url)
-    news_feed.update_attributes(:etag => feed.etag, :last_modified => feed.last_modified)
 
-    entries = add_entries(feed.entries, news_feed.id)
+    begin
+    news_feed.update_attributes(:etag => feed.etag, :last_modified => feed.last_modified)
+    entries = news_feed.add_entries(feed.entries)
+    rescue Exception => e
+      puts "Exception: #{e.to_s.safe_encoding}"
+      news_feed.update_attributes(valid_feed: false)
+      return false
+    end
   end
 
   def self.update_from_feed_continuously(feed_url)
     internal_feed = NewsFeed.find_by_url(feed_url)
     raise 'Couldn\'t find news feed with the given url' if internal_feed.blank?
 
-    feed_to_update                = Feedzirra::Parser::Atom.new.tap do|feed|
-      feed.feed_url       = internal_feed.url
-      feed.etag           = internal_feed.etag
-      feed.last_modified  = internal_feed.last_modified
-    end
+    feed_to_update = internal_feed.atom_feed_object
+    last_atom_entry = internal_feed.last_atom_feed_entry_object
 
-    last_entry      = Feedzirra::Parser::AtomEntry.new
-    last_entry.url  = internal_feed.entries.last
-
-    feed_to_update.entries = [last_entry]
+    feed_to_update.entries = [last_atom_entry]
 
     updated_feed = Feedzirra::Feed.update(feed_to_update)
 
-    new_entries = []
-    
-    if updated_feed.updated?
-      new_entries = add_entries(updated_feed.new_entries, internal_feed.id) 
-      internal_feed.update_attributes!(:etag => updated_feed.etag, :last_modified => updated_feed.last_modified)
-    end
-    new_entries
+    return [] if invalid_feed?(updated_feed) || !updated_feed.updated?
+    internal_feed.update_feed(updated_feed)
+  end
+
+  def self.invalid_feed? feed
+    # Either the url is unreachable, it has a malformed url or it is not a feed
+    feed == 0 || feed == []
   end
 
   def self.localize(entry)
@@ -167,12 +179,15 @@ class FeedEntry < ActiveRecord::Base
 
   def index_in_searchify(index)
     location = self.primary_location.serialized_data
+
+    self.social_ranking = 0.0 if self.social_ranking.nil?
+
     if location["latitude"].present? && location["longitude"].present?
       doc_variables = { 0 => location["latitude"],
                         1 => location["longitude"],
-                        2 => self.published_at.to_i }
+                        2 => self.social_ranking}
 
-      fields = {:url        => self.url, 
+      fields = {:url        => self.url,
                 :timestamp  => self.published_at.to_i,
                 :text       => self.name,
                 :location   => self.primary_location.name,
@@ -181,10 +196,16 @@ class FeedEntry < ActiveRecord::Base
 
       fields[:summary] = self.summary unless self.summary.nil?
 
-      index.document(self.id).add(fields, :variables => doc_variables)
-      self.update_attributes(:indexed => true)
-      true
+      begin
+        index.document(self.id).add(fields, :variables => doc_variables)
+        self.update_attributes(failed: false, indexed: true, outdated: false)
+        true
+      rescue Exception => e
+        self.update_attributes(failed: true, indexed: false, fetch_errors: {error: e.to_s.safe_encoding})
+        false
+      end
     else
+      self.update_attributes(failed: true, indexed: false, fetch_errors: { error: 'It does not have latitude or longitude' })
       false
     end
   end
@@ -193,6 +214,11 @@ class FeedEntry < ActiveRecord::Base
     index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
     entry = self.find(entry_id)
     entry.index_in_searchify(index)
+  end
+
+  def re_index
+    index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
+    self.index_in_searchify(index)
   end
 
   def locations
@@ -245,31 +271,92 @@ class FeedEntry < ActiveRecord::Base
   end
 
   def to_param
-    "#{self.id}-#{self.name.parameterize}"
+    "#{self.id}-#{self.name.parameterize}" unless self.name.nil?
   end
 
-  private 
-  def self.add_entries(feed_entries=[], news_feed_id)
-    entries = []
-    feed_entries.each do|entry|
-      if entry.id.class == String
-        unless exists? guid: entry.id
-          entries << create!(name: entry.title,
-                 summary: entry.summary,
-                 url: entry.url,
-                 published_at: entry.published,
-                 guid: entry.id,
-                 author: entry.author,
-                 news_feed_id: news_feed_id,
-                 content: entry.content)
-        end
+  def update_tweet_count
+    self.update_attributes(:tweet_count => (self.tweet_count += 1))
+  end
+
+  def bg_calculate_social_rank
+    Resque.enqueue(CalculateRanking, self.id)
+  end
+
+  def self.add_tweet(tweet_urls = [])
+    # tweet_urls = Array
+    # tweet_urls => 0 o N urls
+    unless tweet_urls.empty?
+      tweet_urls.each do |url|
+        entry = FeedEntry.where(:url => url["expanded_url"]).first
+        entry.update_tweet_count if entry
       end
     end
-    entries
   end
+
+  def update_facebook_stats
+    # ejecutar query a FB
+    # update fb_count
+    begin
+      client = Koala::Facebook::API.new
+      results = client.fql_query("
+        SELECT url, normalized_url, like_count, share_count, comment_count
+        FROM link_stat WHERE url='#{url.to_s}'").first
+
+      self.update_attributes(
+        :facebook_likes => results["like_count"],
+        :facebook_shares => results["share_count"],
+        :facebook_comments => results["comment_count"]
+      )
+      # self.update_attributes(:facebook_count => results.first["like_count"])
+    rescue Exception => e
+      update_attributes failed: true, fetch_errors: {error: e.to_s.safe_encoding}
+      false
+    end
+  end
+
+  def calculate_social_rank
+    # Explainging the calculation
+    # tweets, facebook likes and facebook shares = 1 upvote
+    # facebook comments = 1/3 upvote
+
+    # calculate upvotes and add 1 to avoid divide a zero by anything
+    upvotes = ( tweet_count + facebook_likes + facebook_shares ) + ( facebook_comments / 3 ) + 1
+
+    # calculate entry_age in hours and add 2 to avoid dividing by zero
+    entry_age = ((Time.now - self.created_at) / 3600 ) + 2
+
+    # calculate social_ranking using the entry rank coefficient (defaults to 1.8)
+    # can be assigned per entry
+    social_ranking = upvotes / ( entry_age ** self.rank_coefficient )
+    self.update_attributes(:social_ranking => social_ranking)
+
+    # rank = (tw + likes) - 1 / (time_since_post_date + 2) ** 1.8
+    # upvotes = (self.tweet_count + self.facebook_count) - 1
+    # social_ranking = upvotes / (entry_age ** 1.8 )
+  end
+  
+  def self.remove_entry(id)
+    begin
+      index = Dimensions::SearchifyApi.instance.indexes(APP_CONFIG['searchify_index'])
+      index.document(id).delete
+      find(id).update_attributes(outdated: true, indexed: false)
+    rescue Exception => e
+      puts "FeedEntry: ID: #{id} could not be unindexed, Error: #{e.to_s}"
+    end
+  end
+
+  def self.remove_this_entries
+    entries_to_remove = FeedEntry.to_remove.map(&:id) 
+    entries_to_remove.each do |entry_id|
+      remove_entry entry_id
+    end
+  end
+
+  private
 
   def self.save_feedzirra_response(news_feed_id, feed)
     feedzirra_response = FeedzirraResponse.new(:serialized_response => {news_feed_id => feed}, :news_feed_id => news_feed_id)
     feedzirra_response.save
   end
+
 end

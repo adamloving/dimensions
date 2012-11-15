@@ -18,15 +18,15 @@
         {{if photo_url}}
         %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
         {{/if}}
-        {{if variable_2}}
+        {{if timestamp}}
         .date 
           Published 
-          %span.date{:class=>"timefield t:${variable_2*1000}"}
+          %span.date{:class=>"timefield t:${timestamp*1000}"}
         {{/if}}
         %br
         .social-buttons
-          <a href="http://www.facebook.com/sharer.php?u=http://www.socialitejs.com&amp;t=Socialite.js" class="socialite facebook" data-href="${$('#rails_to_js_config').data('root-path')}news/${docid}-${URLify(text)}" data-send="false" data-width="60" data-show-faces="false"/>
-          <a href="http://twitter.com/share" class="socialite twitter" data-text="${$('#rails_to_js_config').data('twitter-msg')}" data-url="${url}"/>       
+          <iframe class="fb-share-button socialised facebook" src="//www.facebook.com/plugins/like.php?href=${$('#rails_to_js_config').data('root-path')}news/${docid}-${URLify(text)}&amp;send=false&amp;layout=standard&amp;width=400&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;locale=en_US&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:400px; height:35px;" allowTransparency="true"></iframe>
+          <a href="https://twitter.com/share" class="socialised twitter twitter-share-button" data-text="${$('#rails_to_js_config').data('twitter-msg')}" data-url="${url}" data-via="dimensions">Tweet</a>
   {{/each}}
   
   {{if Object.keys(items.pags).length > 0 }}

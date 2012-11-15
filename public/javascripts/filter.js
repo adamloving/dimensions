@@ -34,7 +34,7 @@
       this.neCoords   = null;
       this.fetch      = ["text", "url", "timestamp", "summary"];
       this.start      = 0;
-      this.len        = 10;
+      this.len        = 20;
       this.current    = 1;
       this.docid      = null;
     }
@@ -118,7 +118,6 @@
         query .start           = this.start;
         }
         query.start_date       = this.startDate;
-        query.filter_docvar2   = this.startDate+':'+this.endDate;
         query.fetch_variables  = true;
         query.len              = this.len;
         return query;
@@ -131,8 +130,8 @@
         if (q.start_date) {
           s += '<li>Start date: ' + new Date(q.start_date*1000) + '</li>';
         }
-        if (q.q) {
-          s += '<li>Keyword: ' + q.q + '</li>';
+        if (this.search) {
+          s += '<li>Keyword: ' + this.search + '</li>';
         }
         if (q.tag) {
           s += '<li>Tags: ' + q.tag + '</li>';
@@ -144,7 +143,11 @@
           s += '<li>Geo: sw: (' + q.sw_lat + ', ' + q.sw_long + ') ';
           s += ' ne: (' + q.ne_lat + ', ' + q.ne_long + ')</li>';
         }
+        if(this.tags.length > 0){
+          s += '<li>Tags: ' + this.tags.join(",") + '</li>';
+        };
         return s += '</ul>';
+        
       },
 
       durationToMinutes : function(s) {

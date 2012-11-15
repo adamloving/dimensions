@@ -31,4 +31,19 @@ This project uses
 * Adam Loving's Rails Bootstrap https://github.com/adamloving/rails-bootstrap
 * Twitter's Bootstrap http://twitter.github.com/bootstrap
 
+Tweet streaming
+===============
+
+To run the tweet streaming process run on your dev environment
+
+`rake tweetstream:start_streaming`
+
+For heroku
+`heroku run:detached rake tweetstream:start_streaming`
+
+For deployment 
+`git remote add staging dimensions@66.175.219.248:/home/dimensions/application`
+`git push staging staging`
+
+The application deployment will be restarted by itself with the push to staging repo
 

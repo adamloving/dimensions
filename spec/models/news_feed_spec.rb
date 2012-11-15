@@ -98,15 +98,19 @@ describe NewsFeed do
   end
   describe "#load_entries" do
     before do
-      @news_feed = FactoryGirl.build(:news_feed)
+      @news_feed = FactoryGirl.create(:news_feed)
     end
 
     it 'should propagate the exception when the url is not valid' do
-      Feedzirra::Feed.stub(:fetch_and_parse){nil}
+      Feedzirra::Feed.stub(:fetch_and_parse){false}
+      @news_feed.load_entries.should be_false
+    end
 
-      lambda {
-        @news_feed.load_entries
-      }.should raise_error('The feed is invalid')
+    it 'should set invalid feed when raise exception' do
+      Feedzirra::Feed.stub(:fetch_and_parse){false}
+      @news_feed.load_entries
+      @news_feed.reload
+      @news_feed.valid_feed.should be_false
     end
 
     it 'associate the entries with the feed' do
@@ -118,5 +122,34 @@ describe NewsFeed do
 
       @news_feed.load_entries
     end
+  end
+
+  describe '#bg_reindex_feed' do
+    let(:index) do
+      indexer = double(:indexer)
+      indexer.stub_chain(:document, :add){true}
+      indexer
+    end
+
+    it 'should run the enqueue the ReindexFeed job for that feed' do
+      @news_feed = FactoryGirl.build(:news_feed)
+      @news_feed.bg_reindex_feed.should be_true
+    end
+  end
+
+  describe "#reindex_feed" do
+
+    let(:index) do
+      indexer = double(:indexer)
+      indexer.stub_chain(:document, :add){true}
+      indexer
+    end
+
+    it "should validate if the feed is valid?" do
+      @news_feed = FactoryGirl.create(:news_feed, valid_feed: true)
+      @news_feed.valid_feed = false
+      @news_feed.reindex_feed.should be_false
+    end
+
   end
 end

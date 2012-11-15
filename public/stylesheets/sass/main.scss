@@ -130,13 +130,16 @@ p.small{
 }
 
 .social-buttons {
+  background: url('../images/social_troll.png') no-repeat 0 0;
   height: 30px;
+  overflow: hidden;
   .socialised {
     float: left;
-    display: none;
   }
   .twitter {
     width: 120px;
+    float: right;
+    margin-right: 83px;
   }
   .facebook {
     width: 400px;
