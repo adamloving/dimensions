@@ -1,8 +1,5 @@
 /* line 2, sass/main.scss */
-body {
-  padding-top: 40px;
-  margin-left: 50px;
-}
+body { padding-top: 152px; margin-left: 0; padding-left: 50px; background: url('http://q.king5.com/seattleblend/background.png'); background-attachment: fixed; }
 /* line 6, sass/main.scss */
 body #filters {
   margin: 20px;
@@ -12,6 +9,7 @@ body #stream {
   margin-top: 20px;
 }
 /* line 15, sass/main.scss */
+#stream .item { border: 1px solid #c5c5c5; background: #fff; padding: 14px; margin: 0 0 10px 0; width: 600px; }
 body #stream .item .post-it {
   display: inline-block;
   height: 50px;
@@ -41,9 +39,8 @@ body #stream .item .body {
   width: 590px;
   display: inline-block;
   vertical-align: top;
-  padding-bottom: 10px;
-  border-bottom: solid 1px #eee;
-  margin-bottom: 20px;
+  padding: 0; 
+  margin: 0;  
 }
 /* line 45, sass/main.scss */
 body #stream .item .body h2 {
@@ -98,21 +95,25 @@ hr {
 /* line 101, sass/main.scss */
 h3.headline {
   line-height: 20px;
+  margin: 0 0 10px 0;
 }
 
 /* line 104, sass/main.scss */
+.pagination { margin: 0; padding: 0; width: 650px; }
 .pagination ul {
-  float: right;
+  float: left;
 }
 
 /* line 107, sass/main.scss */
 .pagination a {
   float: left;
-  padding: 0 9px;
+  padding: 0 7px;
   line-height: 21px;
   text-decoration: none;
   border: 1px solid #DDD;
-  border-left-width: 0;
+  border-left-width: 0;  
+  background-color: #0a1d4a; 
+  color: #fff;
 }
 
 /* line 115, sass/main.scss */
@@ -137,14 +138,15 @@ p.small {
 
 /* line 128, sass/main.scss */
 .pagination .active a {
-  color: #000;
+  color: #0a1d4a;
 }
-
+.pagination a:hover, .pagination .active a { background-color: #fac716; color: #0a1d4a; }
 /* line 132, sass/main.scss */
 .social-buttons {
-  background: url("../images/social_troll.png") no-repeat 0 0;
   height: 30px;
   overflow: hidden;
+  margin: 0; 
+  padding: 0; 
 }
 /* line 136, sass/main.scss */
 .social-buttons .socialised {
@@ -154,18 +156,23 @@ p.small {
 .social-buttons .twitter {
   width: 120px;
   float: right;
-  margin-right: 83px;
+  margin-right: 0;
 }
 /* line 144, sass/main.scss */
 .social-buttons .facebook {
   width: 400px;
+  margin-left: 10px;
 }
 /* line 146, sass/main.scss */
 .social-buttons .facebook iframe {
   width: 100%;
   height: 25px;
 }
-body { padding-top: 152px; margin-left: 0; padding-left: 50px; background: url('http://q.king5.com/seattleblend/background.png'); background-attachment: fixed; }
+
+
+
+
+.topbar { background: url('http://q.king5.com/seattleblend/background.png'); height: 150px; border-bottom: none; }
 .topbar { background: url('http://q.king5.com/seattleblend/background.png'); height: 150px; border-bottom: none; }
 .topbar-inner, .topbar .fill { height: 152px; clear: both; margin-top: 0; background: url('http://q.king5.com/seattleblend/Header.png') no-repeat center 20px; border-bottom: none; box-shadow: none; }
 .topbar-inner .container { height: 150px; }
@@ -175,8 +182,6 @@ body { padding-top: 152px; margin-left: 0; padding-left: 50px; background: url('
 .topbar input:focus, .topbar input.focused { background: #fff; color: #000; }
 .topbar input:-moz-placeholder { color: #000; }
 .topbar h3 { display: none; visibility: none;  }
-#stream .item { border: 1px solid #c5c5c5; background: #fff; padding: 14px; margin: 0 0 10px 0; width: 600px; }
-body #stream .item .body { padding: 0; margin: 0; border-bottom: none; }
 #filters h2 { font: normal bold 16px/21px arial, helvetica, sans-serif; 
 color: #fff; 
 text-align: center; 
@@ -191,15 +196,4 @@ background-image: -moz-linear-gradient(top, rgb(15,43,103) 35%, rgb(10,29,74) 69
 background-image: -webkit-linear-gradient(top, rgb(15,43,103) 35%, rgb(10,29,74) 69%);
 background-image: -ms-linear-gradient(top, rgb(15,43,103) 35%, rgb(10,29,74) 69%); }
 #filters h1 { display: none; visibiilty: none; }
-.social-buttons .twitter { margin-right: 0; }
-.social-buttons .facebook { margin-left: 10px; }
-.social-buttons { background: none; margin: 0; padding: 0; }
-h3.headline { margin: 0 0 10px 0; }
 div.date { background: #ececec; font-size: 10px; padding: 0 6px; margin: 0; }
-.pagination { margin: 0; padding: 0; width: 650px; }
-.pagination ul { float: left; }
-.pagination a { background-color: #0a1d4a; color: #fff; padding: 0 7px }
-.pagination .active a { color: #0a1d4a; }
-.pagination a:hover, .pagination .active a { background-color: #fac716; color: #0a1d4a; }
-
-
