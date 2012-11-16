@@ -31,7 +31,7 @@ staging:
   <<: *open_calais
   <<: *searchify
   searchify_index: 'staging'
-  host: http://king5.tangosource.com/ 
+  host: http://www.seattleblend.com/
 
 production:
   <<: *facebook

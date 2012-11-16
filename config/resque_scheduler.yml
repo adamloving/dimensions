@@ -8,10 +8,10 @@ UpdateFeeds:
   class: FeedUpdater
   description: "Update the feeds from the sources"
 
-ReindexFeeds:
-  cron: "00 */1 * * *"
-  class: EntryMonitor
-  description: "Retry to index the failed entries"
+#ReindexFeeds:
+  #cron: "00 */1 * * *"
+  #class: EntryMonitor
+  #description: "Retry to index the failed entries"
 
 CleanSearchify:
   cron: "59 23 * * *"
