@@ -1,0 +1,39 @@
+facebook: &facebook
+  fb_app_id: 361505903895246 
+
+searchify: &searchify
+  searchify_api_url: http://:Tf9MTWQrYG8Hwz@282nj.api.searchify.com
+
+twitter:
+  consumer_key: KTUsgbQa6JvXHzsdAoBfw
+  consumer_secret: vSD2zY4mo0guod2noUaU9FUXDdO9JfsDNsUyFlB3J4Y
+  oauth_token: 122466898-sXDCRKIY3ciCzPA3cycfWoMpB6YuIPiX6wkKbLY
+  oauth_token_secret: wo9W2MDYGogvGuIOsKOOGgvdrlZZwH8p03e0I6F4oo
+  auth_method: :oauth
+
+open_calais: &open_calais
+  open_calais_api_key: du295ff4zrg3rd4bwdk86xhy
+  
+development:
+  <<: *facebook
+  <<: *open_calais
+  <<: *searchify
+  searchify_index: 'development'
+  host: http://localhost:3000/
+
+test:
+  <<: *facebook
+  <<: *open_calais
+  <<: *searchify
+
+staging:
+  <<: *facebook
+  <<: *open_calais
+  <<: *searchify
+  searchify_index: 'staging'
+  host: http://www.seattleblend.com/
+
+production:
+  <<: *facebook
+  <<: *open_calais
+  <<: *searchify

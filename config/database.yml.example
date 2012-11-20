@@ -1,0 +1,21 @@
+postgres: &postgres
+  adapter: postgresql
+  host: "localhost"
+  username: dev
+  password: dev
+  charset: utf8
+
+
+common: &common
+  # Choose one of the following
+  #<<: *mysql
+  <<: *postgres
+
+development:
+  <<: *common
+  database: dimensions_dev
+
+
+test:
+  <<: *common
+  database: "dimensions_test<%= ENV['TEST_ENV_NUMBER'] %>"

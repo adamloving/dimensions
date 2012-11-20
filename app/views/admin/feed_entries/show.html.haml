@@ -1,0 +1,127 @@
+= content_for :sidebar do
+  %h3
+    FeedEntry
+  #panel_contents
+    %h4
+      State
+    %p
+      %span.label.label-info= @feed_entry.state
+    %h4
+      Visibility
+    %p
+      %span.label.label-inverse= @feed_entry.visible? ? "Showing" : "Hidden"
+    #coefficient.coefficient
+      %p
+        %strong Rank Coefficient:
+        %span
+          = form_tag update_coefficient_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry.id), :method => :post do
+            = text_field_tag :rank_coefficient, @feed_entry.rank_coefficient, :class => 'rank_coefficient'
+            = submit_tag "Update coefficient"
+        %span.field-description
+          Default coefficient is 1.8. If you need to increase this entry's social ranking, please decrease this value.
+    %p
+    - if @feed_entry.fetched?
+      = link_to "Localize", process_entry_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry, :current => @feed_entry.state.to_sym), :method => :post, :class => "button_link"
+    %p
+      = entry_toggle_visibility_link(@feed_entry,{:class=>"button_link"}) 
+    %h4 Indexed?
+    %p
+      - if @feed_entry.indexed?
+        %span.label.label-success= @feed_entry.indexed
+      - else
+        %span.label.label-warning= @feed_entry.indexed
+
+%table.feed_entry
+  %tbody
+    %tr
+      %td
+        Name
+      %td
+        = @feed_entry.name
+    %tr
+      %td
+        Url
+      %td
+        = link_to @feed_entry.url, @feed_entry.url, :target => :blank
+    %tr
+      %td
+        Published At:
+      %td
+        = @feed_entry.published_at
+    %tr
+      %td
+        Author
+      %td
+        = @feed_entry.author
+    %tr
+      %td
+        Summary
+      %td
+        = @feed_entry.summary
+    %tr
+      %td
+        Content
+      %td
+        .more-less
+          .text-block
+            %p
+              = @feed_entry.content
+  
+    - if @feed_entry.failed?
+      %tr
+        %td
+          %span.entry.failed
+            Fetch errors
+        %td
+          %span.entry.failed
+            = @feed_entry.fetch_errors.inspect
+
+    - if @feed_entry.primary_location.present?
+      %tr
+        %td
+          Location
+        %td
+          %span.label.label-success
+            = @feed_entry.primary_location.name
+      %tr
+        %td
+          City
+        %td
+          = @feed_entry.primary_location.serialized_data["shortname"]
+      %tr
+        %td
+          Country
+        %td
+          = @feed_entry.primary_location.serialized_data["containedbycountry"]
+      %tr
+        %td
+          Latitude
+        %td
+          = @feed_entry.primary_location.serialized_data["latitude"]
+      %tr
+        %td
+          Longitude
+        %td
+          = @feed_entry.primary_location.serialized_data["longitude"]
+
+    - if @feed_entry.tagged?
+      %tr
+        %td
+          Tags
+        %td
+          - @feed_entry.tag_list.each do|tag|
+            %span.label.label-info.tag
+              = link_to "x", delete_admin_feed_entry_tags_path(@feed_entry,:tag=>tag),:class =>'close', :style=>"color:#000;font-size:small; cursor:pointer;",:data_dismiss=>"alert"
+              %em
+                = tag
+    - if @feed_entry.indexed?
+      %tr
+        %td
+        
+        %td
+          %div.btn-group
+          = link_to "Index again this entry", re_index_admin_news_feed_feed_entry_path(@feed_entry.feed, @feed_entry.id), :class => "btn btn-primary"
+.ajax_loading
+
+= javascript_include_tag "feed_entries/show.onready.js"
+#confirm_tag_delete

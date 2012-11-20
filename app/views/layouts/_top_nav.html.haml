@@ -1,0 +1,12 @@
+.topbar(data-dropdown="dropdown")
+  .topbar-inner
+    .container
+      %h3
+        %a(href='/') Dimensions
+      %form(onsubmit='$.address.value("search");return false;')
+        %input#search(type="search" placeholder="Search" style="margin-left: 232px")
+      -#%h3
+        -#.name(style="right: 60px; position: absolute; margin-top: 5px; color: #eee; font-size: 0.85em")
+          -#| Welcome, Leon
+      -#%img(src='../../../images/profile.jpeg' width='40px' height='40px' align='right')
+= javascript_include_rpx(user_session_url)

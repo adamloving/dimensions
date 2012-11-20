@@ -1,0 +1,33 @@
+/* line 4, sass/dimensions.scss */
+.admin_page table.feed_entries td span.entry.failed, .admin_page table.feed_entry td span.entry.failed {
+  color: red;
+}
+/* line 8, sass/dimensions.scss */
+.admin_page table.feed_entries td span.entry-progress-block, .admin_page table.feed_entry td span.entry-progress-block {
+  background-color: blue;
+  min-width: 10px;
+  min-height: 20px;
+  float: left;
+}
+/* line 16, sass/dimensions.scss */
+.admin_page .ajax_loading {
+  background-image: url(../images/ajax_spinner.gif);
+  width: 150px;
+  height: 150px;
+  display: none;
+}
+
+/* line 24, sass/dimensions.scss */
+td.ajax_image {
+  width: 45px;
+  height: 45px;
+}
+
+/* line 29, sass/dimensions.scss */
+.ajax_loading_small {
+  background-image: url(../images/ajax_spinner_small.gif);
+  background-repeat: no-repeat;
+  width: 45px;
+  height: 45px;
+  display: none;
+}

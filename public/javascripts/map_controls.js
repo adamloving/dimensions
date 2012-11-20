@@ -34,11 +34,44 @@ function getNorthEastCoordinates(map)
 
 function centerMapToCurrentLocation()
 {
+
     $('#map').gmap({ 'zoom': 9 });
-    navigator.geolocation.getCurrentPosition(function(position) {
-        currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        $('#map').gmap({ 'center': currentPosition });
+    //Firefox sucks! When selecting 'not now' from the geolocation permissions im firefox, it does not get  in the error callback
+
+    function getPosition(cb){
+      var rendered = null;
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        renderMapCentered(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        rendered = true;
+        return cb(true);
+      },
+      function(error){
+        renderMapCentered(new google.maps.LatLng('47.614496', '-122.332077'));
+        rendered = true;
+        return cb(true);
+      });
+
+      setTimeout(function(){
+        if(rendered == null)
+          return cb(false);
+        else
+          return cb(true);
+      }, 5000);
+
+    }
+
+    getPosition(function(rendered){
+      if(!rendered)
+        renderMapCentered(new google.maps.LatLng('47.614496', '-122.332077'))
     });
+
+
+}
+
+function renderMapCentered(position){
+  $('#map').gmap({ 'center': position });
+  filterByBoundary(map);
 }
 
 function getCurrentPosition()
@@ -54,8 +87,11 @@ function filterByBoundary(map)
     boundary = "Visible map viewport has changed.\n\n";
     boundary += "South west coorindates:\n" + getSouthWestCoordinates(map);
     boundary += "\n\nNorth east coorindates:\n" + getNorthEastCoordinates(map);
-    console.log(boundary);
-    window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
+    if(window.location.hash == "" ||"#/search"){
+      window.location.hash = "";
+     window.filter.setCoords(getNorthEastCoordinates(map), getSouthWestCoordinates(map));
+    }
+   
 }
 
 function filterByClick(map)
@@ -67,11 +103,20 @@ $(function() {
     $('#map').gmap();
     
     $('#map').gmap().bind('init', function(event, map) {
+
+        //make map variable accessible for filterByBoundary in centerMapToCurrentPosition
+        window.map = map
+
         centerMapToCurrentLocation();
 
         $(map).dragend( function() {
-            //filterByBoundary(map);
-            filterByClick(map);
+            filterByBoundary(map);
+
+            //retrieves entries stored on map
+            entries = $.data($('#map')[0],'entries');
+            $(entries).each(function(){
+              addMarker(this.variable_0,this.variable_1);
+            });
         });
         
         var firstEvent = true;

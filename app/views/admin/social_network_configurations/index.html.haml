@@ -1,0 +1,9 @@
+%p
+  %h2 Default Message For
+
+- for network in @social_networks
+  %h3
+    = network.name
+    = form_for [:admin, network] do|form|
+      = form.text_field :message
+      = form.submit "Update"

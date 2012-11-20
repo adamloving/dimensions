@@ -1,7 +1,6 @@
 RailsBootstrap::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
-
-  # The production environment is meant for finished, "live" apps.
+  #The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -46,4 +45,11 @@ RailsBootstrap::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Send email when something is wrong on dimensions
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => "[Dimensions-ExceptionNotifier-Production]",
+    :sender_address => %{"Exception Notifier" <app3219037@heroku.com>},
+    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com alejandro.espinoza@tangosource.com}
+
 end

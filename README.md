@@ -15,6 +15,10 @@ Authors
 * Mohammad Almalkawi https://github.com/almalkawi
 * Adam Loving https://github.com/adamloving
 * Lewis Lin http://www.linkedin.com/in/lewislin
+* Ignacio de la Madrid https://github.com/inakidelamadrid
+* Alejandro Espinoza https://github.com/AlejandroEspinoza
+* Antonio Chávez https://github.com/TheNaoX
+* Federico Ramallo https://github.com/framallo
 
 Prerequisites
 =============
@@ -22,21 +26,24 @@ Prerequisites
 This project uses 
 
 * Ruby on Rails 3.0 http://rubyonrails.org/
-* Elastic Search http://www.elasticsearch.org/
-* slim http://slim-lang.org/
+* Searchify (Heroku Add-On) http://www.searchify.com/
 * compass https://github.com/chriseppstein/compass/tree
-* tire https://github.com/karmi/tire
-* crack https://github.com/jnunemaker/crack
-* barista https://github.com/Sutto/barista
 * Adam Loving's Rails Bootstrap https://github.com/adamloving/rails-bootstrap
 * Twitter's Bootstrap http://twitter.github.com/bootstrap
 
-Elastic Search Notes
-====================
+Tweet streaming
+===============
 
-`ruby script/es/load_es.rb  http://IP:9200/ && ruby script/es/load_file.rb data/articles.json http://IP:9200/`
+To run the tweet streaming process run on your dev environment
 
-* load_es - builds out schema for es. First arg is host
-* load_file - parses json file and build out ES json. first arg file second arg host
+`rake tweetstream:start_streaming`
 
-Hosts default to local if not present
+For heroku
+`heroku run:detached rake tweetstream:start_streaming`
+
+For deployment 
+`git remote add staging dimensions@66.175.219.248:/home/dimensions/application`
+`git push staging staging`
+
+The application deployment will be restarted by itself with the push to staging repo
+

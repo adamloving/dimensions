@@ -1,0 +1,21 @@
+.label{
+  display: inline-block;
+  margin-right: 5px;
+  
+  a{
+    text-decoration: none;
+  }
+
+  &.label-success a{
+    color: #fff;
+  }
+
+  &.label-info a{
+    color: #fff;
+  }
+}
+
+.sidebar_section input[type="text"].rank_coefficient {
+  width: 60px;
+  margin-right: 10px;
+}

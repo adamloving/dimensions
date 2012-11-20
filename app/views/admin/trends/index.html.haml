@@ -1,0 +1,16 @@
+%table.trends
+  %thead
+    %tr
+      %th
+        Trend
+      %th
+        Black List This Trend
+  %tbody
+  - @trends.each do |trend|
+    %tr
+      %td.trend
+        =trend.name
+      %td
+        =link_to 'Blacklist', blacklist_admin_trend_path(trend), method: :post, id: "blacklist_trend_#{trend.id}"
+
+  

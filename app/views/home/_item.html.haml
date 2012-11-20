@@ -1,0 +1,50 @@
+= javascript_include_tag 'dimensions/timefield'
+%script#item-template{:type=>"text/x-jquery-tmpl"}
+  {{each(i,item) items.results}}
+  .br{:style=>"clear:both;"}
+  .item
+    {{if img}}
+    .post-it
+      %img{:src=>"${img}",:style=>"width:98%"}
+    {{/if}}
+    .body
+      %h3.headline.unread
+        %a.news{:href=>"${item.url}",:target=>"_blank"}${text}
+      .article-details
+        {{if summary}}
+        %p.summary
+          {{html summary}}
+        {{/if}}
+        {{if photo_url}}
+        %img{:src=>'${photo_url}',:class=>"show",:target=>"_blank"}
+        {{/if}}
+        {{if timestamp}}
+        .date 
+          Published 
+          %span.date{:class=>"timefield t:${timestamp*1000}"}
+        {{/if}}
+        %br
+        .social-buttons
+          <iframe class="fb-share-button socialised facebook" src="//www.facebook.com/plugins/like.php?href=${$('#rails_to_js_config').data('root-path')}news/${docid}-${URLify(text)}&amp;send=false&amp;layout=standard&amp;width=400&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;locale=en_US&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:400px; height:35px;" allowTransparency="true"></iframe>
+          <a href="https://twitter.com/share" class="socialised twitter twitter-share-button" data-text="${$('#rails_to_js_config').data('twitter-msg')}" data-url="${url}" data-via="dimensions">Tweet</a>
+  {{/each}}
+  
+  {{if Object.keys(items.pags).length > 0 }}
+  %span.currentpage
+  .pagination
+    %ul
+      {{if items.previous}}
+      %li
+        %a{:href=>"\#/search#page\#${items.previous}"} Previous
+      {{/if}}
+      {{each(i,item) items.pags}}
+      %li{:class=>"${(items.current == (item))? 'active' : ''}"}
+        %a{:href=>"\#/search#page\#${item}"}${item}
+      {{/each}}
+      {{if items.next }}
+      %li
+        %a{:href=>"\#/search#page\#${items.next}"} Next
+      {{/if}}
+  {{/if}}
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

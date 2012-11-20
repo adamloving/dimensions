@@ -1,0 +1,5 @@
+development: localhost:6379
+test: 
+staging: localhost:6379
+fi:
+production: localhost:6379

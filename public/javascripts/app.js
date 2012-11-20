@@ -8,7 +8,7 @@
   App = (function() {
     function App() {
       this.onSignupSuccess = __bind(this.onSignupSuccess, this);
-      this.onSignupClick = __bind(this.onSignupClick, this);      console.log('hi');
+      this.onSignupClick = __bind(this.onSignupClick, this);
       $('#signup').click(this.onSignupClick);
     }
     App.prototype.onSignupClick = function() {

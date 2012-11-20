@@ -1,0 +1,31 @@
+= content_for :sidebar do
+  %h3
+    FeedEntry
+  #panel_contents
+    %h4
+      State
+    %p
+      = @feed_entry.state
+    %h4
+      Visibility
+    %p
+      = @feed_entry.visible? ? "Showing" : "Hidden"
+
+%table
+  %tbody
+    %tr
+      %td
+        ID
+      %td
+        = @feed_entry.id
+    %tr
+      %td
+        Name
+      %td
+        = @feed_entry.name
+    %tr
+      %td
+        Tags
+      %td
+        - @tags.each do |tag|
+          %span.label.label-info= tag

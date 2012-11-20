@@ -1,0 +1,31 @@
+= content_for :action_items, link_to("New NewsFeed", new_admin_news_feed_path)
+
+= content_for :sidebar do
+  %h3 
+    News Feeds Filters
+  #panel_contents
+    = render 'filters_form'
+
+%table.table-striped.table
+  %thead
+    %tr
+      %th Id
+      %th Name
+      %th Entries(successful)
+      %th Entries(failed)
+      %th Url
+      %th
+  %tbody
+    - @news_feeds.each do|feed|
+      %tr
+        %td= feed.id
+        %td= link_to feed.name, admin_news_feed_path(feed)
+        %td= feed.entries.failed(false).count
+        %td= feed.entries.failed(true).count
+        %td= link_to "#{feed.url}", feed.url, :target => "blank"
+        %td
+          = link_to "Delete", admin_news_feed_path(feed), :method => :delete, :confirm => "Are you sure?"
+          = "|"
+          = link_to "View Entries", admin_news_feed_feed_entries_path(feed)
+
+

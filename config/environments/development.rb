@@ -11,7 +11,7 @@ RailsBootstrap::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_view.debug_rjs             = true
+  #config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
@@ -22,5 +22,9 @@ RailsBootstrap::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => "[Dimensions-ExceptionNotifier-Development]",
+    :sender_address => %{"Exception Notifier" <app3148068@heroku.com>},
+    :exception_recipients => %w{federico@tangosource.com nacho@tangosource.com antonio.chavez@tangosource.com eric@tangosource.com alejandro.espinoza@tangosource.com}
 end
 

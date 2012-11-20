@@ -1,0 +1,23 @@
+/* line 1, sass/dimensions_admin.scss */
+.label {
+  display: inline-block;
+  margin-right: 5px;
+}
+/* line 5, sass/dimensions_admin.scss */
+.label a {
+  text-decoration: none;
+}
+/* line 9, sass/dimensions_admin.scss */
+.label.label-success a {
+  color: #fff;
+}
+/* line 13, sass/dimensions_admin.scss */
+.label.label-info a {
+  color: #fff;
+}
+
+/* line 18, sass/dimensions_admin.scss */
+.sidebar_section input[type="text"].rank_coefficient {
+  width: 60px;
+  margin-right: 10px;
+}

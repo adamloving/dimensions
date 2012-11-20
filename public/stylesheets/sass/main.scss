@@ -1,0 +1,151 @@
+// use $ compass watch . to auto-compile
+body {
+  padding-top: 40px;
+  margin-left: 50px;
+  
+  #filters {
+    margin: 20px;
+  }  
+
+  #stream {
+  	margin-top: 20px;
+
+    .item {
+
+      .post-it {
+        display: inline-block;
+        height: 50px;
+        width: 60px;
+        margin: 10px;
+        margin-top: 0px;
+        padding: 4px;
+        padding-top: 10px;
+        background-color: #ffe454;
+        border: solid 1px #ffe9e9;
+        border-radius: 5px;
+        text-align: center;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
+        box-shadow: rgba(100, 100, 100, 0.2) -1px 2px 2px;
+      }
+          
+      img {        
+        /* display: none; */
+        margin-right: 15px;
+      }
+      .show{
+          display: inline-block;
+      }
+
+      .body {
+
+        width: 590px;
+        display: inline-block;
+        vertical-align: top;
+
+        h2 {  
+          vertical-align: top;
+        }
+
+        padding-bottom: 10px;
+        border-bottom: solid 1px #eee;
+        margin-bottom: 20px;
+      }
+    }  
+  }
+
+  #tag-list .label {
+    a {
+      color: #FFF;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  #tag-list,#group-list {
+    margin-left: 0px;
+    width: 170px;
+    
+    li {
+      list-style: none;
+      display: inline-block;
+      margin-right: 2px;
+      border-radius: 4px;
+      -moz-border-radius: 4px;
+      padding: 2px 4px 2px 4px;
+
+      a {
+        color: #111;  
+      }
+
+      &.selected {
+        background-color: #57A957;
+      }
+    }
+  }
+}
+
+.ui-slider {
+    margin: 0 0 30px 10px;
+}
+
+.feedflare {
+  display: none;
+}
+
+hr {
+  margin: 15px 0 0 0;
+}
+
+h3.headline {
+  line-height: 20px;
+}
+.pagination ul{
+ float:right;
+}
+.pagination a {
+  float: left;
+  padding: 0 9px;
+  line-height: 21px;
+  text-decoration: none;
+  border: 1px solid #DDD;
+  border-left-width: 0;
+}
+.new{
+  margin:10px 10px 40px 10px;
+
+}
+a.news{
+color:#333
+}
+a.news:hover{
+  color:#08c;
+}
+p.small{
+  float:right;
+}
+.pagination .active a{
+  color: #000;
+}
+
+.social-buttons {
+  background: url('../images/social_troll.png') no-repeat 0 0;
+  height: 30px;
+  overflow: hidden;
+  .socialised {
+    float: left;
+  }
+  .twitter {
+    width: 120px;
+    float: right;
+    margin-right: 83px;
+  }
+  .facebook {
+    width: 400px;
+    iframe {
+      width: 100%;
+      height: 25px;
+    }
+  }
+}

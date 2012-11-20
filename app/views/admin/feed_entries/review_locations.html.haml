@@ -1,0 +1,42 @@
+= content_for :sidebar do
+  %h3
+    Review Locations for Entries
+  #panel_contents
+    = select_tag('entity_state', options_for_select({'Not Reviewed' => '1', 'Reviewed' => '2'}),  :class => 'left')
+
+
+.pagination
+  = paginate @feed_entries
+%table.feed_entries.table-striped.table
+  %thead
+    %tr
+      %th Id
+      - if params[:news_feed_id].nil?
+        %th Feed
+      %th Name
+      %th Locations
+      %th
+      %th
+
+  %tbody
+    - @feed_entries.each do|entry|
+      %tr
+        %td= entry.id
+        - if params[:news_feed_id].nil?
+          %td= entry.feed.name
+        %td= link_to entry.name, admin_news_feed_feed_entry_path(entry.feed,entry)
+        %td
+          - unless entry.primary_location.nil?
+            %span.label.label-success
+              = link_to entry.primary_location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => entry.primary_location.id), :rel => :nofollow, :id => "location_#{entry.primary_location.id}", :class => 'location'
+
+          - for location in entry.secondary_locations
+            %span.label.label-info
+              = link_to location.name, admin_feed_entry_set_primary_location_path(entry, :location_id => location.id), :rel => :nofollow, :id => "location_#{location.id}", :class => 'location'
+        %td.ajax_image
+          .ajax_loading_small
+        %td
+          %span{:class => "entry #{(entry.failed? ? 'failed' : 'normal')}" }
+            = entry.state
+
+= javascript_include_tag 'feed_entries/review_locations.onReady'
